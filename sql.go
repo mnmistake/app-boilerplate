@@ -43,11 +43,21 @@ func initDb() {
 	config := dbConfig()
 	var err error
 
-	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		config[dbhost], config[dbport],
-		config[dbuser], config[dbpass], config[dbname])
-	fmt.Println(psqlInfo)
+	psqlInfo := fmt.Sprintf(
+		`
+		host=%s 
+		port=%s 
+		user=%s
+		password=%s
+		dbname=%s
+		sslmode=disable
+		`,
+		config[dbhost],
+		config[dbport],
+		config[dbuser],
+		config[dbpass],
+		config[dbname],
+	)
 
 	db, err = sql.Open("postgres", psqlInfo)
 	if err != nil {
