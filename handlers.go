@@ -2,37 +2,61 @@ package main
 
 import (
 	"encoding/json"
-	"io"
-	"io/ioutil"
+	"fmt"
 	"net/http"
 )
 
-func GetTodos(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(todos)
-	return
+type todo struct {
+	ID          int
+	Name        string
+	IsCompleted bool
 }
 
-func PostTodo(w http.ResponseWriter, r *http.Request) {
-	var todo Todo
-	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
+type todos struct {
+	Todos []todo
+}
+
+func queryTodos(todos *todos) error {
+	rows, err := db.Query(`SELECT * FROM todos`)
+
 	if err != nil {
-		panic(err)
+		return err
 	}
-	if err := r.Body.Close(); err != nil {
-		panic(err)
-	}
-	if err := json.Unmarshal(body, &todo); err != nil {
-		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		w.WriteHeader(422)
-		if err := json.NewEncoder(w).Encode(err); err != nil {
-			panic(err)
+	defer rows.Close()
+	for rows.Next() {
+		todo := todo{}
+		err = rows.Scan(
+			&todo.ID,
+			&todo.Name,
+			&todo.IsCompleted,
+		)
+		if err != nil {
+			return err
 		}
+		todos.Todos = append(todos.Todos, todo)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func DataHandler(w http.ResponseWriter, r *http.Request) {
+	todos := todos{}
+	err := queryTodos(&todos)
+
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
 	}
 
-	t := CreateTodo(todo)
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusCreated)
-	if err := json.NewEncoder(w).Encode(t); err != nil {
-		panic(err)
+	output, err := json.Marshal(todos)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
 	}
+
+	fmt.Fprintf(w, string(output))
+
 }

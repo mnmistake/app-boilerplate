@@ -1,43 +1,77 @@
 package main
 
-var currentId int
-var todos Todos
+import (
+	"database/sql"
+	"fmt"
+	"os"
+
+	_ "github.com/lib/pq"
+)
+
+//"time"
+
+var db *sql.DB
+
+const (
+	dbhost = "DBHOST"
+	dbport = "DBPORT"
+	dbuser = "DBUSER"
+	dbpass = "DBPASS"
+	dbname = "DBNAME"
+)
+
+func dbConfig() map[string]string {
+	conf := make(map[string]string)
+	conf[dbhost] = dbhost
+	conf[dbport] = dbport
+	conf[dbuser] = dbuser
+	conf[dbpass] = dbpass
+	conf[dbname] = dbname
+
+	for key, _ := range conf {
+		val, exists := os.LookupEnv(key)
+		if !exists {
+			panic("oh no")
+		}
+		conf[key] = val
+	}
+	return conf
+}
+
+func initDb() {
+	config := dbConfig()
+	var err error
+
+	psqlInfo := fmt.Sprintf(
+		`
+		host=%s 
+		port=%s 
+		user=%s
+		password=%s
+		dbname=%s
+		sslmode=disable
+		`,
+		config[dbhost],
+		config[dbport],
+		config[dbuser],
+		config[dbpass],
+		config[dbname],
+	)
+
+	db, err = sql.Open("postgres", psqlInfo)
+	if err != nil {
+		panic(err)
+	}
+
+	err = db.Ping()
+
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Connected to DB =>", config[dbname])
+}
 
 func init() {
-	CreateTodo(
-		Todo{
-			Name: "Go shopping",
-		},
-	)
-	CreateTodo(
-		Todo{
-			Name: "Do shit",
-		},
-	)
-}
-
-func FindTodo(id int) Todo {
-	for _, todo := range todos {
-		if todo.ID == id {
-			return todo // can we remove this ?
-		}
-	}
-	return Todo{}
-}
-
-func CreateTodo(t Todo) Todo {
-	currentId++
-	t.ID = currentId
-	todos = append(todos, t)
-	return t
-}
-
-func DeleteTodo(id int) error {
-	for i, t := range todos {
-		if t.ID == id {
-			todos = append(todos[:i], todos[i+1:]...)
-			return nil
-		}
-	}
-	return nil
+	initDb()
+	defer db.Close()
 }
