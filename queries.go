@@ -1,10 +1,19 @@
 package main
 
 import (
+	"fmt"
+	"log"
+
 	"github.com/graphql-go/graphql"
 )
 
-var rootQuery = graphql.NewObject(graphql.ObjectConfig{
+var (
+	id          int
+	content     string
+	isCompleted bool
+)
+
+var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 	Name: "rootQuery",
 	Fields: graphql.Fields{
 		"todo": &graphql.Field{
@@ -16,22 +25,35 @@ var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 				},
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				// Query via Todo ID and return a Todo's ID, content and is_completed status
 				queryID, _ := params.Args["id"].(int)
+				todo := QueryTodo(queryID)
 
-				for _, todo := range TodoList {
-					if todo.ID == queryID {
-						return todo, nil
-					}
-				}
-
-				return Todo{}, nil
+				return todo, nil
 			},
 		},
 		"todoList": &graphql.Field{
 			Type:        graphql.NewList(todoType),
 			Description: "return all todos",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				return TodoList, nil
+				data, _ := db.Query("SELECT id, content FROM todos")
+
+				defer data.Close()
+				for data.Next() {
+					err := data.Scan(&id, &content)
+					if err != nil {
+						log.Fatal(err)
+					}
+					fmt.Println(id, content)
+
+					return TodoList2{
+						Todo{
+							ID:      id,
+							Content: content,
+						},
+					}, nil
+				}
+				return TodoList2{}, nil
 			},
 		},
 	},

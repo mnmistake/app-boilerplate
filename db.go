@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 
 	_ "github.com/lib/pq"
@@ -38,14 +39,14 @@ func dbConfig() map[string]string {
 	return conf
 }
 
-func initDb() {
+func InitDb() {
 	config := dbConfig()
 	var err error
 
 	psqlInfo := fmt.Sprintf(
 		`
-		host=%s 
-		port=%s 
+		host=%s
+		port=%s
 		user=%s
 		password=%s
 		dbname=%s
@@ -60,18 +61,16 @@ func initDb() {
 
 	db, err = sql.Open("postgres", psqlInfo)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	err = db.Ping()
 
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	fmt.Println("Connected to DB =>", config[dbname])
-}
 
-func init() {
-	initDb()
-	defer db.Close()
+	db.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, content TEXT, is_completed BOOL)")
+	//db.Exec(`INSERT INTO todos (content, is_completed) VALUES ('suh dude', true)`)
 }

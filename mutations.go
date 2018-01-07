@@ -6,7 +6,7 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-var rootMutation = graphql.NewObject(graphql.ObjectConfig{
+var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootMutation",
 	Fields: graphql.Fields{
 		"createTodo": &graphql.Field{
@@ -39,7 +39,7 @@ var rootMutation = graphql.NewObject(graphql.ObjectConfig{
 					Type: graphql.Boolean,
 				},
 				"id": &graphql.ArgumentConfig{
-					Type: graphql.String,
+					Type: graphql.Int,
 				},
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {

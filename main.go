@@ -16,6 +16,10 @@ type Todo struct {
 
 var TodoList []Todo
 
+type TodoList2 struct {
+	Todo
+}
+
 func init() {
 	// temporary test data - replace with DB
 	todo1 := Todo{1, "todo 1", true}
@@ -25,8 +29,8 @@ func init() {
 }
 
 var Schema, _ = graphql.NewSchema(graphql.SchemaConfig{
-	Query:    rootQuery,
-	Mutation: rootMutation,
+	Query:    RootQuery,
+	Mutation: RootMutation,
 })
 
 func main() {
@@ -36,6 +40,8 @@ func main() {
 		GraphiQL: true,
 	})
 
+	InitDb()
+	defer db.Close()
 	http.Handle("/graphql", h)
 	http.ListenAndServe(":8000", nil)
 }
