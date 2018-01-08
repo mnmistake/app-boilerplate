@@ -5,7 +5,7 @@
 - [x] Actual working endpoints for queries & mutations
 - [x] Database integration
 - [ ] Unit & integration tests for endpoints
-- [ ] Front end base setup
+- [x] Front end base setup
 - [ ] Client side functionality integration
 - [ ] Docker (?)
 
