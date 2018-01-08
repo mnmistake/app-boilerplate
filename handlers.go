@@ -75,3 +75,12 @@ func UpdateTodo(id int, content string, IsCompleted bool) interface{} {
 		IsCompleted: IsCompleted,
 	}
 }
+
+func DeleteTodo(id int) interface{} {
+	_, err := db.Exec("DELETE FROM todos WHERE id = $1", id)
+	checkError(err)
+
+	return Todo{
+		ID: id,
+	}
+}
