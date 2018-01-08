@@ -1,11 +1,12 @@
 # GraphQL based API written in Golang
 
 - [x] Base queries & mutations for GraphQL
-- [x] Working endpoint
+- [x] Actual working endpoints for queries & mutations
 - [x] Database integration
-- [ ] Unit & integration tests
-- [ ] Client side API integration
-- [ ] Docker
+- [ ] Unit & integration tests for endpoints
+- [ ] Front end base setup
+- [ ] Client side functionality integration
+- [ ] Docker (?)
 
 #### Setup
 
