@@ -72,5 +72,5 @@ func InitDb() {
 	fmt.Println("Connected to DB =>", config[dbname])
 
 	db.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, content TEXT, is_completed BOOL)")
-	//db.Exec(`INSERT INTO todos (content, is_completed) VALUES ('suh dude', true)`)
+	//db.Exec(`INSERT INTO todos (content, is_completed) VALUES ('do shit', true)`)
 }

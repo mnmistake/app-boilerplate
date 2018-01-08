@@ -1,46 +1,45 @@
 package main
 
-import (
-	"fmt"
-	"log"
+var (
+	id          int
+	content     string
+	isCompleted bool
 )
 
-func QueryTodos() error {
-	rows, err := db.Query(`SELECT id, content FROM todos`)
+func QueryTodos() interface{} {
+	rows, err := db.Query("SELECT id, content, is_completed FROM todos")
+	todos := TodoList
 
-	if err != nil {
-		return err
-	}
+	checkError(err)
 	defer rows.Close()
+
 	for rows.Next() {
-		//todos := Todo{}
 		err := rows.Scan(
 			&id,
 			&content,
+			&isCompleted,
 		)
-		if err != nil {
-			return err
-		}
-		fmt.Println(id, content)
+		todos = append(todos, Todo{
+			ID:          id,
+			Content:     content,
+			IsCompleted: isCompleted,
+		})
+		checkError(err)
 	}
+
 	err = rows.Err()
-	if err != nil {
-		return err
-	}
-	return nil
+	checkError(err)
+
+	return todos
 }
 
 func QueryTodo(queryID int) interface{} {
-	data, err := db.Query("SELECT id, content, is_completed FROM todos WHERE id=$1", queryID)
-	if err != nil {
-		log.Fatal(err)
-	}
+	rows, err := db.Query("SELECT id, content, is_completed FROM todos WHERE id=$1", queryID)
+	checkError(err)
 
-	for data.Next() {
-		err := data.Scan(&id, &content, &isCompleted)
-		if err != nil {
-			log.Fatal(err)
-		}
+	for rows.Next() {
+		err := rows.Scan(&id, &content, &isCompleted)
+		checkError(err)
 
 		return Todo{
 			ID:          id,
@@ -49,29 +48,8 @@ func QueryTodo(queryID int) interface{} {
 		}
 	}
 
-	err = data.Err()
-	if err != nil {
-		log.Fatal(err)
-	}
+	err = rows.Err()
+	checkError(err)
+
 	return Todo{}
 }
-
-/*func DataHandler(w http.ResponseWriter, r *http.Request) {
-	todos := todos{}
-	err := queryTodos(&todos)
-
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
-
-	output, err := json.Marshal(todos)
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
-
-	fmt.Fprintf(w, string(output))
-
-}
-*/
