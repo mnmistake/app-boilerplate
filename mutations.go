@@ -59,5 +59,12 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 				return DeleteTodo(id), nil
 			},
 		},
+		"deleteTodos": &graphql.Field{
+			Type:        todoType,
+			Description: "Delete all todos",
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				return DeleteTodos(), nil
+			},
+		},
 	},
 })

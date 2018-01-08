@@ -84,3 +84,9 @@ func DeleteTodo(id int) interface{} {
 		ID: id,
 	}
 }
+
+func DeleteTodos() interface{} {
+	db.Exec("DELETE FROM todos *")
+
+	return TodoList
+}
