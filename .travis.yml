@@ -1,10 +1,14 @@
-language: node_js
-node_js:
-  - "stable"
+sudo: false
+language: go
 
-cache:
-  directories:
-    - "node_modules"
+go:
+  - 1.9.x
+  - 1.8.x
+  - 1.7.x
+  - master
 
-after_success:
-- npm run cover
+install:
+  - go get
+
+script:
+  - go test -v
