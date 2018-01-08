@@ -1,8 +1,6 @@
 package main
 
 import (
-	"math/rand"
-
 	"github.com/graphql-go/graphql"
 )
 
@@ -20,21 +18,18 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) { // handler of the mutation
 				// handle creation of the todo
 				content, _ := params.Args["content"].(string)
-				newID := rand.Intn(100)
-				newTodo := Todo{
-					ID:          newID,
-					Content:     content,
-					IsCompleted: false,
-				}
-				TodoList = append(TodoList, newTodo)
+				insertedTodo := InsertTodo(content)
 
-				return newTodo, nil
+				return insertedTodo, nil
 			},
 		},
 		"updateTodo": &graphql.Field{
 			Type:        todoType, // return type
 			Description: "Update todo",
 			Args: graphql.FieldConfigArgument{
+				"content": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
 				"isCompleted": &graphql.ArgumentConfig{
 					Type: graphql.Boolean,
 				},
@@ -44,17 +39,11 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				IsCompleted, _ := params.Args["isCompleted"].(bool)
+				content := params.Args["content"].(string)
 				id, _ := params.Args["id"].(int)
-				targetTodo := Todo{}
-
-				for _, todo := range TodoList {
-					if todo.ID == id {
-						todo.IsCompleted = IsCompleted
-						targetTodo = todo
-						break
-					}
-				}
-				return targetTodo, nil
+				modifiedTodo := UpdateTodo(id, content, IsCompleted)
+				
+				return modifiedTodo, nil
 			},
 		},
 	},
