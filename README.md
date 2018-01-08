@@ -1,4 +1,5 @@
 # GraphQL based API written in Golang
+[![Build Status](https://travis-ci.org/raunofreiberg/kyrene.svg?branch=master)](https://travis-ci.org/raunofreiberg/kyrene)
 
 - [x] Base queries & mutations for GraphQL
 - [x] Actual working endpoints for queries & mutations
