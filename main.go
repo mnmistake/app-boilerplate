@@ -2,10 +2,11 @@ package main
 
 import (
 	"net/http"
+	"os"
 
-	"github.com/graphql-go/handler"
-
+	"github.com/gorilla/handlers"
 	"github.com/graphql-go/graphql"
+	"github.com/graphql-go/handler"
 )
 
 type Todo struct {
@@ -41,5 +42,5 @@ func main() {
 	InitDb()
 	defer db.Close()
 	http.Handle("/graphql", h)
-	http.ListenAndServe(":8000", nil)
+	http.ListenAndServe(":8000", handlers.LoggingHandler(os.Stdout, http.DefaultServeMux))
 }
