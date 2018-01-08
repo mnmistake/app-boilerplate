@@ -19,12 +19,14 @@ func QueryTodos() interface{} {
 			&content,
 			&isCompleted,
 		)
+
+		checkError(err)
+
 		todos = append(todos, Todo{
 			ID:          id,
 			Content:     content,
 			IsCompleted: isCompleted,
 		})
-		checkError(err)
 	}
 
 	err = rows.Err()
@@ -51,7 +53,7 @@ func QueryTodo(queryID int) interface{} {
 	err = rows.Err()
 	checkError(err)
 
-	return Todo{}
+	panic("No todo found")
 }
 
 func InsertTodo(content string) interface{} {
@@ -70,12 +72,12 @@ func InsertTodo(content string) interface{} {
 }
 
 func UpdateTodo(id int, content string, IsCompleted bool) interface{} {
-	err := db.QueryRow(
-		"UPDATE todos SET content = $1, is_completed = $2 WHERE id = $3 RETURNING id",
+	_, err := db.Exec(
+		"UPDATE todos SET content = $1, is_completed = $2 WHERE id = $3",
 		content,
 		isCompleted,
 		id,
-	).Scan(&id)
+	)
 	checkError(err)
 
 	return Todo{
