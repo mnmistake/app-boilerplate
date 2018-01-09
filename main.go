@@ -32,7 +32,7 @@ func main() {
 	defer server.DB.Close()
 
 	http.Handle("/graphql", h)
-	http.Handle("/", http.FileServer(http.Dir("./client")))
+	http.Handle("/", http.FileServer(http.Dir("./dist"))) // TODO: use nginx to serve static files later
 	http.ListenAndServe(":8000", handlers.LoggingHandler(os.Stdout, http.DefaultServeMux))
 	//e.Start(":8000")
 }
