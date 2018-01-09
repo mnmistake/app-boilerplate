@@ -21,7 +21,7 @@ func checkError(err error) {
 }
 
 func QueryTodos() interface{} {
-	rows, err := db.Query("SELECT id, content, is_completed FROM todos ORDER BY id")
+	rows, err := DB.Query("SELECT id, content, is_completed FROM todos ORDER BY id")
 	todos := TodoList
 
 	checkError(err)
@@ -50,7 +50,7 @@ func QueryTodos() interface{} {
 }
 
 func QueryTodo(queryID int) interface{} {
-	rows, err := db.Query("SELECT id, content, is_completed FROM todos WHERE id=$1", queryID)
+	rows, err := DB.Query("SELECT id, content, is_completed FROM todos WHERE id=$1", queryID)
 	checkError(err)
 
 	for rows.Next() {
@@ -71,7 +71,7 @@ func QueryTodo(queryID int) interface{} {
 }
 
 func InsertTodo(content string) interface{} {
-	err := db.QueryRow(
+	err := DB.QueryRow(
 		"INSERT INTO todos (content, is_completed) VALUES ($1, $2) RETURNING id",
 		content,
 		false,
@@ -86,7 +86,7 @@ func InsertTodo(content string) interface{} {
 }
 
 func UpdateTodo(id int, content string, IsCompleted bool) interface{} {
-	_, err := db.Exec(
+	_, err := DB.Exec(
 		"UPDATE todos SET content = $1, is_completed = $2 WHERE id = $3",
 		content,
 		isCompleted,
@@ -102,7 +102,7 @@ func UpdateTodo(id int, content string, IsCompleted bool) interface{} {
 }
 
 func DeleteTodo(id int) interface{} {
-	_, err := db.Exec("DELETE FROM todos WHERE id = $1", id)
+	_, err := DB.Exec("DELETE FROM todos WHERE id = $1", id)
 	checkError(err)
 
 	return Todo{
@@ -111,7 +111,7 @@ func DeleteTodo(id int) interface{} {
 }
 
 func DeleteTodos() interface{} {
-	db.Exec("DELETE FROM todos *")
+	DB.Exec("DELETE FROM todos *")
 
 	return TodoList
 }

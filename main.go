@@ -6,7 +6,7 @@ import (
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
 
-	"github.com/labstack/echo"
+	//"github.com/labstack/echo"
 	"github.com/raunofreiberg/kyrene/server"
 )
 
@@ -21,12 +21,14 @@ func main() {
 		Pretty:   true,
 		GraphiQL: true,
 	})
-	e := echo.New()
+	//e := echo.New()
 
-	e.Static("/", "../client")
-	e.File("/bundle.js", "../dist")
+	//e.Static("/", "./client")
 
 	server.InitDb()
+	defer server.DB.Close()
+
 	http.Handle("/graphql", h)
-	e.Start(":8000")
+	http.ListenAndServe(":8000", nil)
+	//e.Start(":8000")
 }

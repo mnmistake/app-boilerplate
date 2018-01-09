@@ -11,7 +11,7 @@ import (
 
 //"time"
 
-var db *sql.DB
+var DB *sql.DB
 
 const (
 	dbhost = "DBHOST"
@@ -59,20 +59,18 @@ func InitDb() {
 		config[dbname],
 	)
 
-	db, err = sql.Open("postgres", psqlInfo)
+	DB, err = sql.Open("postgres", psqlInfo)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = db.Ping()
+	err = DB.Ping()
 
 	if err != nil {
 		log.Fatal(err)
 	}
 	
-	defer db.Close()
 	fmt.Println("Connected to DB =>", config[dbname])
 
-	db.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, content TEXT, is_completed BOOL)")
-	//db.Exec(`INSERT INTO todos (content, is_completed) VALUES ('do shit', true)`)
+	DB.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, content TEXT, is_completed BOOL)")
 }
