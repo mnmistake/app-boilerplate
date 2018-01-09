@@ -33,10 +33,6 @@ imports:
   version: 586e6dcca296d085100876beb6dbf02287a247f7
 - name: github.com/mattn/go-isatty
   version: 6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c
-- name: github.com/raunofreiberg/kyrene
-  version: 20fb86675a4f5ec0dc79f6f3ad590393ebb00417
-  subpackages:
-  - server
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasttemplate

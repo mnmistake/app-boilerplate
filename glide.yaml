@@ -7,6 +7,3 @@ import:
 - package: github.com/labstack/echo
   version: 3.2.6
 - package: github.com/lib/pq
-- package: github.com/raunofreiberg/kyrene
-  subpackages:
-  - server
