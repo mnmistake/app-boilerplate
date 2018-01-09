@@ -69,6 +69,8 @@ func InitDb() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	
+	defer db.Close()
 	fmt.Println("Connected to DB =>", config[dbname])
 
 	db.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, content TEXT, is_completed BOOL)")

@@ -11,8 +11,8 @@ import (
 )
 
 var Schema, _ = graphql.NewSchema(graphql.SchemaConfig{
-	Query:    RootQuery,
-	Mutation: RootMutation,
+	Query:    server.RootQuery,
+	Mutation: server.RootMutation,
 })
 
 func main() {
@@ -26,8 +26,7 @@ func main() {
 	e.Static("/", "../client")
 	e.File("/bundle.js", "../dist")
 
-	InitDb()
-	defer db.Close()
+	server.InitDb()
 	http.Handle("/graphql", h)
 	e.Start(":8000")
 }
