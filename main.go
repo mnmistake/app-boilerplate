@@ -1,7 +1,10 @@
 package main
 
 import (
+	"os"
 	"net/http"
+	
+	"github.com/gorilla/handlers"
 
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
@@ -29,6 +32,7 @@ func main() {
 	defer server.DB.Close()
 
 	http.Handle("/graphql", h)
-	http.ListenAndServe(":8000", nil)
+	http.Handle("/", http.FileServer(http.Dir("./client")))
+	http.ListenAndServe(":8000", handlers.LoggingHandler(os.Stdout, http.DefaultServeMux))
 	//e.Start(":8000")
 }

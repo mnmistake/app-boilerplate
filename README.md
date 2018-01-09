@@ -14,7 +14,7 @@
 * Start by setting env variables for Go (Note: `$` implies using the terminal)
 
 ```
-$ export GOPATH=$HOME/path/to/proj
+$ export GOPATH=$HOME/path/to/go/projects
 $ export PATH=$GOPATH/bin:$PATH
 ```
 
@@ -31,7 +31,7 @@ $ export DBNAME=<YOUR_DB_NAME>
 * Go crazy
 
 ```
-$ go run *.go
+$ go run main.go
 ```
 
 #### Endpoint examples
