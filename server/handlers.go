@@ -1,10 +1,24 @@
-package main
+package server
 
 var (
 	id          int
 	content     string
 	isCompleted bool
 )
+
+type Todo struct {
+	ID          int    `json:"id,omitempty"`
+	Content     string `json:"content,omitempty"`
+	IsCompleted bool   `json:"isCompleted,omitempty"`
+}
+
+var TodoList []Todo
+
+func checkError(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
 
 func QueryTodos() interface{} {
 	rows, err := db.Query("SELECT id, content, is_completed FROM todos ORDER BY id")
