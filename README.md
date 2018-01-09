@@ -28,10 +28,22 @@ $ export DBPASS=<YOUR_PASSWORD>
 $ export DBNAME=<YOUR_DB_NAME>
 ```
 
-* Go crazy
+* Install dependencies via Glide
 
 ```
-$ go run main.go
+glide install
+````
+
+* Development (served on localhost:8080)
+
+```
+$ npm run dev
+```
+
+* Production (served on localhost:8000) 
+
+```
+$ npm run prod
 ```
 
 #### Endpoint examples

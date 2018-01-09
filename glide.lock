@@ -18,8 +18,6 @@ imports:
   - language/visitor
 - name: github.com/graphql-go/handler
   version: f0393b2c10daeebea900292b8e092e73475399d9
-- name: github.com/labstack/echo
-  version: b338075a0fc6e1a0683dbf03d09b4957a289e26f
 - name: github.com/lib/pq
   version: 83612a56d3dd153a94a629cd64925371c9adad78
   subpackages:

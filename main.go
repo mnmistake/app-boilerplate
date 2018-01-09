@@ -24,15 +24,17 @@ func main() {
 		Pretty:   true,
 		GraphiQL: true,
 	})
-	//e := echo.New()
-
-	//e.Static("/", "./client")
+	development := os.Getenv("ENV") == "development"
 
 	server.InitDb()
 	defer server.DB.Close()
 
+	if development {
+		http.Handle("/", http.FileServer(http.Dir("./client")))
+	} else {
+		http.Handle("/", http.FileServer(http.Dir("./dist")))
+	}
+	
 	http.Handle("/graphql", h)
-	http.Handle("/", http.FileServer(http.Dir("./dist"))) // TODO: use nginx to serve static files later
 	http.ListenAndServe(":8000", handlers.LoggingHandler(os.Stdout, http.DefaultServeMux))
-	//e.Start(":8000")
 }
