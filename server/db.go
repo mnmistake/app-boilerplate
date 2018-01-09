@@ -13,7 +13,7 @@ import (
 
 var DB *sql.DB
 
-const (
+/*const (
 	dbhost = "DBHOST"
 	dbport = "DBPORT"
 	dbuser = "DBUSER"
@@ -39,27 +39,23 @@ func dbConfig() map[string]string {
 	return conf
 }
 
-func InitDb() {
-	config := dbConfig()
+*/
+
+func InitDb() {	
 	var err error
 
-	psqlInfo := fmt.Sprintf(
-		`
-		host=%s
-		port=%s
-		user=%s
-		password=%s
-		dbname=%s
-		sslmode=disable
-		`,
-		config[dbhost],
-		config[dbport],
-		config[dbuser],
-		config[dbpass],
-		config[dbname],
+	shit := fmt.Sprintf(
+		"dbname=%s user=%s password=%s host=%s sslmode=disable",
+		os.Getenv("DB_NAME"),
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASS"),
+		os.Getenv("DB_HOST"),
 	)
+	
+	fmt.Println(os.Getenv("POSTGRES_PASSWORD"))
+	fmt.Println(shit)
 
-	DB, err = sql.Open("postgres", psqlInfo)
+	DB, err = sql.Open("postgres", shit)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -70,7 +66,7 @@ func InitDb() {
 		log.Fatal(err)
 	}
 	
-	fmt.Println("Connected to DB =>", config[dbname])
+	fmt.Println("Connected to DB =>", os.Getenv("DB_NAME"))
 
 	DB.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, content TEXT, is_completed BOOL)")
 }

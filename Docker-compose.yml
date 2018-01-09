@@ -1,0 +1,59 @@
+version: "2"
+services:
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile-node
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+    links:
+      - db
+      - api
+    depends_on:
+      - db
+      - api
+    environment:
+      - NODE_ENV=production      
+    command: npm run build
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile-go
+    links:
+      - db
+    depends_on:
+      - db
+    ports:
+      - "8001:8001"
+    environment:
+      - ENV=production
+      - DB_NAME=kyrene
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - DB_HOST=db # Database container name - db in this case.
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; ./kyrene'
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ".data-postgres:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=kyrene
+    restart: always
+  nginx:
+    restart: always
+    build: ./nginx/
+    volumes:
+      - ./dist:/var/lib/assets      
+    ports:
+      - "80:80"
+    depends_on:
+      - client
+    links:
+      - client

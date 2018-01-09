@@ -32,9 +32,9 @@ func main() {
 	if development {
 		http.Handle("/", http.FileServer(http.Dir("./client")))
 	} else {
-		http.Handle("/", http.FileServer(http.Dir("./dist")))
+		http.Handle("/", http.FileServer(http.Dir("./dist"))) // TOOD: use nginx in production
 	}
-	
+
 	http.Handle("/graphql", h)
 	http.ListenAndServe(":8000", handlers.LoggingHandler(os.Stdout, http.DefaultServeMux))
 }
