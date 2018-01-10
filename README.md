@@ -9,7 +9,7 @@
 - [ ] Client side functionality integration
 - [x] Docker
 	- [x] Development
-	- [ ] Production
+	- [x] Production
 
 #### Setup
 
