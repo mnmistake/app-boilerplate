@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile-node
     ports:
-      - "8080:8080" # webpack-dev-server runs on 8080 by default
+      - "3000:3000"
     volumes:
       - .:/usr/app
       - /usr/app/node_modules
@@ -16,8 +16,8 @@ services:
       - db
       - api
     environment:
-      - NODE_ENV=development
-    command: npm run client
+      - NODE_ENV=production      
+    command: npm run build
   api:
     build:
       context: .
@@ -27,9 +27,9 @@ services:
     depends_on:
       - db
     ports:
-      - "8000:8000"
+      - "8001:8001"
     environment:
-      - ENV=development
+      - ENV=production
       - DB_NAME=kyrene
       - DB_USER=postgres
       - DB_PASS=postgres
@@ -46,3 +46,14 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=kyrene
     restart: always
+  nginx:
+    restart: always
+    build: ./nginx/
+    volumes:
+      - ./dist:/var/lib/assets      
+    ports:
+      - "80:80"
+    depends_on:
+      - client
+    links:
+      - client
