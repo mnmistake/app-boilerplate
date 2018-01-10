@@ -33,7 +33,7 @@ services:
       - DB_NAME=kyrene
       - DB_USER=postgres
       - DB_PASS=postgres
-      - DB_HOST=db # Database container name - db in this case.
+      - DB_HOST=db # database container alias - db in this case
     command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; ./kyrene'
   db:
     image: postgres

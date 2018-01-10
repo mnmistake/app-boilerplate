@@ -21,10 +21,10 @@ module.exports = webpackMerge(commonConfig, {
     ],
     devServer: {
         historyApiFallback: true,
-        contentBase: './client',
+        contentBase: './client',        
         proxy: {
             '/graphql': {
-                target: 'http://localhost:8000',
+                target: 'http://api:8000', // `api` being the alias of the Docker container - see: Docker-compose.yml
                 secure: false,
             },
         },

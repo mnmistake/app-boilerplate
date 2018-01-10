@@ -1,5 +1,24 @@
 version: "2"
 services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile-go
+    volumes:
+      - .:/go/src/github.com/raunofreiberg/kyrene
+    links:
+      - db
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=development
+      - DB_NAME=kyrene
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - DB_HOST=db # database container alias - db in this case
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; kyrene'
   client:
     build:
       context: .
@@ -18,23 +37,6 @@ services:
     environment:
       - NODE_ENV=development
     command: npm run client
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile-go
-    links:
-      - db
-    depends_on:
-      - db
-    ports:
-      - "8000:8000"
-    environment:
-      - ENV=development
-      - DB_NAME=kyrene
-      - DB_USER=postgres
-      - DB_PASS=postgres
-      - DB_HOST=db # Database container name - db in this case.
-    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; ./kyrene'
   db:
     image: postgres
     ports:

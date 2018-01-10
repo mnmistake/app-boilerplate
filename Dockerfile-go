@@ -1,11 +1,10 @@
 FROM golang:latest
 
-COPY . /go/src/github.com/raunofreiberg/kyrene
 WORKDIR /go/src/github.com/raunofreiberg/kyrene
 
 RUN go get ./...
 RUN go build
 
-EXPOSE 8001
+EXPOSE 8000
 
-CMD ["./kyrene"]
+CMD ["kyrene"]
