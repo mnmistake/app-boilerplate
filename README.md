@@ -7,7 +7,9 @@
 - [ ] Unit & integration tests for endpoints
 - [x] Front end base setup
 - [ ] Client side functionality integration
-- [ ] Docker (?)
+- [x] Docker
+	- [x] Development
+	- [ ] Production
 
 #### Setup
 
