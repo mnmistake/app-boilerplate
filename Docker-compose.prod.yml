@@ -27,7 +27,7 @@ services:
     depends_on:
       - db
     ports:
-      - "8001:8001"
+      - "8000:8000"
     environment:
       - ENV=production
       - DB_NAME=kyrene
@@ -38,7 +38,7 @@ services:
   db:
     image: postgres
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - ".data-postgres:/var/lib/postgresql/data"
     environment:
@@ -52,7 +52,7 @@ services:
     volumes:
       - ./dist:/var/lib/assets      
     ports:
-      - "80:80"
+      - "1337:80"
     depends_on:
       - client
     links:
