@@ -48,6 +48,13 @@ $ npm run dev
 $ npm run prod
 ```
 
+#### Docker
+
+Development
+```
+docker-compose up --build
+```
+
 #### Endpoint examples
 
 * Retrieve single object
