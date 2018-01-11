@@ -2,9 +2,13 @@ FROM golang:latest
 
 WORKDIR /go/src/github.com/raunofreiberg/kyrene
 
-RUN go get ./...
-RUN go build
+ADD glide.yaml .
+ADD glide.lock .
+
+RUN curl https://glide.sh/get | sh
+RUN glide install
 
 EXPOSE 8000
 
-CMD ["kyrene"]
+# Build code and run the app
+CMD ["go build && ./kyrene"]
