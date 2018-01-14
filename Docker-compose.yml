@@ -18,7 +18,7 @@ services:
       - DB_USER=postgres
       - DB_PASS=postgres
       - DB_HOST=db # database container alias - db in this case
-    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; go build && ./kyrene'
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; go build && fresh'
   client:
     build:
       context: .
@@ -42,7 +42,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ".data-postgres:/var/lib/postgresql/data"
+      - .data-postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

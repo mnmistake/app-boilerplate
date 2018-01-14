@@ -111,7 +111,8 @@ func DeleteTodo(id int) interface{} {
 }
 
 func DeleteTodos() interface{} {
-	DB.Exec("DELETE FROM todos *")
+	_, err := DB.Exec("DELETE FROM todos *")
+	checkError(err)
 
 	return TodoList
 }
