@@ -85,18 +85,16 @@ func InsertTodo(content string) interface{} {
 	}
 }
 
-func UpdateTodo(id int, content string, IsCompleted bool) interface{} {
+func UpdateTodo(id int, IsCompleted bool) interface{} {
 	_, err := DB.Exec(
-		"UPDATE todos SET content = $1, is_completed = $2 WHERE id = $3",
-		content,
-		isCompleted,
+		"UPDATE todos SET is_completed = $1 WHERE id = $2",
+		IsCompleted,
 		id,
 	)
 	checkError(err)
 
 	return Todo{
 		ID:          id,
-		Content:     content,
 		IsCompleted: IsCompleted,
 	}
 }

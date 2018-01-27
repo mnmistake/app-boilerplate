@@ -27,9 +27,6 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 			Type:        todoType, // return type
 			Description: "Update todo",
 			Args: graphql.FieldConfigArgument{
-				"content": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
 				"isCompleted": &graphql.ArgumentConfig{
 					Type: graphql.Boolean,
 				},
@@ -39,9 +36,8 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				IsCompleted, _ := params.Args["isCompleted"].(bool)
-				content := params.Args["content"].(string)
 				id := params.Args["id"].(int)
-				modifiedTodo := UpdateTodo(id, content, IsCompleted)
+				modifiedTodo := UpdateTodo(id, IsCompleted)
 
 				return modifiedTodo, nil
 			},
