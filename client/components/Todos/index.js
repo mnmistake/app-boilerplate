@@ -50,6 +50,8 @@ const createTodoMutation = gql`
     mutation createTodo($content: String!) {
         createTodo(content: $content) {
             id,
+            content,
+            isCompleted,
         }
     }
 `;
@@ -68,11 +70,12 @@ export default compose(
     graphql(todosQuery),
     graphql(createTodoMutation, { 
         name: 'createTodo',
-        options: {
-            refetchQueries: [{
-                query: todosQuery,
-            }],
+        options: {            
+            update: (store, { data: createTodoMutation }) => {
+                const data = store.readQuery({ query: todosQuery });                
+                data.todoList.push(createTodoMutation.createTodo);                
+                store.writeQuery({ query: todosQuery, data });
+            }        
         }
-    }
-    ),
+    }),
 )(TodoList);
