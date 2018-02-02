@@ -3,13 +3,13 @@ import { Router, Route, Switch } from 'react-router-dom';
 
 import history from './history';
 
-import TodoList from './components/TodoList/TodoList';
+import Todos from './components/Todos';
 
 const AppRouter = () => (
     <Router history={history}>                                
         <div>
             <Switch>
-                <Route path="/" component={TodoList}/>
+                <Route path="/" component={Todos} />
             </Switch>
         </div>        
     </Router>
