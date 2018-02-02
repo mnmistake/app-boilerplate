@@ -24,7 +24,7 @@ module.exports = webpackMerge(commonConfig, {
         contentBase: './client',        
         proxy: {
             '/graphql': {
-                target: 'http://api:8000', // `api` being the alias of the Docker container - see: Docker-compose.yml
+                target: 'http://api:3000', // `api` being the alias of the Docker container - see: Docker-compose.yml
                 secure: false,
             },
         },

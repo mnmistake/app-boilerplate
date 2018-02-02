@@ -11,14 +11,14 @@ services:
     depends_on:
       - db
     ports:
-      - "8000:8000"
+      - "3000:3000" # gin runs at 3000 and proxies the request to the webserver at port 8000
     environment:
       - ENV=development
       - DB_NAME=kyrene
       - DB_USER=postgres
       - DB_PASS=postgres
       - DB_HOST=db # database container alias - db in this case
-    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; go build && fresh'
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; go build && gin --appPort 8000'
   client:
     build:
       context: .
