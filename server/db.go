@@ -11,7 +11,7 @@ import (
 
 var DB *sql.DB
 
-func InitDb() {	
+func InitDb() {
 	var err error
 
 	psqlInfo := fmt.Sprintf(
@@ -32,8 +32,8 @@ func InitDb() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	fmt.Println("Connected to DB =>", os.Getenv("DB_NAME"))
 
-	DB.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, content TEXT, is_completed BOOL)")
+	DB.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, content TEXT, is_completed BOOL, created_at TEXT)")
 }

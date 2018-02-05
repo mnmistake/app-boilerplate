@@ -5,7 +5,7 @@ import (
 )
 
 var RootQuery = graphql.NewObject(graphql.ObjectConfig{
-	Name: "rootQuery",
+	Name: "RootQuery",
 	Fields: graphql.Fields{
 		"todo": &graphql.Field{
 			Type:        todoType,

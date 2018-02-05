@@ -1,15 +1,21 @@
 package server
 
+import (
+	"time"
+)
+
 var (
 	id          int
 	content     string
 	isCompleted bool
+	createdAt   string
 )
 
 type Todo struct {
 	ID          int    `json:"id,omitempty"`
 	Content     string `json:"content,omitempty"`
 	IsCompleted bool   `json:"isCompleted,omitempty"`
+	CreatedAt   string `json:"createdAt,omitempty"`
 }
 
 var TodoList []Todo
@@ -21,7 +27,7 @@ func checkError(err error) {
 }
 
 func QueryTodos() interface{} {
-	rows, err := DB.Query("SELECT id, content, is_completed FROM todos ORDER BY id")
+	rows, err := DB.Query("SELECT id, content, is_completed, created_at FROM todos ORDER BY created_at")
 	todos := TodoList
 
 	checkError(err)
@@ -32,6 +38,7 @@ func QueryTodos() interface{} {
 			&id,
 			&content,
 			&isCompleted,
+			&createdAt,
 		)
 
 		checkError(err)
@@ -40,6 +47,7 @@ func QueryTodos() interface{} {
 			ID:          id,
 			Content:     content,
 			IsCompleted: isCompleted,
+			CreatedAt:   createdAt,
 		})
 	}
 
@@ -50,17 +58,18 @@ func QueryTodos() interface{} {
 }
 
 func QueryTodo(queryID int) interface{} {
-	rows, err := DB.Query("SELECT id, content, is_completed FROM todos WHERE id=$1", queryID)
+	rows, err := DB.Query("SELECT id, content, is_completed, created_at FROM todos WHERE id=$1", queryID)
 	checkError(err)
 
 	for rows.Next() {
-		err := rows.Scan(&id, &content, &isCompleted)
+		err := rows.Scan(&id, &content, &isCompleted, &createdAt)
 		checkError(err)
 
 		return Todo{
 			ID:          id,
 			Content:     content,
 			IsCompleted: isCompleted,
+			CreatedAt:   createdAt,
 		}
 	}
 
@@ -71,17 +80,20 @@ func QueryTodo(queryID int) interface{} {
 }
 
 func InsertTodo(content string) interface{} {
+	currTime := time.Now().Local()
 	err := DB.QueryRow(
-		"INSERT INTO todos (content, is_completed) VALUES ($1, $2) RETURNING id",
+		"INSERT INTO todos (content, is_completed, created_at) VALUES ($1, $2, $3) RETURNING id",
 		content,
 		false,
+		currTime,
 	).Scan(&id)
 	checkError(err)
 
 	return Todo{
 		ID:          id,
 		Content:     content,
-		IsCompleted: false,
+		IsCompleted: false, // todos are marked as uncompleted by default
+		CreatedAt:   currTime.String(),
 	}
 }
 

@@ -17,5 +17,8 @@ var todoType = graphql.NewObject(graphql.ObjectConfig{
 		"isCompleted": &graphql.Field{
 			Type: graphql.Boolean,
 		},
+		"createdAt": &graphql.Field{
+			Type: graphql.String,
+		},
 	},
 })
