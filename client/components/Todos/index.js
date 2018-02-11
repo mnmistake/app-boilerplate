@@ -1,70 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
-import gql from 'graphql-tag';
 
-class TodoList extends React.Component {
-    state = {
-        content: '',
-    }
+import TodoList from './TodoList';
+import { todosQuery } from '../../queries/todos';
+import { createTodoMutation } from '../../mutations/todos';
 
-    static propTypes = {
-        createTodo: PropTypes.func.isRequired,
-        data: PropTypes.shape(PropTypes.shape({
-            todoList: PropTypes.shape({}).isRequired,
-            loading: PropTypes.bool.isRequired,
-        })).isRequired,
-    }
-
-    createTodo() {
-        if (this.state.content) {
-            this.props.createTodo({
-                variables: {
-                    content: this.state.content,
-                }
-            })
-        }
-    }
-
-    render() {
-        console.log(this.props)
-        const { createTodo } = this.props;
-        const { todoList: todos, loading } = this.props.data;
-        if (loading) {
-            return 'loading'
-        }
-
-        return (
-            <ul>
-                {todos && todos.map(todo =>
-                    <li key={todo.id}>{todo.content}</li>
-                )}
-                <input type="text" onChange={e => this.setState({ content: e.target.value })} />
-                <button onClick={() => this.createTodo()}>create todo</button>
-            </ul>
-        )
-    }
-}
-
-const createTodoMutation = gql`
-    mutation createTodo($content: String!) {
-        createTodo(content: $content) {
-            id,
-            content,
-            isCompleted,
-        }
-    }
-`;
-
-const todosQuery = gql`
-    query {
-        todoList {
-            id,
-            content,
-            isCompleted,
-        }
-    }
-`;
+const Todos = (props) => <TodoList {...props} />
 
 export default compose(
     graphql(todosQuery),
@@ -78,4 +19,4 @@ export default compose(
             }        
         }
     }),
-)(TodoList);
+)(Todos);
