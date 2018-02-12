@@ -1,9 +1,9 @@
 package main
 
 import (
-	"os"
 	"net/http"
-	
+	"os"
+
 	"github.com/gorilla/handlers"
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
