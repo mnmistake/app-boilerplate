@@ -1,15 +1,17 @@
 package authentication
 
 import (
-	"fmt"
+	"errors"
 
+	"golang.org/x/crypto/bcrypt"
 	"github.com/raunofreiberg/kyrene/server"
 	"github.com/raunofreiberg/kyrene/server/model"
 )
 
 var (
-	id          int
-	username	string
+	id          	int
+	username		string
+	hashedPassword	[]byte
 )
 
 func CreateUser(username string, password string) (interface{}, error) {
@@ -59,5 +61,24 @@ func QueryUser(username string) (interface{}, error) {
 		panic(err)
 	}
 
-	return nil, fmt.Errorf("User not found")
+	return nil, errors.New("User not found")
+}
+
+func LoginUser(username string, password []byte) (bool, error) {
+	queryErr := server.DB.QueryRow(
+		"SELECT password FROM users where username=$1",
+		username,
+	).Scan(&hashedPassword)
+
+	if queryErr != nil {
+		panic(queryErr)
+	}
+	
+	err := bcrypt.CompareHashAndPassword(hashedPassword, password)
+
+	if err != nil {
+		return false, errors.New("Incorrect password")
+	}
+
+	return true, nil
 }
