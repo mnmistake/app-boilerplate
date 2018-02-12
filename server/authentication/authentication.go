@@ -47,10 +47,7 @@ func LoginFunc(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(queriedUser)
-
 	isAuthenticated, err := LoginUser(userData.Username, []byte(userData.Password))
-
 	if err != nil {
 		http.Error(w, "Invalid password", http.StatusUnauthorized)
 		return
@@ -82,7 +79,6 @@ func RegisterFunc(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	// if the user exists, don't create another one
 	queriedUser, err := QueryUser(userData.Username)
 	if queriedUser != nil {
 		http.Error(w, "User already exists", http.StatusInternalServerError)
@@ -90,14 +86,12 @@ func RegisterFunc(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user, err := CreateUser(userData.Username, userData.Password)	
-
 	if err != nil {
 		http.Error(w, "Failed to create user", http.StatusInternalServerError)
 		return
 	}
 
 	signedToken, err := generateJWT(user)
-
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
