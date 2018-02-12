@@ -7,6 +7,7 @@
 - [ ] Unit & integration tests for endpoints
 - [x] Front end base setup
 - [ ] Client side functionality integration
+- [ ] JWT authentication
 - [x] Docker
 	- [x] Development
 	- [x] Production
@@ -42,7 +43,7 @@ glide install
 $ npm run dev
 ```
 
-* Production (served on localhost:8000) 
+* Production (served on localhost:8000)
 
 ```
 $ npm run prod
