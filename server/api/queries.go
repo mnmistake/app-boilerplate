@@ -18,7 +18,11 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				// Query via Todo ID and return a Todo's ID, content and is_completed status
 				queryID, _ := params.Args["id"].(int)
-				queriedTodo := QueryTodo(queryID)
+				queriedTodo, err := QueryTodo(queryID)
+
+				if err != nil {
+					return nil, err
+				}
 
 				return queriedTodo, nil
 			},
@@ -27,7 +31,11 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 			Type:        graphql.NewList(todoType),
 			Description: "return all todos",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				queriedTodos := QueryTodos()
+				queriedTodos, err := QueryTodos()
+
+				if err != nil {
+					return nil, err
+				}
 
 				return queriedTodos, nil
 			},

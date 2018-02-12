@@ -18,7 +18,11 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) { // handler of the mutation
 				// handle creation of the todo
 				content, _ := params.Args["content"].(string)
-				insertedTodo := InsertTodo(content)
+				insertedTodo, err := InsertTodo(content)
+
+				if err != nil {
+					return nil, err
+				}
 
 				return insertedTodo, nil
 			},
@@ -37,7 +41,11 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				IsCompleted, _ := params.Args["isCompleted"].(bool)
 				id := params.Args["id"].(int)
-				modifiedTodo := UpdateTodo(id, IsCompleted)
+				modifiedTodo, err := UpdateTodo(id, IsCompleted)
+
+				if err != nil {
+					return nil, err
+				}
 
 				return modifiedTodo, nil
 			},
@@ -52,14 +60,26 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				id := params.Args["id"].(int)
-				return DeleteTodo(id), nil
+				todo, err := DeleteTodo(id)
+				
+				if err != nil {
+					return nil, err
+				}
+
+				return todo, nil
 			},
 		},
 		"deleteTodos": &graphql.Field{
 			Type:        todoType,
 			Description: "Delete all todos",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				return DeleteTodos(), nil
+				todos, err := DeleteTodos()
+
+				if err != nil {
+					return nil, err
+				}
+				
+				return todos, nil
 			},
 		},
 	},
