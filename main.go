@@ -5,16 +5,16 @@ import (
 	"net/http"
 	
 	"github.com/gorilla/handlers"
-
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
-
 	"github.com/raunofreiberg/kyrene/server"
+	"github.com/raunofreiberg/kyrene/server/api"
+	"github.com/raunofreiberg/kyrene/server/authentication"
 )
 
 var Schema, _ = graphql.NewSchema(graphql.SchemaConfig{
-	Query:    server.RootQuery,
-	Mutation: server.RootMutation,
+	Query:    api.RootQuery,
+	Mutation: api.RootMutation,
 })
 
 func main() {
@@ -25,13 +25,15 @@ func main() {
 	})
 	development := os.Getenv("ENV") == "development"
 
-	server.InitDb()
-	defer server.DB.Close()
+	api.InitDb()
+	defer api.DB.Close()
 
 	if development {
 		http.Handle("/", http.FileServer(http.Dir("./client")))
 	} // only serve static files in development via this server. Nginx is used in production instead
 
-	http.Handle("/graphql", h)
+	http.Handle("/graphql", server.RequireAuth(h))
+	http.HandleFunc("/login", authentication.LoginFunc)
+	http.HandleFunc("/register", authentication.RegisterFunc)
 	http.ListenAndServe(":8000", handlers.LoggingHandler(os.Stdout, http.DefaultServeMux))
 }

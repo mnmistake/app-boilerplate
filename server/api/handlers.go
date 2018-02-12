@@ -1,7 +1,8 @@
-package server
+package api
 
 import (
 	"time"
+	"github.com/raunofreiberg/kyrene/server/model"
 )
 
 var (
@@ -11,14 +12,7 @@ var (
 	createdAt   string
 )
 
-type Todo struct {
-	ID          int    `json:"id,omitempty"`
-	Content     string `json:"content,omitempty"`
-	IsCompleted bool   `json:"isCompleted,omitempty"`
-	CreatedAt   string `json:"createdAt,omitempty"`
-}
-
-var TodoList []Todo
+var TodoList []model.Todo
 
 func checkError(err error) {
 	if err != nil {
@@ -43,7 +37,7 @@ func QueryTodos() interface{} {
 
 		checkError(err)
 
-		todos = append(todos, Todo{
+		todos = append(todos, model.Todo{
 			ID:          id,
 			Content:     content,
 			IsCompleted: isCompleted,
@@ -65,7 +59,7 @@ func QueryTodo(queryID int) interface{} {
 		err := rows.Scan(&id, &content, &isCompleted, &createdAt)
 		checkError(err)
 
-		return Todo{
+		return model.Todo{
 			ID:          id,
 			Content:     content,
 			IsCompleted: isCompleted,
@@ -89,7 +83,7 @@ func InsertTodo(content string) interface{} {
 	).Scan(&id)
 	checkError(err)
 
-	return Todo{
+	return model.Todo{
 		ID:          id,
 		Content:     content,
 		IsCompleted: false, // todos are marked as uncompleted by default
@@ -105,7 +99,7 @@ func UpdateTodo(id int, IsCompleted bool) interface{} {
 	)
 	checkError(err)
 
-	return Todo{
+	return model.Todo{
 		ID:          id,
 		IsCompleted: IsCompleted,
 	}
@@ -115,7 +109,7 @@ func DeleteTodo(id int) interface{} {
 	_, err := DB.Exec("DELETE FROM todos WHERE id = $1", id)
 	checkError(err)
 
-	return Todo{
+	return model.Todo{
 		ID: id,
 	}
 }

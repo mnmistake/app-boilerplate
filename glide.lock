@@ -1,6 +1,10 @@
-hash: 1b84b591906bb97fe08a3efafd90eb5b1445924c055e6196f78e0b165a809258
-updated: 2018-01-09T20:59:20.58148833+02:00
+hash: ff260aa29f2ade3a8ab442bd440015b22b0c836b1c2138759201b07ea25cebcb
+updated: 2018-02-12T17:30:43.810225693+02:00
 imports:
+- name: github.com/dghubble/gologin
+  version: ea49f1659cedb2bbef34a869e014700fec178ae5
+- name: github.com/dgrijalva/jwt-go
+  version: dbeaa9332f19a944acb5736b4456cfcc02140e29
 - name: github.com/gorilla/handlers
   version: 90663712d74cb411cbef281bc1e08c19d1a76145
 - name: github.com/graphql-go/graphql

@@ -1,4 +1,4 @@
-package server
+package api
 
 import (
 	"database/sql"
@@ -36,4 +36,5 @@ func InitDb() {
 	fmt.Println("Connected to DB =>", os.Getenv("DB_NAME"))
 
 	DB.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, content TEXT, is_completed BOOL, created_at TEXT)")
+	DB.Exec("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, username TEXT, password TEXT)")
 }
