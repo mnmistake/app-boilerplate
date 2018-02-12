@@ -1,5 +1,5 @@
-hash: ff260aa29f2ade3a8ab442bd440015b22b0c836b1c2138759201b07ea25cebcb
-updated: 2018-02-12T17:30:43.810225693+02:00
+hash: f128fd44cd319965e669b9eebaa18f46f7580952085dba4de0d8af81c160cd8f
+updated: 2018-02-12T19:47:26.323044464+02:00
 imports:
 - name: github.com/dghubble/gologin
   version: ea49f1659cedb2bbef34a869e014700fec178ae5
@@ -26,4 +26,9 @@ imports:
   version: 83612a56d3dd153a94a629cd64925371c9adad78
   subpackages:
   - oid
+- name: golang.org/x/crypto
+  version: 0fcca4842a8d74bfddc2c96a073bd2a4d2a7a2e8
+  subpackages:
+  - bcrypt
+  - blowfish
 testImports: []
