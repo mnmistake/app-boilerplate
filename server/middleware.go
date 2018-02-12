@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"regexp"
-	
+
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
@@ -15,7 +15,7 @@ func RequireAuth(next http.Handler) http.Handler {
 		authorizationHeader := r.Header.Get("Authorization")
 		bearerRegex, _ := regexp.Compile("(?:Bearer *)([^ ]+)(?: *)")
 		bearerRegexMatches := bearerRegex.FindStringSubmatch(authorizationHeader)
-		
+
 		if len(bearerRegexMatches) == 0 {
 			http.Error(w, "Missing token", http.StatusUnauthorized)
 			return
@@ -34,7 +34,7 @@ func RequireAuth(next http.Handler) http.Handler {
 			return
 		}
 		fmt.Println(token)
-		
+
 		next.ServeHTTP(w, r)
 	})
 }

@@ -61,7 +61,7 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				id := params.Args["id"].(int)
 				todo, err := DeleteTodo(id)
-				
+
 				if err != nil {
 					return nil, err
 				}
@@ -78,7 +78,7 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 				if err != nil {
 					return nil, err
 				}
-				
+
 				return todos, nil
 			},
 		},

@@ -3,15 +3,15 @@ package authentication
 import (
 	"errors"
 
-	"golang.org/x/crypto/bcrypt"
 	"github.com/raunofreiberg/kyrene/server"
 	"github.com/raunofreiberg/kyrene/server/model"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var (
-	id          	int
-	username		string
-	hashedPassword	[]byte
+	id             int
+	username       string
+	hashedPassword []byte
 )
 
 func CreateUser(username string, password string) (interface{}, error) {
@@ -19,20 +19,20 @@ func CreateUser(username string, password string) (interface{}, error) {
 	if error != nil {
 		panic(error)
 	}
-	
+
 	err := server.DB.QueryRow(
 		"INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id",
 		username,
 		hashedPassword,
 	).Scan(&id)
-	
+
 	if err != nil {
 		panic(err)
 	}
 
 	return model.User{
-		ID:          id,
-		Username:    username,	
+		ID:       id,
+		Username: username,
 	}, nil
 }
 
@@ -51,8 +51,8 @@ func QueryUser(username string) (interface{}, error) {
 		}
 
 		return model.User{
-			ID:          id,
-			Username:    username,	
+			ID:       id,
+			Username: username,
 		}, nil
 	}
 
@@ -73,7 +73,7 @@ func LoginUser(username string, password []byte) (bool, error) {
 	if queryErr != nil {
 		panic(queryErr)
 	}
-	
+
 	err := bcrypt.CompareHashAndPassword(hashedPassword, password)
 
 	if err != nil {

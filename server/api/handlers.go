@@ -1,9 +1,9 @@
 package api
 
 import (
-	"time"
-	"github.com/raunofreiberg/kyrene/server/model"
 	"github.com/raunofreiberg/kyrene/server"
+	"github.com/raunofreiberg/kyrene/server/model"
+	"time"
 )
 
 var (
@@ -82,7 +82,7 @@ func InsertTodo(content string) (interface{}, error) {
 		false,
 		currTime,
 	).Scan(&id)
-	
+
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +101,7 @@ func UpdateTodo(id int, IsCompleted bool) (interface{}, error) {
 		IsCompleted,
 		id,
 	)
-	
+
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +114,7 @@ func UpdateTodo(id int, IsCompleted bool) (interface{}, error) {
 
 func DeleteTodo(id int) (interface{}, error) {
 	_, err := server.DB.Exec("DELETE FROM todos WHERE id = $1", id)
-	
+
 	if err != nil {
 		return nil, err
 	}

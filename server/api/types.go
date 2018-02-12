@@ -4,7 +4,6 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-
 // GraphQL ObjectType for Todos
 var todoType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "Todo",

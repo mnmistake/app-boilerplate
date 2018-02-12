@@ -9,6 +9,6 @@ func HashPassword(password string) ([]uint8, error) {
 	if err != nil {
 		panic(err)
 	}
-	
+
 	return hashedPassword, nil
 }

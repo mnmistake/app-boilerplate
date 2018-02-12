@@ -3,21 +3,21 @@ package authentication
 import (
 	"encoding/json"
 	"errors"
-	"time"
 	"net/http"
+	"time"
 
-	"github.com/raunofreiberg/kyrene/server/model"
-	"github.com/raunofreiberg/kyrene/server"
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/raunofreiberg/kyrene/server"
+	"github.com/raunofreiberg/kyrene/server/model"
 )
 
 func generateJWT(user interface{}) (string, error) {
 	expireToken := time.Now().Add(time.Hour * 1).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &model.User{
-		ID: user.(model.User).ID,
+		ID:       user.(model.User).ID,
 		Username: user.(model.User).Username,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt:	expireToken,
+			ExpiresAt: expireToken,
 		},
 	})
 	signedToken, err := token.SignedString(server.JwtSecret)
@@ -59,7 +59,7 @@ func LoginFunc(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		
+
 		json.NewEncoder(w).Encode(model.Token{
 			Token: signedToken,
 		})
@@ -84,7 +84,7 @@ func RegisterFunc(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := CreateUser(userData.Username, userData.Password)	
+	user, err := CreateUser(userData.Username, userData.Password)
 	if err != nil {
 		http.Error(w, "Failed to create user", http.StatusInternalServerError)
 		return
@@ -95,7 +95,7 @@ func RegisterFunc(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	
+
 	json.NewEncoder(w).Encode(model.Token{
 		Token: signedToken,
 	})
