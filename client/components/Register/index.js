@@ -1,9 +1,12 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
+import registerMutation from '../../mutations/register';
 // import history from '../../history';
 
-class Register extends React.Component {
+@graphql(registerMutation, {
+    name: 'registerUser',
+})
+export default class Register extends React.Component {
     state = {
         username: '',
         password: '',
@@ -34,15 +37,3 @@ class Register extends React.Component {
         );
     }
 }
-
-const registerMutation = gql`
-    mutation registerUser($username: String!, $password: String!) {
-        registerUser(username: $username, password: $password) {
-            token
-        }
-    }
-`;
-
-export default graphql(registerMutation, {
-    name: 'registerUser',
-})(Register);

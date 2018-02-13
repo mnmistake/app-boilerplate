@@ -5,14 +5,15 @@
       "stage-1"
     ],
     "plugins": [
-      ["transform-runtime", {
+      [
+        "transform-decorators-legacy",
+        "transform-runtime", {
         "helpers": false,
         "polyfill": false,
         "regenerator": true,
         "moduleName": "babel-runtime"
       },
-      "transform-function-bind",
-      "transform-deceorators-legacy"
+      "transform-function-bind"
       ]
     ]
   }
