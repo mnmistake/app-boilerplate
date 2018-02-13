@@ -12,13 +12,13 @@ func LoginUser(username string, password string) (interface{}, error) {
 		return nil, errors.New("User not found")
 	}
 
-	isAuthenticated, err := AuthenticateUser(username, []byte(password))
+	isAuthenticated, err := IsAuthenticated(username, []byte(password))
 	if err != nil {
 		return nil, errors.New("Invalid password")
 	}
 
 	if isAuthenticated {
-		signedToken, err := generateJWT(queriedUser)
+		signedToken, err := GenerateJWT(queriedUser)
 
 		if err != nil {
 			return nil, err
@@ -43,7 +43,7 @@ func RegisterUser(username string, password string) (interface{}, error) {
 		return nil, err
 	}
 
-	signedToken, err := generateJWT(user)
+	signedToken, err := GenerateJWT(user)
 	if err != nil {
 		return nil, err
 	}

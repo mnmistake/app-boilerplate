@@ -10,7 +10,7 @@ import (
 	"github.com/raunofreiberg/kyrene/server/model"
 )
 
-func generateJWT(user interface{}) (string, error) {
+func GenerateJWT(user interface{}) (string, error) {
 	expireToken := time.Now().Add(time.Hour * 1).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &model.User{
 		ID:       user.(model.User).ID,

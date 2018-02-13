@@ -64,7 +64,7 @@ func QueryUser(username string) (interface{}, error) {
 	return nil, errors.New("User not found")
 }
 
-func AuthenticateUser(username string, password []byte) (bool, error) {
+func IsAuthenticated(username string, password []byte) (bool, error) {
 	queryErr := server.DB.QueryRow(
 		"SELECT password FROM users where username=$1",
 		username,
