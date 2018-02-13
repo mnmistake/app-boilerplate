@@ -32,7 +32,7 @@ func main() {
 		http.Handle("/", http.FileServer(http.Dir("./client")))
 	} // only serve static files in development via this server. Nginx is used in production instead
 
-	http.Handle("/graphql", h) // todo: use http.Handle("graphql", server.RequireAuth(h))
+	http.Handle("/graphql", server.RequireAuth(h))
 	http.HandleFunc("/login", authentication.LoginFunc)
 	http.HandleFunc("/register", authentication.RegisterFunc)
 	http.ListenAndServe(":8000", handlers.LoggingHandler(os.Stdout, http.DefaultServeMux))
