@@ -1,39 +1,23 @@
 package server
 
 import (
-	"fmt"
-	"net/http"
 	"regexp"
-
-	jwt "github.com/dgrijalva/jwt-go"
+	"context"
+	"net/http"
 )
 
-var JwtSecret = []byte("secret")
-
-func RequireAuth(next http.Handler) http.Handler {
+func PassJwtContext(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authorizationHeader := r.Header.Get("Authorization")
 		bearerRegex, _ := regexp.Compile("(?:Bearer *)([^ ]+)(?: *)")
 		bearerRegexMatches := bearerRegex.FindStringSubmatch(authorizationHeader)
+		ctx := context.WithValue(r.Context(), "jwt", "")
 
-		if len(bearerRegexMatches) == 0 {
-			http.Error(w, "Missing token", http.StatusUnauthorized)
-			return
+		if len(bearerRegexMatches) != 0 {
+			jwtToken := bearerRegexMatches[1]
+			ctx = context.WithValue(r.Context(), "jwt", jwtToken)
 		}
 
-		jwtToken := bearerRegexMatches[1]
-		_, err := jwt.Parse(jwtToken, func(token *jwt.Token) (interface{}, error) {
-			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
-			}
-			return JwtSecret, nil
-		})
-
-		if err != nil {
-			http.Error(w, "Invalid token", http.StatusUnauthorized)
-			return
-		}
-
-		next.ServeHTTP(w, r)
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

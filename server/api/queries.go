@@ -1,6 +1,8 @@
 package api
 
 import (
+	"fmt"
+	"errors"
 	"github.com/graphql-go/graphql"
 )
 
@@ -31,13 +33,25 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 			Type:        graphql.NewList(TodoType),
 			Description: "return all todos",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				queriedTodos, err := QueryTodos()
+				jwt := params.Context.Value("jwt").(string)
+				fmt.Println(jwt)
+				isAuthorized, err := IsAuthorized(jwt)
 
 				if err != nil {
 					return nil, err
 				}
 
-				return queriedTodos, nil
+				if isAuthorized {
+					queriedTodos, err := QueryTodos()
+
+					if err != nil {
+						return nil, err
+					}
+
+					return queriedTodos, nil
+				}
+
+				return nil, errors.New("Unauthorized")
 			},
 		},
 	},
