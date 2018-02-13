@@ -10,6 +10,4 @@ mutation createTodo($content: String!) {
 }
 `;
 
-export {
-    createTodoMutation,
-}
+export default createTodoMutation;

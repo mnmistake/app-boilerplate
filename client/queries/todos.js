@@ -10,6 +10,4 @@ query {
 }
 `;
 
-export {
-    todosQuery,
-}
+export default todosQuery;
