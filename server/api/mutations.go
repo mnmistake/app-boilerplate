@@ -2,13 +2,14 @@ package api
 
 import (
 	"github.com/graphql-go/graphql"
+	"github.com/raunofreiberg/kyrene/server/authentication"
 )
 
 var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootMutation",
 	Fields: graphql.Fields{
 		"createTodo": &graphql.Field{
-			Type:        todoType,
+			Type:        TodoType,
 			Description: "create todo",
 			Args: graphql.FieldConfigArgument{ // args that the mutation takes
 				"content": &graphql.ArgumentConfig{
@@ -28,7 +29,7 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"updateTodo": &graphql.Field{
-			Type:        todoType, // return type
+			Type:        TodoType, // return type
 			Description: "Update todo",
 			Args: graphql.FieldConfigArgument{
 				"isCompleted": &graphql.ArgumentConfig{
@@ -51,7 +52,7 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"deleteTodo": &graphql.Field{
-			Type:        todoType,
+			Type:        TodoType,
 			Description: "Delete todo",
 			Args: graphql.FieldConfigArgument{
 				"id": &graphql.ArgumentConfig{
@@ -70,7 +71,7 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"deleteTodos": &graphql.Field{
-			Type:        todoType,
+			Type:        TodoType,
 			Description: "Delete all todos",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				todos, err := DeleteTodos()
@@ -80,6 +81,52 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 				}
 
 				return todos, nil
+			},
+		},
+		"registerUser": &graphql.Field{
+			Type:        UserType,
+			Description: "Create user",
+			Args: graphql.FieldConfigArgument{
+				"username": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+				"password": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+			},
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				username := params.Args["username"].(string)
+				password := params.Args["password"].(string)
+				token, err := authentication.RegisterUser(username, password)
+
+				if err != nil {
+					return nil, err
+				}
+
+				return token, nil
+			},
+		},
+		"loginUser": &graphql.Field{
+			Type:        UserType,
+			Description: "Login user",
+			Args: graphql.FieldConfigArgument{
+				"username": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+				"password": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+			},
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				username := params.Args["username"].(string)
+				password := params.Args["password"].(string)
+				token, err := authentication.LoginUser(username, password)
+
+				if err != nil {
+					return nil, err
+				}
+
+				return token, nil
 			},
 		},
 	},

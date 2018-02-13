@@ -22,7 +22,6 @@ func RequireAuth(next http.Handler) http.Handler {
 		}
 
 		jwtToken := bearerRegexMatches[1]
-		fmt.Println(jwtToken)
 		_, err := jwt.Parse(jwtToken, func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])

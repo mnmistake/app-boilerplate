@@ -9,7 +9,6 @@ import (
 	"github.com/graphql-go/handler"
 	"github.com/raunofreiberg/kyrene/server"
 	"github.com/raunofreiberg/kyrene/server/api"
-	"github.com/raunofreiberg/kyrene/server/authentication"
 )
 
 var Schema, _ = graphql.NewSchema(graphql.SchemaConfig{
@@ -32,8 +31,6 @@ func main() {
 		http.Handle("/", http.FileServer(http.Dir("./client")))
 	} // only serve static files in development via this server. Nginx is used in production instead
 
-	http.Handle("/graphql", server.RequireAuth(h))
-	http.HandleFunc("/login", authentication.LoginFunc)
-	http.HandleFunc("/register", authentication.RegisterFunc)
+	http.Handle("/graphql", h) // todo: add auth middleware -> http.Handle("/graphql", server.RequireAuth(h))
 	http.ListenAndServe(":8000", handlers.LoggingHandler(os.Stdout, http.DefaultServeMux))
 }

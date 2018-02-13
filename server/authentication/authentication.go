@@ -1,103 +1,54 @@
 package authentication
 
 import (
-	"encoding/json"
 	"errors"
-	"net/http"
-	"time"
 
-	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/raunofreiberg/kyrene/server"
 	"github.com/raunofreiberg/kyrene/server/model"
 )
 
-func generateJWT(user interface{}) (string, error) {
-	expireToken := time.Now().Add(time.Hour * 1).Unix()
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &model.User{
-		ID:       user.(model.User).ID,
-		Username: user.(model.User).Username,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expireToken,
-		},
-	})
-	signedToken, err := token.SignedString(server.JwtSecret)
-
+func LoginUser(username string, password string) (interface{}, error) {
+	queriedUser, err := QueryUser(username)
 	if err != nil {
-		return "", errors.New("Failed to generate token")
+		return nil, errors.New("User not found")
 	}
 
-	return signedToken, nil
-}
-
-func LoginFunc(w http.ResponseWriter, r *http.Request) {
-	decoder := json.NewDecoder(r.Body)
-	userData := model.UserData{}
-	err := decoder.Decode(&userData)
-
+	isAuthenticated, err := AuthenticateUser(username, []byte(password))
 	if err != nil {
-		http.Error(w, "Error decoding JSON", http.StatusInternalServerError)
-		return
-	}
-	defer r.Body.Close()
-
-	queriedUser, err := QueryUser(userData.Username)
-	if err != nil {
-		http.Error(w, "User not found", http.StatusInternalServerError)
-		return
-	}
-
-	isAuthenticated, err := LoginUser(userData.Username, []byte(userData.Password))
-	if err != nil {
-		http.Error(w, "Invalid password", http.StatusUnauthorized)
-		return
+		return nil, errors.New("Invalid password")
 	}
 
 	if isAuthenticated {
 		signedToken, err := generateJWT(queriedUser)
 
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
+			return nil, err
 		}
 
-		json.NewEncoder(w).Encode(model.Token{
+		return model.Token{
 			Token: signedToken,
-		})
-		return
+		}, nil
 	}
+
+	return nil, nil
 }
 
-func RegisterFunc(w http.ResponseWriter, r *http.Request) {
-	decoder := json.NewDecoder(r.Body)
-	userData := model.UserData{}
-	err := decoder.Decode(&userData)
-
-	if err != nil {
-		http.Error(w, "Error decoding JSON", http.StatusInternalServerError)
-		return
-	}
-	defer r.Body.Close()
-
-	queriedUser, err := QueryUser(userData.Username)
+func RegisterUser(username string, password string) (interface{}, error) {
+	queriedUser, err := QueryUser(username)
 	if queriedUser != nil {
-		http.Error(w, "User already exists", http.StatusInternalServerError)
-		return
+		return nil, errors.New("User already exists")
 	}
 
-	user, err := CreateUser(userData.Username, userData.Password)
+	user, err := CreateUser(username, password)
 	if err != nil {
-		http.Error(w, "Failed to create user", http.StatusInternalServerError)
-		return
+		return nil, err
 	}
 
 	signedToken, err := generateJWT(user)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		return nil, err
 	}
 
-	json.NewEncoder(w).Encode(model.Token{
+	return model.Token{
 		Token: signedToken,
-	})
-	return
+	}, nil
 }

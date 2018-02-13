@@ -8,7 +8,7 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootQuery",
 	Fields: graphql.Fields{
 		"todo": &graphql.Field{
-			Type:        todoType,
+			Type:        TodoType,
 			Description: "return a todo",
 			Args: graphql.FieldConfigArgument{
 				"id": &graphql.ArgumentConfig{
@@ -28,7 +28,7 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"todoList": &graphql.Field{
-			Type:        graphql.NewList(todoType),
+			Type:        graphql.NewList(TodoType),
 			Description: "return all todos",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				queriedTodos, err := QueryTodos()

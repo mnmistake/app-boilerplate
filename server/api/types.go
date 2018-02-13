@@ -4,8 +4,7 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-// GraphQL ObjectType for Todos
-var todoType = graphql.NewObject(graphql.ObjectConfig{
+var TodoType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "Todo",
 	Fields: graphql.Fields{
 		"id": &graphql.Field{
@@ -18,6 +17,15 @@ var todoType = graphql.NewObject(graphql.ObjectConfig{
 			Type: graphql.Boolean,
 		},
 		"createdAt": &graphql.Field{
+			Type: graphql.String,
+		},
+	},
+})
+
+var UserType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "User",
+	Fields: graphql.Fields{
+		"token": &graphql.Field{
 			Type: graphql.String,
 		},
 	},
