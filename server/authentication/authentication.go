@@ -9,12 +9,12 @@ import (
 func LoginUser(username string, password string) (interface{}, error) {
 	queriedUser, err := QueryUser(username)
 	if err != nil {
-		return nil, errors.New("User not found")
+		return nil, err
 	}
 
 	isAuthenticated, err := IsAuthenticated(username, []byte(password))
 	if err != nil {
-		return nil, errors.New("Invalid password")
+		return nil, err
 	}
 
 	if isAuthenticated {

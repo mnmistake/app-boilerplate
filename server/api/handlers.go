@@ -1,9 +1,10 @@
 package api
 
 import (
+	"time"
+
 	"github.com/raunofreiberg/kyrene/server"
 	"github.com/raunofreiberg/kyrene/server/model"
-	"time"
 )
 
 var (

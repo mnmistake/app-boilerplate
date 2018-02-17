@@ -40,14 +40,14 @@ func QueryUser(username string) (interface{}, error) {
 	rows, err := server.DB.Query("SELECT id, username FROM users WHERE username=$1", username)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	for rows.Next() {
 		err := rows.Scan(&id, &username)
 
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 
 		return model.User{
@@ -58,7 +58,7 @@ func QueryUser(username string) (interface{}, error) {
 
 	err = rows.Err()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	return nil, errors.New("User not found")
@@ -71,12 +71,10 @@ func IsAuthenticated(username string, password []byte) (bool, error) {
 	).Scan(&hashedPassword)
 
 	if queryErr != nil {
-		panic(queryErr)
+		return false, queryErr
 	}
 
-	err := bcrypt.CompareHashAndPassword(hashedPassword, password)
-
-	if err != nil {
+	if err := bcrypt.CompareHashAndPassword(hashedPassword, password); err != nil {
 		return false, errors.New("Incorrect password")
 	}
 
