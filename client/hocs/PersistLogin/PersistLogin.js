@@ -9,7 +9,7 @@ export default function (ComposedComponent, isRegister = false) {
     @graphql(getUserStatusQuery, {
         skip: () => !Auth.isUserAuthenticated(), // skip the getStatus query if there is no JWT to verify
     })
-    class IsAuthorized extends React.Component {
+    class PersistLogin extends React.Component {
         componentWillUpdate(nextProps) {
             const { isAuthorized } = nextProps.data.getUserStatus ? nextProps.data.getUserStatus : false;
             if (isAuthorized) {
@@ -22,5 +22,5 @@ export default function (ComposedComponent, isRegister = false) {
         }
     }
 
-    return IsAuthorized;
+    return PersistLogin;
 }

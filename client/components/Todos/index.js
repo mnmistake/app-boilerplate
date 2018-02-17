@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 
+import history from '../../history';
 import todoListQuery from '../../graphql/queries/todos';
 import createTodoMutation from '../../graphql/mutations/todos';
 
@@ -38,9 +39,13 @@ export default class Todos extends React.Component {
         if (content) createTodo(content);
     };
 
+    logout = () => {
+        localStorage.removeItem('token');
+        history.push('/login');
+    };
+
     render() {
         const { todoList, loading } = this.props.data;
-        console.log(this.props);
         if (loading) {
             return 'loading';
         }
@@ -50,6 +55,7 @@ export default class Todos extends React.Component {
                 {todoList && todoList.map(todo => <li key={todo.id}>{todo.content}</li>)}
                 <input type="text" onChange={e => this.setState({ content: e.target.value })} />
                 <button onClick={this.handleClick}>create todo</button>
+                <button onClick={this.logout}>logout</button>
             </ul>
         );
     }
