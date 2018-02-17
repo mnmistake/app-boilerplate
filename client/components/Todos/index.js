@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 
-import todoListQuery from '../../queries/todos';
-import createTodoMutation from '../../mutations/todos';
+import todoListQuery from '../../graphql/queries/todos';
+import createTodoMutation from '../../graphql/mutations/todos';
 
 @graphql(createTodoMutation, {
     props: ({ mutate }) => ({
