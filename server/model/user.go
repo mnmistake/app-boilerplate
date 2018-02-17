@@ -15,3 +15,7 @@ type UserData struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
+
+type UserStatus struct {
+	IsAuthorized bool `json:"isAuthorized,omitempty"`
+}

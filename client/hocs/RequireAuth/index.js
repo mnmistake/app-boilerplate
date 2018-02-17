@@ -1,17 +1,16 @@
 import React from 'react';
-import Auth from '../../utils/Auth';
+import { graphql } from 'react-apollo';
 import history from '../../history';
 
-export default function (ComposedComponent) {
-    class RequireAuth extends React.Component {
-        componentWillMount() {
-            if (!Auth.isUserAuthenticated()) {
-                history.push('/login');
-            }
-        }
+import getUserStatusQuery from '../../graphql/queries/auth';
 
-        componentWillUpdate() {
-            if (!Auth.isUserAuthenticated()) {
+export default function (ComposedComponent) {
+    @graphql(getUserStatusQuery)
+    class RequireAuth extends React.Component {
+        componentWillUpdate(nextProps) {
+            const { isAuthorized } = nextProps.data.getUserStatus ? nextProps.data.getUserStatus : false;
+
+            if (!isAuthorized) {
                 history.push('/login');
             }
         }

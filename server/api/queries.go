@@ -1,9 +1,10 @@
 package api
 
 import (
-	"fmt"
 	"errors"
+
 	"github.com/graphql-go/graphql"
+	"github.com/raunofreiberg/kyrene/server/model"
 )
 
 var RootQuery = graphql.NewObject(graphql.ObjectConfig{
@@ -34,7 +35,6 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 			Description: "return all todos",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				jwt := params.Context.Value("jwt").(string)
-				fmt.Println(jwt)
 				isAuthorized, err := IsAuthorized(jwt)
 
 				if err != nil {
@@ -52,6 +52,22 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 				}
 
 				return nil, errors.New("Unauthorized")
+			},
+		},
+		"getUserStatus": &graphql.Field{
+			Type:        StatusType,
+			Description: "Verify that the token being used is valid",
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				jwt := params.Context.Value("jwt").(string)
+				isAuthorized, err := IsAuthorized(jwt)
+
+				if err != nil {
+					return nil, err
+				}
+
+				return model.UserStatus{
+					IsAuthorized: isAuthorized,
+				}, nil
 			},
 		},
 	},
