@@ -6,14 +6,16 @@ import history from './history';
 import Login from './components/Login';
 import Register from './components/Register';
 import Todos from './components/Todos';
+import RequireAuth from './components/RequireAuth';
+import IsAuthenticated from './components/IsAuthenticated';
 
 const AppRouter = () => (
     <Router history={history}>
         <div>
             <Switch>
-                <Route path="/login" component={Login} />
-                <Route path="/register" component={Register} />
-                <Route exact path="/" component={Todos} />
+                <Route path="/login" component={IsAuthenticated(Login)} />
+                <Route path="/register" component={IsAuthenticated(Register)} />
+                <Route exact path="/" component={RequireAuth(Todos)} />
             </Switch>
         </div>
     </Router>

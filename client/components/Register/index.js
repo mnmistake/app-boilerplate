@@ -1,7 +1,9 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
-import registerMutation from '../../mutations/register';
-// import history from '../../history';
+
+import Auth from '../../middleware/Auth';
+import { registerMutation } from '../../mutations/auth';
+import history from '../../history';
 
 @graphql(registerMutation, {
     name: 'registerUser',
@@ -24,8 +26,9 @@ export default class Register extends React.Component {
             },
         });
         const { token } = res.data.registerUser;
-        console.log(token);
-    }
+        Auth.setToken(token);
+        history.push('/');
+    };
 
     render() {
         return (
