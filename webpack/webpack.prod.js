@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const commonConfig = require('./webpack.common.js');
 const helpers = require('../helpers');
 
@@ -29,7 +28,7 @@ module.exports = webpackMerge(commonConfig, {
         }),
         new HtmlWebpackPlugin({
             template: './client/index.html',
-        }),        
+        }),
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.optimize.AggressiveMergingPlugin(),
     ],

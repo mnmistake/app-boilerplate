@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const commonConfig = require('./webpack.common.js');
@@ -21,7 +20,7 @@ module.exports = webpackMerge(commonConfig, {
     ],
     devServer: {
         historyApiFallback: true,
-        contentBase: './client',        
+        contentBase: './client',
         proxy: {
             '/graphql': {
                 target: 'http://api:3000', // `api` being the alias of the Docker container - see: Docker-compose.yml
