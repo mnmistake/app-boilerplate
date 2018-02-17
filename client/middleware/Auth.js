@@ -9,7 +9,7 @@ export default class Auth {
     /**
      * Get a token value.
      *
-     * @returns {string}
+     * @returns {string} token
      */
 
     static getToken = () => localStorage.getItem('token');
@@ -29,13 +29,4 @@ export default class Auth {
      *
      */
     static removeToken = () => localStorage.removeItem('token');
-
-    /**
-     * Auth middleware - keeps the user logged in.
-     *
-     * @param {object} store - Redux store
-     */
-    static ensureAuthenticated() {
-
-    }
 }

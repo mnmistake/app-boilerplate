@@ -2,20 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 
-import todosQuery from '../../queries/todos';
+import todoListQuery from '../../queries/todos';
 import createTodoMutation from '../../mutations/todos';
 
 @graphql(createTodoMutation, {
-    name: 'createTodo',
+    props: ({ mutate }) => ({
+        createTodo: content => mutate({ variables: { content } }),
+    }),
     options: {
         update: (store, { data }) => {
-            const storeData = store.readQuery({ query: todosQuery });
+            const storeData = store.readQuery({ query: todoListQuery });
             storeData.todoList.push(data.createTodo);
-            store.writeQuery({ query: todosQuery, data: storeData });
+            store.writeQuery({ query: todoListQuery, data: storeData });
         },
     },
 })
-@graphql(todosQuery)
+@graphql(todoListQuery)
 export default class Todos extends React.Component {
     static propTypes = {
         createTodo: PropTypes.func.isRequired,
@@ -29,27 +31,25 @@ export default class Todos extends React.Component {
         content: '',
     };
 
-    createTodo() {
-        if (this.state.content) {
-            this.props.createTodo({
-                variables: {
-                    content: this.state.content,
-                },
-            });
-        }
-    }
+    handleClick = () => {
+        const { content } = this.state;
+        const { createTodo } = this.props;
+
+        if (content) createTodo(content);
+    };
 
     render() {
-        const { todoList: todos, loading } = this.props.data;
+        const { todoList, loading } = this.props.data;
+        console.log(this.props);
         if (loading) {
             return 'loading';
         }
 
         return (
             <ul>
-                {todos && todos.map(todo => <li key={todo.id}>{todo.content}</li>)}
+                {todoList && todoList.map(todo => <li key={todo.id}>{todo.content}</li>)}
                 <input type="text" onChange={e => this.setState({ content: e.target.value })} />
-                <button onClick={() => this.createTodo()}>create todo</button>
+                <button onClick={this.handleClick}>create todo</button>
             </ul>
         );
     }

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-const todosQuery = gql`
+const todoListQuery = gql`
     query {
         todoList {
             id,
@@ -10,4 +10,4 @@ const todosQuery = gql`
     }
 `;
 
-export default todosQuery;
+export default todoListQuery;
