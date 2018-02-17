@@ -16,7 +16,7 @@ import history from '../../history';
         register: ({ username, password }) => mutate({ variables: { username, password } }),
     }),
 })
-export default class Login extends React.Component {
+export default class Authentication extends React.Component {
     static propTypes = {
         login: PropTypes.func.isRequired,
         register: PropTypes.func.isRequired,
@@ -37,8 +37,8 @@ export default class Login extends React.Component {
         try {
             const res = isRegister ? await register({ username, password }) : await login({ username, password });
 
-            if (res.data.loginUser) {
-                const { token } = res.data.loginUser;
+            if (res.data) {
+                const { token } = isRegister ? res.data.registerUser : res.data.loginUser;
                 Auth.setToken(token);
                 history.push('/');
             }
