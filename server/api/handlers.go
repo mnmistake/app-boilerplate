@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"time"
 
 	"github.com/raunofreiberg/kyrene/server"
@@ -16,28 +17,20 @@ var (
 
 var TodoList []model.Todo
 
-func checkError(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
 func QueryTodos() (interface{}, error) {
 	rows, err := server.DB.Query("SELECT id, content, is_completed, created_at FROM todos ORDER BY created_at")
 	todos := TodoList
 
-	checkError(err)
+	if err != nil {
+		return nil, err
+	}
+
 	defer rows.Close()
 
 	for rows.Next() {
-		err := rows.Scan(
-			&id,
-			&content,
-			&isCompleted,
-			&createdAt,
-		)
-
-		checkError(err)
+		if err := rows.Scan(&id, &content, &isCompleted, &createdAt); err != nil {
+			return nil, err
+		}
 
 		todos = append(todos, model.Todo{
 			ID:          id,
@@ -47,19 +40,24 @@ func QueryTodos() (interface{}, error) {
 		})
 	}
 
-	err = rows.Err()
-	checkError(err)
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
 
 	return todos, nil
 }
 
 func QueryTodo(queryID int) (interface{}, error) {
 	rows, err := server.DB.Query("SELECT id, content, is_completed, created_at FROM todos WHERE id=$1", queryID)
-	checkError(err)
+
+	if err != nil {
+		return nil, err
+	}
 
 	for rows.Next() {
-		err := rows.Scan(&id, &content, &isCompleted, &createdAt)
-		checkError(err)
+		if err := rows.Scan(&id, &content, &isCompleted, &createdAt); err != nil {
+			return nil, err
+		}
 
 		return model.Todo{
 			ID:          id,
@@ -69,10 +67,11 @@ func QueryTodo(queryID int) (interface{}, error) {
 		}, nil
 	}
 
-	err = rows.Err()
-	checkError(err)
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
 
-	panic("No todo found")
+	return nil, errors.New("No todo found")
 }
 
 func InsertTodo(content string) (interface{}, error) {
@@ -97,8 +96,8 @@ func InsertTodo(content string) (interface{}, error) {
 }
 
 func UpdateTodo(id int, IsCompleted bool) (interface{}, error) {
-	_, err := server.DB.Exec(
-		"UPDATE todos SET is_completed = $1 WHERE id = $2",
+	rows, err := server.DB.Query(
+		"UPDATE todos SET is_completed = $1 WHERE id = $2 RETURNING id",
 		IsCompleted,
 		id,
 	)
@@ -107,22 +106,36 @@ func UpdateTodo(id int, IsCompleted bool) (interface{}, error) {
 		return nil, err
 	}
 
-	return model.Todo{
-		ID:          id,
-		IsCompleted: IsCompleted,
-	}, nil
+	for rows.Next() {
+		if err := rows.Scan(&id); err != nil {
+			return nil, err
+		}
+
+		return model.Todo{
+			ID:          id,
+			IsCompleted: IsCompleted,
+		}, nil
+	}
+
+	return nil, errors.New("Todo not updated")
 }
 
 func DeleteTodo(id int) (interface{}, error) {
-	_, err := server.DB.Exec("DELETE FROM todos WHERE id = $1", id)
+	rows, err := server.DB.Query("DELETE FROM todos WHERE id = $1 RETURNING id", id)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return model.Todo{
-		ID: id,
-	}, nil
+	for rows.Next() {
+		if err := rows.Scan(&id); err != nil {
+			return nil, err
+		}
+
+		return model.Todo{}, nil
+	}
+
+	return nil, errors.New("Todo not deleted")
 }
 
 func DeleteTodos() (interface{}, error) {
