@@ -1,6 +1,6 @@
 import React from 'react';
-import Auth from '../../../middleware/Auth';
-import history from '../../../history';
+import Auth from '../../utils/Auth';
+import history from '../../history';
 
 export default function (ComposedComponent, isRegister = false) {
     class IsAuthenticated extends React.Component {

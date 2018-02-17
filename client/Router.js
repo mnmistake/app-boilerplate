@@ -5,8 +5,8 @@ import history from './history';
 
 import Authentication from './components/Authentication';
 import Todos from './components/Todos';
-import RequireAuth from './components/hocs/RequireAuth';
-import IsAuthenticated from './components/hocs/IsAuthenticated';
+import RequireAuth from './hocs/RequireAuth';
+import IsAuthenticated from './hocs/IsAuthenticated';
 
 const AppRouter = () => (
     <Router history={history}>

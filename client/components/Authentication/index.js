@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 
-import Auth from '../../middleware/Auth';
+import Auth from '../../utils/Auth';
 import { loginMutation, registerMutation } from '../../mutations/auth';
 import history from '../../history';
 
