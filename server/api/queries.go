@@ -35,7 +35,7 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 			Description: "return all todos",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				jwt := params.Context.Value("jwt").(string)
-				isAuthorized, err := IsAuthorized(jwt)
+				isAuthorized, err := ValidateJWT(jwt)
 
 				if err != nil {
 					return nil, err
@@ -59,7 +59,7 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 			Description: "Verify that the token being used is valid",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				jwt := params.Context.Value("jwt").(string)
-				isAuthorized, err := IsAuthorized(jwt)
+				isAuthorized, err := ValidateJWT(jwt)
 
 				if err != nil {
 					return nil, err

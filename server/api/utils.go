@@ -4,11 +4,11 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/raunofreiberg/kyrene/server"
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/raunofreiberg/kyrene/server"
 )
 
-func IsAuthorized(jwtToken string) (bool, error) {
+func ValidateJWT(jwtToken string) (bool, error) {
 	if len(jwtToken) == 0 {
 		return false, errors.New("Missing token")
 	}
