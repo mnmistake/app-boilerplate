@@ -4,7 +4,7 @@ export default class Auth {
     static getToken = () => localStorage.getItem('token');
 
     static removeToken = () => localStorage.removeItem('token');
-    
+
     static doesTokenExist() {
         return this.getToken() !== null &&
         this.getToken() !== undefined;

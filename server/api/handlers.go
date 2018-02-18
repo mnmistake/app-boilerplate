@@ -97,7 +97,7 @@ func InsertTodo(content string) (interface{}, error) {
 
 func UpdateTodo(id int, IsCompleted bool) (interface{}, error) {
 	rows, err := server.DB.Query(
-		"UPDATE todos SET is_completed = $1 WHERE id = $2 RETURNING id",
+		"UPDATE todos SET is_completed = $1 WHERE id = $2 RETURNING content",
 		IsCompleted,
 		id,
 	)
@@ -107,13 +107,14 @@ func UpdateTodo(id int, IsCompleted bool) (interface{}, error) {
 	}
 
 	for rows.Next() {
-		if err := rows.Scan(&id); err != nil {
+		if err := rows.Scan(&content); err != nil {
 			return nil, err
 		}
 
 		return model.Todo{
 			ID:          id,
 			IsCompleted: IsCompleted,
+			Content:	 content,
 		}, nil
 	}
 

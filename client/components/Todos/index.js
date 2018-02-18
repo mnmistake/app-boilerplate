@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo';
 
 import history from '../../history';
 import todoListQuery from '../../graphql/queries/todos';
-import createTodoMutation from '../../graphql/mutations/todos';
+import { createTodoMutation, updateTodoMutation } from '../../graphql/mutations/todos';
 
 @graphql(createTodoMutation, {
     props: ({ mutate }) => ({
@@ -18,10 +18,16 @@ import createTodoMutation from '../../graphql/mutations/todos';
         },
     },
 })
+@graphql(updateTodoMutation, {
+    props: ({ mutate }) => ({
+        updateTodo: (id, isCompleted) => mutate({ variables: { id, isCompleted } }),
+    }),
+})
 @graphql(todoListQuery)
 export default class Todos extends React.Component {
     static propTypes = {
         createTodo: PropTypes.func.isRequired,
+        updateTodo: PropTypes.func.isRequired,
         data: PropTypes.shape({
             todoList: PropTypes.array,
             loading: PropTypes.bool.isRequired,
@@ -46,13 +52,26 @@ export default class Todos extends React.Component {
 
     render() {
         const { todoList, loading } = this.props.data;
+        const { updateTodo } = this.props;
+
+        const renderTodo = todo => (
+            <div key={todo.id} className="todos">
+                <li>{todo.content}</li>
+                <input
+                    type="checkbox"
+                    checked={todo.isCompleted}
+                    onChange={() => updateTodo(todo.id, !todo.isCompleted)}
+                />
+            </div>
+        );
+
         if (loading) {
             return 'loading';
         }
 
         return (
             <ul>
-                {todoList && todoList.map(todo => <li key={todo.id}>{todo.content}</li>)}
+                {todoList && todoList.map(todo => renderTodo(todo))}
                 <input type="text" onChange={e => this.setState({ content: e.target.value })} />
                 <button onClick={this.handleClick}>create todo</button>
                 <button onClick={this.logout}>logout</button>
