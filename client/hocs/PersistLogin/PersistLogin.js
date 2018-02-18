@@ -9,7 +9,7 @@ export default function (ComposedComponent, isRegister = false) {
                 history.push('/');
             }
         }
-     
+
         componentWillUpdate() {
             if (Auth.doesTokenExist()) {
                 history.push('/');

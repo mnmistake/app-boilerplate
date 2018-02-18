@@ -14,9 +14,7 @@ const Todo = ({ data }) => {
 };
 
 export default graphql(todoQuery, {
-    options: ({ match }) => ({
-        variables: {
-            id: match.params.id,
-        },
+    options: ({ match: { params: { id } } }) => ({
+        variables: { id },
     }),
 })(Todo);

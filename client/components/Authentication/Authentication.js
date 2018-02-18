@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 
-import Auth from '../../utils/Auth';
 import { loginMutation, registerMutation } from '../../graphql/mutations/auth';
+import Auth from '../../utils/Auth';
 import history from '../../history';
 
 @graphql(loginMutation, {

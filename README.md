@@ -7,7 +7,7 @@
 - [ ] Unit & integration tests for endpoints
 - [x] Front end base setup
 - [ ] Client side functionality integration
-- [ ] JWT authentication
+- [x] JWT authentication
 - [x] Docker
 	- [x] Development
 	- [x] Production

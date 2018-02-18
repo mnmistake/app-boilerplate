@@ -6,13 +6,15 @@ import history from './history';
 import Authentication from './components/Authentication';
 import Todos from './components/Todos';
 import Todo from './components/Todo';
+import Navbar from './components/Navbar';
 
 import RequireAuth from './hocs/RequireAuth';
-import PersistLogin from './hocs/PersistLogin/PersistLogin';
+import PersistLogin from './hocs/PersistLogin';
 
 const AppRouter = () => (
     <Router history={history}>
         <div>
+            <Navbar />
             <Switch>
                 <Route exact path="/" component={RequireAuth(Todos)} />
                 <Route path="/todo/:id" component={RequireAuth(Todo)} />
