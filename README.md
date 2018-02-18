@@ -18,6 +18,7 @@ State management is done via `apollo-link-state` and authentication is provided 
 - [x] Docker
 	- [x] Development
 	- [x] Production
+- [ ] Styles
 
 # Technologies
 - Golang
