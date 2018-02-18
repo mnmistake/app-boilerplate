@@ -30,12 +30,3 @@ var UserType = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},
 })
-
-var StatusType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Status",
-	Fields: graphql.Fields{
-		"isAuthorized": &graphql.Field{
-			Type: graphql.Boolean,
-		},
-	},
-})
