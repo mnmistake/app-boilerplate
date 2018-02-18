@@ -10,4 +10,17 @@ const todoListQuery = gql`
     }
 `;
 
-export default todoListQuery;
+const todoQuery = gql`
+    query todoQuery($id: Int!) {
+        todo(id: $id) {
+            id,
+            content,
+            isCompleted,
+        }
+    }
+`;
+
+export {
+    todoListQuery,
+    todoQuery,
+};

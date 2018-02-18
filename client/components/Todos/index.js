@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
+import { Link } from 'react-router-dom';
 
 import history from '../../history';
-import todoListQuery from '../../graphql/queries/todos';
+import { todoListQuery } from '../../graphql/queries/todos';
 import { createTodoMutation, updateTodoMutation } from '../../graphql/mutations/todos';
 
 @graphql(createTodoMutation, {
@@ -55,14 +56,14 @@ export default class Todos extends React.Component {
         const { updateTodo } = this.props;
 
         const renderTodo = todo => (
-            <div key={todo.id} className="todos">
+            <Link to={`/todo/${todo.id}`} key={todo.id}>
                 <li>{todo.content}</li>
                 <input
                     type="checkbox"
                     checked={todo.isCompleted}
                     onChange={() => updateTodo(todo.id, !todo.isCompleted)}
                 />
-            </div>
+            </Link>
         );
 
         if (loading) {
