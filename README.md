@@ -1,6 +1,13 @@
 # GraphQL based API written in Golang
 [![Build Status](https://travis-ci.org/raunofreiberg/kyrene.svg?branch=master)](https://travis-ci.org/raunofreiberg/kyrene)
 
+> Work in progress
+
+This project serves as a GraphQL based API written in Golang, which is consumed by the front-end via the Apollo client using React.
+State management is done via `apollo-link-state` and authentication is provided by JSON web tokens. Still work in progress.
+
+# Features
+
 - [x] Base queries & mutations for GraphQL
 - [x] Actual working endpoints for queries & mutations
 - [x] Database integration
@@ -12,7 +19,28 @@
 	- [x] Development
 	- [x] Production
 
-#### Setup
+# Technologies
+- Golang
+- GraphQL
+- PostgreSQL
+- Docker
+- React
+- React-Router
+- Apollo
+- Webpack
+
+# Setup
+
+#### Docker
+
+Development
+```
+docker-compose up --build
+```
+
+¯\_(ツ)_/¯
+
+#### Non-Docker
 
 * Start by setting env variables for Go (Note: `$` implies using the terminal)
 
@@ -47,13 +75,6 @@ $ npm run dev
 
 ```
 $ npm run prod
-```
-
-#### Docker
-
-Development
-```
-docker-compose up --build
 ```
 
 #### Endpoint examples
