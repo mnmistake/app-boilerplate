@@ -83,3 +83,16 @@ func TestAuthMiddlewareValidToken(t *testing.T) {
 		t.Error(diff)
 	}
 }
+
+func TestAuthMiddlewareInValidToken(t *testing.T) {
+	invalidToken := "123123"
+	callbackMock := func() (interface{}, error) {
+		return ResponseMock{}, nil
+	}
+
+	_, err := server.AuthMiddleware(invalidToken, callbackMock)
+
+	if diff := deep.Equal(err.Error(), "Invalid token"); diff != nil {
+		t.Error(diff)
+	}
+}
