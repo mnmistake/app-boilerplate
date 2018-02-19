@@ -5,8 +5,14 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/go-test/deep"
 	"github.com/raunofreiberg/kyrene/server"
 )
+
+type ResponseMock struct {
+	Name string
+}
 
 func TestJwtMiddleware1(t *testing.T) {
 	req, err := http.NewRequest("GET", "/graphql", nil)
@@ -57,4 +63,26 @@ func TestJwtMiddleware2(t *testing.T) {
 	rr := httptest.NewRecorder()
 	handler := server.PassJwtContext(testHandler)
 	handler.ServeHTTP(rr, req)
+}
+
+func TestAuthMiddlewareValidToken(t *testing.T) {
+	token := jwt.New(jwt.SigningMethodHS256)
+	tokenString, err := token.SignedString(server.JwtSecret)
+	callback := func() (interface{}, error) {
+		return ResponseMock{"Doge"}, nil
+	}
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	res, error := server.AuthMiddleware(tokenString, callback)
+
+	if error != nil {
+		t.Error(error)
+	}
+
+	if diff := deep.Equal(res, ResponseMock{"Doge"}); diff != nil {
+		t.Error(diff)
+	}
 }
