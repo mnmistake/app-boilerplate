@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"regexp"
 )
@@ -20,4 +21,24 @@ func PassJwtContext(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
+}
+
+func AuthMiddleware(jwt string, callback func() (interface{}, error)) (interface{}, error) {
+	isAuthorized, err := ValidateJWT(jwt)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if isAuthorized {
+		res, err := callback()
+
+		if err != nil {
+			return nil, err
+		}
+
+		return res, nil
+	}
+
+	return nil, errors.New("Not authorized")
 }

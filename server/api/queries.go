@@ -1,9 +1,8 @@
 package api
 
 import (
-	"errors"
-
 	"github.com/graphql-go/graphql"
+	"github.com/raunofreiberg/kyrene/server"
 	"github.com/raunofreiberg/kyrene/server/authentication"
 )
 
@@ -35,36 +34,27 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 			Description: "return all todos",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				jwt := params.Context.Value("jwt").(string)
-				isAuthorized, err := ValidateJWT(jwt)
+				res, err := server.AuthMiddleware(jwt, QueryTodos)
 
 				if err != nil {
 					return nil, err
 				}
 
-				if isAuthorized {
-					queriedTodos, err := QueryTodos()
-
-					if err != nil {
-						return nil, err
-					}
-
-					return queriedTodos, nil
-				}
-
-				return nil, errors.New("Unauthorized")
+				return res, err
 			},
 		},
 		"users": &graphql.Field{
 			Type:        graphql.NewList(UserType),
 			Description: "Return all users",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				users, err := authentication.QueryUsers()
+				jwt := params.Context.Value("jwt").(string)
+				res, err := server.AuthMiddleware(jwt, authentication.QueryUsers)
 
 				if err != nil {
 					return nil, err
 				}
 
-				return users, nil
+				return res, nil
 			},
 		},
 	},

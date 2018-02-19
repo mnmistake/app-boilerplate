@@ -1,11 +1,10 @@
-package api
+package server
 
 import (
 	"errors"
 	"fmt"
 
 	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/raunofreiberg/kyrene/server"
 )
 
 func ValidateJWT(jwtToken string) (bool, error) {
@@ -17,7 +16,7 @@ func ValidateJWT(jwtToken string) (bool, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return false, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
-		return server.JwtSecret, nil
+		return JwtSecret, nil
 	})
 
 	if err != nil {
