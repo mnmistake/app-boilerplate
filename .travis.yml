@@ -1,10 +1,14 @@
-language: node_js
-node_js:
-  - "stable"
+language: go
+go:
+  - 1.9.x
+  - 1.8.x
+  - 1.7.x
+  - master
 
-cache:
-  directories:
-    - "node_modules"
+matrix:
+  allow_failures:
+    - go: master
+  fast_finish: true
 
-after_success:
-- npm run cover
+script:
+ - go test -v ./...
