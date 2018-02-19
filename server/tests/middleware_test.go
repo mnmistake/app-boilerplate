@@ -14,7 +14,7 @@ type ResponseMock struct {
 	Name string
 }
 
-func TestJwtMiddleware1(t *testing.T) {
+func TestJwtMiddleware_WithToken(t *testing.T) {
 	req, err := http.NewRequest("GET", "/graphql", nil)
 	req.Header.Add("Authorization", "Bearer ey28718921th")
 
@@ -41,7 +41,7 @@ func TestJwtMiddleware1(t *testing.T) {
 
 // Don't provide a Authorization header, JWT should be a empty string since we
 // pass the context to the GraphQL resolver func that handles authentication.
-func TestJwtMiddleware2(t *testing.T) {
+func TestJwtMiddleware_WithoutToken(t *testing.T) {
 	req, err := http.NewRequest("GET", "/graphql", nil)
 
 	if err != nil {
@@ -65,7 +65,7 @@ func TestJwtMiddleware2(t *testing.T) {
 	handler.ServeHTTP(rr, req)
 }
 
-func TestAuthMiddlewareValidToken(t *testing.T) {
+func TestAuthMiddleWare_ValidToken(t *testing.T) {
 	token := jwt.New(jwt.SigningMethodHS256)
 	tokenString, _ := token.SignedString(server.JwtSecret)
 	resMock := ResponseMock{"Doge"}
@@ -84,7 +84,7 @@ func TestAuthMiddlewareValidToken(t *testing.T) {
 	}
 }
 
-func TestAuthMiddlewareInValidToken(t *testing.T) {
+func TestAuthMiddleware_InvalidToken(t *testing.T) {
 	invalidToken := "123123"
 	callbackMock := func() (interface{}, error) {
 		return ResponseMock{}, nil
