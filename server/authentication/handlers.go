@@ -17,7 +17,7 @@ var (
 func CreateUser(username string, password string) (interface{}, error) {
 	hashedPassword, error := HashPassword(password)
 	if error != nil {
-		panic(error)
+		return nil, error
 	}
 
 	err := server.DB.QueryRow(
@@ -27,7 +27,7 @@ func CreateUser(username string, password string) (interface{}, error) {
 	).Scan(&id)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	return model.User{

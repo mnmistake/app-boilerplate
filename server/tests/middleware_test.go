@@ -11,6 +11,7 @@ import (
 func TestJwtMiddleware1(t *testing.T) {
 	req, err := http.NewRequest("GET", "/graphql", nil)
 	req.Header.Add("Authorization", "Bearer ey28718921th")
+
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -33,9 +34,10 @@ func TestJwtMiddleware1(t *testing.T) {
 }
 
 // Don't provide a Authorization header, JWT should be a empty string since we
-// pass it to the GraphQL resolver func that handles authentication.
+// pass the context to the GraphQL resolver func that handles authentication.
 func TestJwtMiddleware2(t *testing.T) {
 	req, err := http.NewRequest("GET", "/graphql", nil)
+
 	if err != nil {
 		t.Fatal(err)
 	}
