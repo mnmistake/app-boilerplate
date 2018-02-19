@@ -1,9 +1,9 @@
 package server
 
 import (
-	"regexp"
 	"context"
 	"net/http"
+	"regexp"
 )
 
 func PassJwtContext(next http.Handler) http.Handler {
