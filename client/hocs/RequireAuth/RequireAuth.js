@@ -33,12 +33,18 @@ export default function (ComposedComponent) {
         }
 
         setUser() {
-            const decoded = jwtDecode(Auth.getToken());
-            const { setUser } = this.props;
+            try {
+                const decoded = jwtDecode(Auth.getToken());
+                const { setUser } = this.props;
 
-            if (decoded) {
-                const { username, id } = decoded;
-                setUser({ username, id });
+                if (decoded) {
+                    const { username, id } = decoded;
+                    setUser({ username, id });
+                }
+            } catch (err) {
+                // invalid token error, abort and send back to login
+                Auth.removeToken();
+                history.push('/login');
             }
         }
 
