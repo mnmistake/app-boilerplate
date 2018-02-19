@@ -67,22 +67,19 @@ func TestJwtMiddleware2(t *testing.T) {
 
 func TestAuthMiddlewareValidToken(t *testing.T) {
 	token := jwt.New(jwt.SigningMethodHS256)
-	tokenString, err := token.SignedString(server.JwtSecret)
-	callback := func() (interface{}, error) {
-		return ResponseMock{"Doge"}, nil
+	tokenString, _ := token.SignedString(server.JwtSecret)
+	resMock := ResponseMock{"Doge"}
+	callbackMock := func() (interface{}, error) {
+		return resMock, nil
 	}
+
+	res, err := server.AuthMiddleware(tokenString, callbackMock)
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	res, error := server.AuthMiddleware(tokenString, callback)
-
-	if error != nil {
-		t.Error(error)
-	}
-
-	if diff := deep.Equal(res, ResponseMock{"Doge"}); diff != nil {
+	if diff := deep.Equal(res, resMock); diff != nil {
 		t.Error(diff)
 	}
 }
