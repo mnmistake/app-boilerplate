@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/graphql-go/graphql"
+	"github.com/raunofreiberg/kyrene/server/authentication"
 )
 
 var RootQuery = graphql.NewObject(graphql.ObjectConfig{
@@ -51,6 +52,19 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 				}
 
 				return nil, errors.New("Unauthorized")
+			},
+		},
+		"users": &graphql.Field{
+			Type:        graphql.NewList(UserType),
+			Description: "Return all users",
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				users, err := authentication.QueryUsers()
+
+				if err != nil {
+					return nil, err
+				}
+
+				return users, nil
 			},
 		},
 	},

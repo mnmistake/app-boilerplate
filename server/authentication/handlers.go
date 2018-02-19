@@ -64,6 +64,32 @@ func QueryUser(username string) (interface{}, error) {
 	return nil, errors.New("User not found")
 }
 
+func QueryUsers() (interface{}, error) {
+	rows, err := server.DB.Query("SELECT id, username FROM users")
+	var users []model.User
+
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		if err := rows.Scan(&id, &username); err != nil {
+			return nil, err
+		}
+
+		users = append(users, model.User{
+			ID:       id,
+			Username: username,
+		})
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
+
 func IsAuthenticated(username string, password []byte) (bool, error) {
 	queryErr := server.DB.QueryRow(
 		"SELECT password FROM users where username=$1",
