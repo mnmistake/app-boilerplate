@@ -10,7 +10,7 @@ services:
     environment:
       - NODE_ENV=production      
     command: npm run build
-  api:
+  api: # Go server runs on :8000, /graphql route is proxied to via Nginx
     build:
       context: .
       dockerfile: Dockerfile-go
