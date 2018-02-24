@@ -23,7 +23,7 @@ func PassJwtContext(next http.Handler) http.Handler {
 	})
 }
 
-func AuthMiddleware(jwt string, callback func() (interface{}, error)) (interface{}, error) {
+func RequireAuth(jwt string, callback func() (interface{}, error)) (interface{}, error) {
 	isAuthorized, err := ValidateJWT(jwt)
 
 	if err != nil {
