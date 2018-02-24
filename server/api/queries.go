@@ -33,8 +33,10 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 			Type:        graphql.NewList(TodoType),
 			Description: "return all todos",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				jwt := params.Context.Value("jwt").(string)
-				res, err := server.AuthMiddleware(jwt, QueryTodos)
+				res, err := server.AuthMiddleware(
+					params.Context.Value("jwt").(string),
+					QueryTodos,
+				)
 
 				if err != nil {
 					return nil, err
@@ -47,8 +49,10 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 			Type:        graphql.NewList(UserType),
 			Description: "Return all users",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				jwt := params.Context.Value("jwt").(string)
-				res, err := server.AuthMiddleware(jwt, authentication.QueryUsers)
+				res, err := server.AuthMiddleware(
+					params.Context.Value("jwt").(string),
+					authentication.QueryUsers,
+				)
 
 				if err != nil {
 					return nil, err

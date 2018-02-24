@@ -16,7 +16,7 @@ State management is done via `apollo-link-state` and authentication is provided 
 - [x] Front end base setup
 - [ ] Client side functionality integration
 - [ ] JWT authentication
-	- [ ] Wrap GraphQL queries in authentication HOF
+	- [x] Wrap GraphQL queries in authentication HOF
 - [x] Docker
 	- [x] Development
 	- [x] Production
