@@ -65,7 +65,7 @@ func TestJwtMiddleware_WithoutToken(t *testing.T) {
 	handler.ServeHTTP(rr, req)
 }
 
-func TestAuthMiddleWare_ValidToken(t *testing.T) {
+func TestRequireAuthMiddleware_ValidToken(t *testing.T) {
 	token := jwt.New(jwt.SigningMethodHS256)
 	tokenString, _ := token.SignedString(server.JwtSecret)
 	resMock := ResponseMock{"Doge"}
@@ -73,7 +73,7 @@ func TestAuthMiddleWare_ValidToken(t *testing.T) {
 		return resMock, nil
 	}
 
-	res, err := server.AuthMiddleware(tokenString, callbackMock)
+	res, err := server.RequireAuth(tokenString, callbackMock)
 
 	if err != nil {
 		t.Error(err)
@@ -84,13 +84,13 @@ func TestAuthMiddleWare_ValidToken(t *testing.T) {
 	}
 }
 
-func TestAuthMiddleware_InvalidToken(t *testing.T) {
+func TestRequireAuthMiddleware_InvalidToken(t *testing.T) {
 	invalidToken := "123123"
 	callbackMock := func() (interface{}, error) {
 		return ResponseMock{}, nil
 	}
 
-	_, err := server.AuthMiddleware(invalidToken, callbackMock)
+	_, err := server.RequireAuth(invalidToken, callbackMock)
 
 	if diff := deep.Equal(err.Error(), "Invalid token"); diff != nil {
 		t.Error(diff)
