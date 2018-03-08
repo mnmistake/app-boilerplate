@@ -6,6 +6,7 @@ const commonConfig = require('./webpack.common.js');
 const helpers = require('../helpers');
 
 module.exports = webpackMerge(commonConfig, {
+    mode: 'production',
     devtool: 'eval',
     entry: {
         bundle: [
@@ -19,9 +20,6 @@ module.exports = webpackMerge(commonConfig, {
         publicPath: '/',
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            names: ['vendor', 'manifest'],
-        }),
         new CleanWebpackPlugin(['dist'], {
             root: helpers.root(),
             verbose: true,
@@ -30,7 +28,6 @@ module.exports = webpackMerge(commonConfig, {
         new HtmlWebpackPlugin({
             template: './client/index.html',
         }),
-        new webpack.optimize.UglifyJsPlugin(),
         new webpack.optimize.AggressiveMergingPlugin(),
     ],
 });

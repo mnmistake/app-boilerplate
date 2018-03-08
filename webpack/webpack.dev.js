@@ -5,6 +5,7 @@ const helpers = require('../helpers');
 
 module.exports = webpackMerge(commonConfig, {
     devtool: 'eval-source-map',
+    mode: 'development',
     entry: [
         'babel-polyfill',
         './client/index.js',
