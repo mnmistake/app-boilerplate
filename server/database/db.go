@@ -17,6 +17,14 @@ type User struct {
 	Password []uint8
 }
 
+type Sheet struct {
+	gorm.Model
+
+	User   User
+	UserID int
+	Name   string
+}
+
 func InitDb() {
 	var err error
 
@@ -37,8 +45,7 @@ func InitDb() {
 	fmt.Println("Connected to DB =>", os.Getenv("DB_NAME"))
 
 	DB.LogMode(true)
-
-	DB.AutoMigrate(&User{})
+	DB.AutoMigrate(&User{}, &Sheet{})
 
 	//DB.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, content TEXT, is_completed BOOL, created_at TEXT)")
 	//DB.Exec("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, username TEXT, password TEXT)")
