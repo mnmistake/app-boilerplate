@@ -16,3 +16,6 @@ import:
   - bcrypt
 - package: github.com/go-test/deep
   version: ^1.0.1
+- package: github.com/jinzhu/gorm
+  version: ^1.9.1
+- package: github.com/jinzhu/inflection

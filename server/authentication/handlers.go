@@ -3,7 +3,7 @@ package authentication
 import (
 	"errors"
 
-	"github.com/raunofreiberg/kyrene/server"
+	"github.com/raunofreiberg/kyrene/server/database"
 	"github.com/raunofreiberg/kyrene/server/model"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -15,92 +15,74 @@ var (
 )
 
 func CreateUser(username string, password string) (interface{}, error) {
-	hashedPassword, error := HashPassword(password)
-	if error != nil {
-		return nil, error
-	}
-
-	err := server.DB.QueryRow(
-		"INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id",
-		username,
-		hashedPassword,
-	).Scan(&id)
+	hashedPassword, err := HashPassword(password)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return model.User{
-		ID:       id,
+	user := database.User{
 		Username: username,
+		Password: hashedPassword,
+	}
+
+	res := database.DB.Create(&user)
+
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	return model.User{
+		ID:       user.ID,
+		Username: user.Username,
 	}, nil
 }
 
 func QueryUser(username string) (interface{}, error) {
-	rows, err := server.DB.Query("SELECT id, username FROM users WHERE username=$1", username)
+	user := database.User{}
 
-	if err != nil {
-		return nil, err
+	res := database.DB.Where("username = ?", username).First(&user)
+
+	if res.Error != nil {
+		return nil, res.Error
 	}
 
-	for rows.Next() {
-		err := rows.Scan(&id, &username)
-
-		if err != nil {
-			return nil, err
-		}
-
-		return model.User{
-			ID:       id,
-			Username: username,
-		}, nil
-	}
-
-	err = rows.Err()
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, errors.New("User not found")
+	return model.User{
+		ID:       user.ID,
+		Username: user.Username,
+	}, nil
 }
 
 func QueryUsers() (interface{}, error) {
-	rows, err := server.DB.Query("SELECT id, username FROM users")
 	var users []model.User
+	var dbUsers []database.User
 
-	if err != nil {
-		return nil, err
+	res := database.DB.Select("id, username").Find(&dbUsers)
+
+	if res.Error != nil {
+		return nil, res.Error
 	}
 
-	for rows.Next() {
-		if err := rows.Scan(&id, &username); err != nil {
-			return nil, err
-		}
-
+	for _, x := range dbUsers {
 		users = append(users, model.User{
-			ID:       id,
-			Username: username,
+			ID:       x.ID,
+			Username: x.Username,
 		})
-	}
-
-	if err = rows.Err(); err != nil {
-		return nil, err
 	}
 
 	return users, nil
 }
 
 func IsAuthenticated(username string, password []byte) (bool, error) {
-	queryErr := server.DB.QueryRow(
-		"SELECT password FROM users where username=$1",
-		username,
-	).Scan(&hashedPassword)
+	user := database.User{}
 
-	if queryErr != nil {
-		return false, queryErr
+	res := database.DB.Where("username = ?", username).First(&user)
+
+	if res.Error != nil {
+		return false, res.Error
 	}
 
-	if err := bcrypt.CompareHashAndPassword(hashedPassword, password); err != nil {
+	if err := bcrypt.CompareHashAndPassword(user.Password, password); err != nil {
 		return false, errors.New("Incorrect password")
 	}
 

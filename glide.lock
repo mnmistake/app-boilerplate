@@ -1,5 +1,5 @@
-hash: 9d65622ad58271ef20415265d4d3cf0b9e04c3dddc643f6675602bf8683495f8
-updated: 2018-02-19T23:41:21.33377121+02:00
+hash: a63f3d0d080af9960b3b89565adb682c82c457dc691d41a6d02c1566728e2ef9
+updated: 2018-03-08T20:40:12.782651+02:00
 imports:
 - name: github.com/dghubble/gologin
   version: ea49f1659cedb2bbef34a869e014700fec178ae5
@@ -24,6 +24,10 @@ imports:
   - language/visitor
 - name: github.com/graphql-go/handler
   version: f0393b2c10daeebea900292b8e092e73475399d9
+- name: github.com/jinzhu/gorm
+  version: 6ed508ec6a4ecb3531899a69cbc746ccf65a4166
+- name: github.com/jinzhu/inflection
+  version: 04140366298a54a039076d798123ffa108fff46c
 - name: github.com/lib/pq
   version: 83612a56d3dd153a94a629cd64925371c9adad78
   subpackages:
