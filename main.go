@@ -7,8 +7,10 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
+
 	"github.com/raunofreiberg/kyrene/server"
 	"github.com/raunofreiberg/kyrene/server/api"
+	"github.com/raunofreiberg/kyrene/server/database"
 )
 
 var Schema, _ = graphql.NewSchema(graphql.SchemaConfig{
@@ -24,8 +26,7 @@ func main() {
 	})
 	development := os.Getenv("ENV") == "development"
 
-	server.InitDb()
-	defer server.DB.Close()
+	database.Migrate()
 
 	if development {
 		http.Handle("/", http.FileServer(http.Dir("./client")))

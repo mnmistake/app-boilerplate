@@ -3,40 +3,69 @@ package api
 import (
 	"github.com/graphql-go/graphql"
 	"github.com/raunofreiberg/kyrene/server"
+	"github.com/raunofreiberg/kyrene/server/api/segments"
+	"github.com/raunofreiberg/kyrene/server/api/sheets"
+	"github.com/raunofreiberg/kyrene/server/api/users"
 	"github.com/raunofreiberg/kyrene/server/authentication"
 )
 
 var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootQuery",
 	Fields: graphql.Fields{
-		"todo": &graphql.Field{
-			Type:        TodoType,
-			Description: "return a todo",
+		"sheet": &graphql.Field{
+			Type:        sheets.SheetType,
+			Description: "Query a sheet",
 			Args: graphql.FieldConfigArgument{
 				"id": &graphql.ArgumentConfig{
 					Type: graphql.Int,
 				},
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				// Query via Todo ID and return a Todo's ID, content and is_completed status
-				queryID, _ := params.Args["id"].(int)
-				queriedTodo, err := QueryTodo(queryID)
+				sheetID, _ := params.Args["id"].(int)
+				sheet, err := sheets.QuerySheet(sheetID)
 
 				if err != nil {
 					return nil, err
 				}
 
-				return queriedTodo, nil
+				return sheet, nil
 			},
 		},
-		"todoList": &graphql.Field{
-			Type:        graphql.NewList(TodoType),
-			Description: "return all todos",
+		"sheets": &graphql.Field{
+			Type:        graphql.NewList(sheets.SheetType),
+			Description: "Query all sheets",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				res, err := server.RequireAuth(
+				/* res, err := server.RequireAuth(
 					params.Context.Value("jwt").(string),
 					QueryTodos,
-				)
+				) */
+
+				res, err := sheets.QuerySheets()
+
+				if err != nil {
+					return nil, err
+				}
+
+				return res, err
+			},
+		},
+		"segments": &graphql.Field{
+			Type:        graphql.NewList(segments.SegmentType),
+			Description: "Query all segments",
+			Args: graphql.FieldConfigArgument{
+				"id": &graphql.ArgumentConfig{
+					Type: graphql.Int,
+				},
+			},
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				/* res, err := server.RequireAuth(
+					params.Context.Value("jwt").(string),
+					QueryTodos,
+				) */
+
+				sheetID := params.Args["id"].(int)
+
+				res, err := segments.QuerySegments(sheetID)
 
 				if err != nil {
 					return nil, err
@@ -46,7 +75,7 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"users": &graphql.Field{
-			Type:        graphql.NewList(UserType),
+			Type:        graphql.NewList(users.UserType),
 			Description: "Return all users",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				res, err := server.RequireAuth(

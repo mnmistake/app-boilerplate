@@ -9,7 +9,7 @@ import (
 func LoginUser(username string, password string) (interface{}, error) {
 	queriedUser, err := QueryUser(username)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("User not found")
 	}
 
 	isAuthenticated, err := IsAuthenticated(username, []byte(password))
