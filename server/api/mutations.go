@@ -1,8 +1,6 @@
 package api
 
 import (
-	"fmt"
-
 	"github.com/graphql-go/graphql"
 
 	"github.com/raunofreiberg/kyrene/server/api/segments"
@@ -14,6 +12,54 @@ import (
 var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootMutation",
 	Fields: graphql.Fields{
+		// Authentication
+		"registerUser": &graphql.Field{
+			Type:        users.UserType,
+			Description: "Create user",
+			Args: graphql.FieldConfigArgument{
+				"username": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+				"password": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+			},
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				username := params.Args["username"].(string)
+				password := params.Args["password"].(string)
+				token, err := authentication.RegisterUser(username, password)
+
+				if err != nil {
+					return nil, err
+				}
+
+				return token, nil
+			},
+		},
+		"loginUser": &graphql.Field{
+			Type:        users.UserType,
+			Description: "Login user",
+			Args: graphql.FieldConfigArgument{
+				"username": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+				"password": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+			},
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				username := params.Args["username"].(string)
+				password := params.Args["password"].(string)
+				token, err := authentication.LoginUser(username, password)
+
+				if err != nil {
+					return nil, err
+				}
+
+				return token, nil
+			},
+		},
+		// Sheets & segments
 		"createSheet": &graphql.Field{
 			Type:        sheets.SheetType,
 			Description: "Create a sheet attached to a user",
@@ -55,8 +101,6 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 				sheetID, _ := params.Args["sheetId"].(int)
 				label, _ := params.Args["label"].(string)
 				content, _ := params.Args["content"].(string)
-
-				fmt.Println(sheetID)
 
 				segment, err := segments.InsertSegment(sheetID, label, content)
 
@@ -123,51 +167,5 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 					return todos, nil
 				},
 			}, */
-		"registerUser": &graphql.Field{
-			Type:        users.UserType,
-			Description: "Create user",
-			Args: graphql.FieldConfigArgument{
-				"username": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"password": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-			},
-			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				username := params.Args["username"].(string)
-				password := params.Args["password"].(string)
-				token, err := authentication.RegisterUser(username, password)
-
-				if err != nil {
-					return nil, err
-				}
-
-				return token, nil
-			},
-		},
-		"loginUser": &graphql.Field{
-			Type:        users.UserType,
-			Description: "Login user",
-			Args: graphql.FieldConfigArgument{
-				"username": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"password": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-			},
-			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				username := params.Args["username"].(string)
-				password := params.Args["password"].(string)
-				token, err := authentication.LoginUser(username, password)
-
-				if err != nil {
-					return nil, err
-				}
-
-				return token, nil
-			},
-		},
 	},
 })

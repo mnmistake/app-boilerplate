@@ -6,12 +6,27 @@ import (
 	"github.com/raunofreiberg/kyrene/server/api/segments"
 	"github.com/raunofreiberg/kyrene/server/api/sheets"
 	"github.com/raunofreiberg/kyrene/server/api/users"
-	"github.com/raunofreiberg/kyrene/server/authentication"
 )
 
 var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootQuery",
 	Fields: graphql.Fields{
+		"users": &graphql.Field{
+			Type:        graphql.NewList(users.UserType),
+			Description: "Return all users",
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				res, err := server.RequireAuth(
+					params.Context.Value("jwt").(string),
+					users.QueryUsers,
+				)
+
+				if err != nil {
+					return nil, err
+				}
+
+				return res, nil
+			},
+		},
 		"sheet": &graphql.Field{
 			Type:        sheets.SheetType,
 			Description: "Query a sheet",
@@ -72,22 +87,6 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 				}
 
 				return res, err
-			},
-		},
-		"users": &graphql.Field{
-			Type:        graphql.NewList(users.UserType),
-			Description: "Return all users",
-			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				res, err := server.RequireAuth(
-					params.Context.Value("jwt").(string),
-					authentication.QueryUsers,
-				)
-
-				if err != nil {
-					return nil, err
-				}
-
-				return res, nil
 			},
 		},
 	},

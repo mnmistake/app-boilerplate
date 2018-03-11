@@ -2,7 +2,6 @@ package segments
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/raunofreiberg/kyrene/server/api/sheets"
@@ -36,8 +35,6 @@ func QuerySegments(sheetID int) (interface{}, error) {
 }
 
 func InsertSegment(sheetID int, label string, content string) (interface{}, error) {
-	fmt.Println(sheetID, label, content)
-
 	if sheetID == 0 || label == "" || content == "" {
 		return nil, errors.New("Missing arguments")
 	}
@@ -62,6 +59,7 @@ func InsertSegment(sheetID int, label string, content string) (interface{}, erro
 	}
 
 	return model.Segment{
+		ID:        segment.ID,
 		SheetID:   segment.SheetID,
 		Label:     segment.Label,
 		Content:   segment.Content,

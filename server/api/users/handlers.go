@@ -1,4 +1,4 @@
-package authentication
+package users
 
 import (
 	"errors"
@@ -10,13 +10,7 @@ import (
 
 var db = database.Database()
 
-func CreateUser(username string, password string) (interface{}, error) {
-	hashedPassword, error := HashPassword(password)
-
-	if error != nil {
-		return nil, error
-	}
-
+func CreateUser(username string, hashedPassword []uint8) (interface{}, error) {
 	user := database.User{
 		Username: username,
 		Password: hashedPassword,
@@ -84,4 +78,22 @@ func IsAuthenticated(username string, password []byte) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func QueryUserById(userID int) (interface{}, error) {
+	user := database.User{}
+
+	_, err := db.QueryOne(
+		&user,
+		"SELECT username FROM users WHERE username = ?", userID,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return model.User{
+		ID:       user.ID,
+		Username: user.Username,
+	}, nil
 }

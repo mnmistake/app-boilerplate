@@ -7,12 +7,11 @@ var Models = []interface{}{
 	&Segment{},
 }
 
-type Segment struct {
-	ID        int
-	SheetID   int
-	Label     string
-	Content   string
-	CreatedAt string
+type User struct {
+	ID       int
+	Username string
+	Password []uint8
+	Sheets   []*Sheet
 }
 
 type Sheet struct {
@@ -23,9 +22,10 @@ type Sheet struct {
 	Segments  []*Segment
 }
 
-type User struct {
-	ID       int
-	Username string
-	Password []uint8
-	Sheets   []*Sheet
+type Segment struct {
+	ID        int
+	SheetID   int
+	Label     string
+	Content   string
+	CreatedAt string
 }
