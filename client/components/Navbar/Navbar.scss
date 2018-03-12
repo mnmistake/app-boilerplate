@@ -1,0 +1,12 @@
+.navbar {
+    width: 100%;
+    position: relative;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e7e7e7;
+
+    > div {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+}

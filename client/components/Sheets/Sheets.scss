@@ -1,0 +1,24 @@
+.sheetsWrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    grid-gap: 3rem;
+    padding: 2rem;
+    align-items: stretch;
+    margin: 0 auto;
+    max-width: 1440px;
+    font-size: 1rem;
+}
+
+.sheet {
+    max-width: 100%;
+    height: 250px;
+    padding: 3rem;
+    box-shadow: 0 1px 12px rgba(0, 0, 0, .1);
+    color: $black;
+    text-decoration: none;
+    transition: box-shadow .4s;
+
+    &:hover {
+        box-shadow: 4px 6.9px 40px rgba(36, 37, 38, .2);
+    }
+}

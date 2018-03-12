@@ -3,6 +3,7 @@ package server
 import (
 	"errors"
 	"fmt"
+	"os"
 
 	jwt "github.com/dgrijalva/jwt-go"
 )
@@ -24,4 +25,14 @@ func ValidateJWT(jwtToken string) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func GetEnvWithDefault(key string, fallback string) string {
+	value, exists := os.LookupEnv(key)
+
+	if !exists {
+		value = fallback
+	}
+
+	return value
 }

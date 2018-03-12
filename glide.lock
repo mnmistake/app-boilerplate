@@ -1,10 +1,18 @@
-hash: 9d65622ad58271ef20415265d4d3cf0b9e04c3dddc643f6675602bf8683495f8
-updated: 2018-02-19T23:41:21.33377121+02:00
+hash: df56647c4e809c784c83b0575f5bd5871c6315a2967d87d96f4b9f22ca0ea256
+updated: 2018-03-08T18:42:40.535970247+02:00
 imports:
 - name: github.com/dghubble/gologin
   version: ea49f1659cedb2bbef34a869e014700fec178ae5
 - name: github.com/dgrijalva/jwt-go
   version: dbeaa9332f19a944acb5736b4456cfcc02140e29
+- name: github.com/go-pg/pg
+  version: 24dfe0572921e42ffe1035f7afbd40f9d97cb8c8
+  subpackages:
+  - internal
+  - internal/parser
+  - internal/pool
+  - orm
+  - types
 - name: github.com/go-test/deep
   version: 6592d9cc0a499ad2d5f574fde80a2b5c5cc3b4f5
 - name: github.com/gorilla/handlers
@@ -24,10 +32,10 @@ imports:
   - language/visitor
 - name: github.com/graphql-go/handler
   version: f0393b2c10daeebea900292b8e092e73475399d9
+- name: github.com/jinzhu/inflection
+  version: 04140366298a54a039076d798123ffa108fff46c
 - name: github.com/lib/pq
   version: 83612a56d3dd153a94a629cd64925371c9adad78
-  subpackages:
-  - oid
 - name: golang.org/x/crypto
   version: 0fcca4842a8d74bfddc2c96a073bd2a4d2a7a2e8
   subpackages:

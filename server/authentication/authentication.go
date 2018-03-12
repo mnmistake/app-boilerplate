@@ -3,16 +3,17 @@ package authentication
 import (
 	"errors"
 
+	"github.com/raunofreiberg/kyrene/server/api/users"
 	"github.com/raunofreiberg/kyrene/server/model"
 )
 
 func LoginUser(username string, password string) (interface{}, error) {
-	queriedUser, err := QueryUser(username)
+	queriedUser, err := users.QueryUser(username)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("User not found")
 	}
 
-	isAuthenticated, err := IsAuthenticated(username, []byte(password))
+	isAuthenticated, err := users.IsAuthenticated(username, []byte(password))
 	if err != nil {
 		return nil, err
 	}
@@ -33,12 +34,18 @@ func LoginUser(username string, password string) (interface{}, error) {
 }
 
 func RegisterUser(username string, password string) (interface{}, error) {
-	queriedUser, err := QueryUser(username)
+	queriedUser, err := users.QueryUser(username)
 	if queriedUser != nil {
 		return nil, errors.New("User already exists")
 	}
 
-	user, err := CreateUser(username, password)
+	hashedPassword, err := HashPassword(password)
+
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := users.CreateUser(username, hashedPassword)
 	if err != nil {
 		return nil, err
 	}
