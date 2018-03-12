@@ -5,7 +5,6 @@ import (
 
 	"github.com/raunofreiberg/kyrene/server/api/segments"
 	"github.com/raunofreiberg/kyrene/server/api/sheets"
-	"github.com/raunofreiberg/kyrene/server/api/users"
 	"github.com/raunofreiberg/kyrene/server/authentication"
 )
 
@@ -14,7 +13,7 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 	Fields: graphql.Fields{
 		// Authentication
 		"registerUser": &graphql.Field{
-			Type:        users.UserType,
+			Type:        UserType,
 			Description: "Create user",
 			Args: graphql.FieldConfigArgument{
 				"username": &graphql.ArgumentConfig{
@@ -37,7 +36,7 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"loginUser": &graphql.Field{
-			Type:        users.UserType,
+			Type:        UserType,
 			Description: "Login user",
 			Args: graphql.FieldConfigArgument{
 				"username": &graphql.ArgumentConfig{
@@ -61,7 +60,7 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 		},
 		// Sheets & segments
 		"createSheet": &graphql.Field{
-			Type:        sheets.SheetType,
+			Type:        SheetType,
 			Description: "Create a sheet attached to a user",
 			Args: graphql.FieldConfigArgument{
 				"name": &graphql.ArgumentConfig{
@@ -84,7 +83,7 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 		"createSegment": &graphql.Field{
-			Type:        segments.SegmentType,
+			Type:        SegmentType,
 			Description: "Create a segment and attaches it to a sheet",
 			Args: graphql.FieldConfigArgument{
 				"sheetId": &graphql.ArgumentConfig{

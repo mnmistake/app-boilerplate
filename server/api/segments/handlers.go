@@ -12,10 +12,18 @@ import (
 var db = database.Database()
 
 func QuerySegments(sheetID int) (interface{}, error) {
+	if sheetID == 0 {
+		return nil, errors.New("This query requires a SheetID param")
+	}
+
 	var segments []model.Segment
 	var dbSegments []database.Segment
 
-	err := db.Model(&dbSegments).Select()
+	_, err := db.Query(
+		&dbSegments,
+		"SELECT id, sheet_id, label, content, created_at FROM segments WHERE sheet_id = ?",
+		sheetID,
+	)
 
 	if err != nil {
 		return nil, err

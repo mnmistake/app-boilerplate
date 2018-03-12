@@ -44,6 +44,24 @@ func QueryUser(username string) (interface{}, error) {
 	}, nil
 }
 
+func QueryUserById(userID int) (interface{}, error) {
+	user := database.User{}
+
+	_, err := db.QueryOne(
+		&user,
+		"SELECT username, id FROM users WHERE id = ?", userID,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return model.User{
+		ID:       user.ID,
+		Username: user.Username,
+	}, nil
+}
+
 func QueryUsers() (interface{}, error) {
 	var users []model.User
 	var dbUsers []database.User
@@ -78,22 +96,4 @@ func IsAuthenticated(username string, password []byte) (bool, error) {
 	}
 
 	return true, nil
-}
-
-func QueryUserById(userID int) (interface{}, error) {
-	user := database.User{}
-
-	_, err := db.QueryOne(
-		&user,
-		"SELECT username FROM users WHERE username = ?", userID,
-	)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return model.User{
-		ID:       user.ID,
-		Username: user.Username,
-	}, nil
 }

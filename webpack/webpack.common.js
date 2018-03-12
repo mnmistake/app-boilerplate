@@ -33,7 +33,7 @@ module.exports = {
             {
                 loader: 'sass-resources-loader',
                 options: {
-                    resources: helpers.root('./client/sass/_utils.scss'),
+                    resources: helpers.root('./client/sass/utils.scss'),
                 },
             },
             ],

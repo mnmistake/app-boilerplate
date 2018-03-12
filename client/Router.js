@@ -4,8 +4,9 @@ import { Router, Route, Switch } from 'react-router-dom';
 import history from './history';
 
 import Authentication from './components/Authentication';
-import Todos from './components/Todos';
-import Todo from './components/Todo';
+import Sheets from './components/Sheets';
+import CreateSheet from './components/CreateSheet';
+import Sheet from './components/Sheet';
 import Navbar from './components/Navbar';
 
 import RequireAuth from './hocs/RequireAuth';
@@ -16,8 +17,9 @@ const AppRouter = () => (
         <div>
             <Navbar />
             <Switch>
-                <Route exact path="/" component={RequireAuth(Todos)} />
-                <Route path="/todo/:id" component={RequireAuth(Todo)} />
+                <Route exact path="/" component={RequireAuth(Sheets)} />
+                <Route path="/sheet/:id" component={RequireAuth(Sheet)} />
+                { /*<Route path="/sheet/create" component={RequireAuth(CreateSheet)} />*/ }
                 <Route path="/login" component={PersistLogin(Authentication)} />
                 <Route path="/register" component={PersistLogin(Authentication, true)} />
             </Switch>

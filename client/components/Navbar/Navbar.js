@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 
+import * as styles from './Navbar.scss';
 import userQuery from '../../graphql/queries/user';
 import setUserMutation from '../../graphql/mutations/user';
 import Auth from '../../utils/Auth';
@@ -32,10 +33,12 @@ export default class Navbar extends React.Component {
     render() {
         const { user } = this.props;
         return (
-            <React.Fragment>
-                <h1>{user && user.username}</h1>
-                <button onClick={this.logout}>Log out</button>
-            </React.Fragment>
+            <div className={styles.navbar}>
+                <div className="container">
+                    <h1>{user && user.username}</h1>
+                    <button onClick={this.logout}>Log out</button>
+                </div>
+            </div>
         );
     }
 }
