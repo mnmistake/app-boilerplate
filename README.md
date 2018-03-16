@@ -68,7 +68,19 @@ $ export DBNAME=<YOUR_DB_NAME>
 glide install
 ````
 
-* Development (served on localhost:8080)
+* Build the server executable
+
+```
+$ go build
+```
+
+* Run the server
+
+```
+$ ./kyrene
+````
+
+* Run the client side webpack-dev-server instance (served on localhost:8080)
 
 ```
 $ npm run dev
