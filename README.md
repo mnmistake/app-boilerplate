@@ -79,26 +79,3 @@ $ npm run dev
 ```
 $ npm run prod
 ```
-
-#### Endpoint examples
-
-* Retrieve single object
-
-Request
-```
-curl -g 'http://localhost:8000/graphql?query={todo(id:<ID>){id,content,isCompleted}}'
-```
-
-Response
-```
-{
-	"data": {
-		"todo": {
-			"content": "hello world",
-			"id": "3",
-			"isCompleted": false
-		}
-	}
-}
-```
-
