@@ -2,16 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 
-import { loginMutation, registerMutation } from '../../graphql/mutations/auth';
+import { registerUser, loginUser } from '../../graphql/mutations/auth.graphql';
 import Auth from '../../utils/Auth';
 import history from '../../history';
 
-@graphql(loginMutation, {
+console.log(registerUser);
+
+@graphql(loginUser, {
     props: ({ mutate }) => ({
         login: ({ username, password }) => mutate({ variables: { username, password } }),
     }),
 })
-@graphql(registerMutation, {
+@graphql(registerUser, {
     props: ({ mutate }) => ({
         register: ({ username, password }) => mutate({ variables: { username, password } }),
     }),
@@ -43,6 +45,7 @@ export default class Authentication extends React.Component {
                 history.push('/');
             }
         } catch (error) {
+            console.error(error);
             const errors = error.graphQLErrors.map(err => err.message);
             this.setState({ errors });
         }

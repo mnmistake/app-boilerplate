@@ -16,6 +16,11 @@ module.exports = {
             loader: 'url-loader',
         },
         {
+            test: /\.(graphql|gql)$/,
+            exclude: /node_modules/,
+            loader: 'graphql-tag/loader',
+        },
+        {
             test: /\.s?css/,
             use: [{
                 loader: 'style-loader',

@@ -19,7 +19,7 @@ const AppRouter = () => (
             <Switch>
                 <Route exact path="/" component={RequireAuth(Sheets)} />
                 <Route path="/sheet/:id" component={RequireAuth(Sheet)} />
-                { /*<Route path="/sheet/create" component={RequireAuth(CreateSheet)} />*/ }
+                <Route path="/create" component={RequireAuth(CreateSheet)} />
                 <Route path="/login" component={PersistLogin(Authentication)} />
                 <Route path="/register" component={PersistLogin(Authentication, true)} />
             </Switch>

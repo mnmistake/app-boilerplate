@@ -1,0 +1,6 @@
+query userQuery {
+    user @client {
+        username
+        id
+    }
+}

@@ -1,22 +1,87 @@
 body {
     font-family: "Circular Air";
     letter-spacing: 0.03em;
-    font-size: 10px;
+    font-size: 1rem;
+    margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
     margin: 0;
 }
 
 button {
-    background: black;
+    background: $secondary;
     border-radius: 80px;
     width: 100px;
     height: 35px;
     color: white;
     font-family: "Circular Air";
     font-size: 0.9rem;
-    box-shadow: 0 6px 8px rgba(0,0,0,.07);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, .07);
+    transition: .2s ease-in-out;
+
+    &:focus {
+        outline: 0;
+    }
+
+    &.fullWidthBtn {
+        width: 100vw;
+        position: fixed;
+        height: 60px;
+
+        left: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 0;
+
+        border-radius: 0;
+        border: none;
+        background: $primary;
+        font-size: 1.5rem;
+    }
+
+    &.circleBtn {
+        width: 75px;
+        height: 75px;
+        font-size: 2.5rem;
+        box-shadow: 0 13px 35px 0 rgba(0, 0, 0, 0.1);
+
+        &:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+        box-shadow: 0 8px 10px rgba(0, 0, 0, .13);
+    }
+}
+
+.largeButton {
+    width: 50%;
+    height: 40px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .container {
     margin: 0 auto;
-    max-width: 1440px;
+    max-width: 1024px;
+    padding: 0 2rem;
+}
+
+.note {
+    text-transform: uppercase;
+    color: #999;
+    font-size: 0.7rem;
+    letter-spacing: 0.08rem;
 }

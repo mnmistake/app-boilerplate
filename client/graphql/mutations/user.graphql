@@ -1,0 +1,6 @@
+mutation setUser($username: String!, $id: Int!) {
+    setUser(username: $username, id: $id) @client {
+        username
+        id
+    }
+}

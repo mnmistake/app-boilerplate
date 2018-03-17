@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 
 import * as styles from './Navbar.scss';
-import userQuery from '../../graphql/queries/user';
-import setUserMutation from '../../graphql/mutations/user';
+import userQuery from '../../graphql/queries/user.graphql';
+import setUserMutation from '../../graphql/mutations/user.graphql';
 import Auth from '../../utils/Auth';
 import history from '../../history';
 

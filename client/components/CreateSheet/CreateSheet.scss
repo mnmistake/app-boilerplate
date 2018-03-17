@@ -1,0 +1,37 @@
+.createSheetWrapper {
+    padding: 3rem 0;
+}
+
+.addSegmentBtnWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.segmentCreators {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    grid-gap: 3rem;
+    align-items: stretch;
+    margin: 3rem auto;
+ }
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    > div:first-of-type {
+        flex: 0.5;
+    }
+
+    .toggle {
+        display: flex;
+        align-items: center;
+
+        span {
+            padding-right: 1rem;
+            font-size: 0.8rem;
+        }
+    }
+}

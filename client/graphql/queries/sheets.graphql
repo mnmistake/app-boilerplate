@@ -1,0 +1,23 @@
+query sheetsQuery {
+    sheets {
+        id
+        name
+        createdAt
+        user {
+            id
+            username
+        }
+    }
+}
+
+query sheetQuery($id: Int!) {
+    sheet(id: $id) {
+        name
+        segments {
+            id
+            label
+            content
+            createdAt
+        }
+    }
+}
