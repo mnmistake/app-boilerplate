@@ -68,7 +68,19 @@ $ export DBNAME=<YOUR_DB_NAME>
 glide install
 ````
 
-* Development (served on localhost:8080)
+* Build the server executable
+
+```
+$ go build
+```
+
+* Run the server
+
+```
+$ ./kyrene
+````
+
+* Run the client side webpack-dev-server instance (served on localhost:8080)
 
 ```
 $ npm run dev
@@ -79,26 +91,3 @@ $ npm run dev
 ```
 $ npm run prod
 ```
-
-#### Endpoint examples
-
-* Retrieve single object
-
-Request
-```
-curl -g 'http://localhost:8000/graphql?query={todo(id:<ID>){id,content,isCompleted}}'
-```
-
-Response
-```
-{
-	"data": {
-		"todo": {
-			"content": "hello world",
-			"id": "3",
-			"isCompleted": false
-		}
-	}
-}
-```
-
