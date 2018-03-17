@@ -1,0 +1,10 @@
+mutation createSheet($userId: Int!, $name: String!, $segments: Array!) {
+    createSheet(userId: $userId, name: $name, segments: $segments) {
+        id
+        userId
+        segments {
+            sheetId
+            label
+        }
+    }
+}

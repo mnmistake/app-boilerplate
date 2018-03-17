@@ -3,28 +3,14 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { graphql } from 'react-apollo';
+import classNames from 'classnames';
 
 import * as styles from './Sheets.scss';
-import { sheetsQuery } from '../../graphql/queries/sheets';
-import { createTodoMutation, updateTodoMutation } from '../../graphql/mutations/todos';
+import { sheetsQuery } from '../../graphql/queries/sheets.graphql';
 
-@graphql(createTodoMutation, {
-    props: ({ mutate }) => ({
-        createTodo: content => mutate({ variables: { content } }),
-    }),
-    options: {
-        update: (store, { data }) => {
-            const storeData = store.readQuery({ query: sheetsQuery });
-            storeData.todoList.push(data.createTodo);
-            store.writeQuery({ query: sheetsQuery, data: storeData });
-        },
-    },
-})
-@graphql(updateTodoMutation, {
-    props: ({ mutate }) => ({
-        updateTodo: (id, isCompleted) => mutate({ variables: { id, isCompleted } }),
-    }),
-})
+import Avatar from '../Avatar';
+import Spinner from '../Spinner';
+
 @graphql(sheetsQuery)
 export default class Sheets extends React.Component {
     static propTypes = {
@@ -37,20 +23,24 @@ export default class Sheets extends React.Component {
     render() {
         const { sheets, loading } = this.props.data;
 
-        if (loading) return 'loading';
+        if (loading) {
+            return <Spinner />;
+        }
 
         const LastSheet = () => (
-            <Link to={`/sheet/create`} className="gridItem">
+            <Link to={`/create`} className={styles.sheet}>
                 Create your sheet...
             </Link>
         );
 
         const Sheet = ({ id, name, createdAt, user: { username }, isLastSheet }) => (
             <React.Fragment>
-                <Link to={`/sheet/${id}`} className="gridItem">
-                    <h1>{name}</h1>
-                    <p>{username}</p>
-                    Created {moment(createdAt).fromNow()}
+                <Link to={`/sheet/${id}`} className={styles.sheet} title={name}>
+                    <div className={styles.sheetDetails}>
+                        <h1>{name}</h1>
+                        <p className="note">Created {moment(createdAt).fromNow()}</p>
+                    </div>
+                    <Avatar username={username} />
                 </Link>
                 {isLastSheet && <LastSheet />}
             </React.Fragment>
@@ -58,7 +48,7 @@ export default class Sheets extends React.Component {
 
 
         return (
-            <div className="gridWrapper">
+            <div className={classNames('container', styles.sheetsWrapper)}>
                 {sheets && sheets.map((sheet, idx) => {
                     const isLastSheet = sheets.length - 1 === idx;
 

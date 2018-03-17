@@ -99,3 +99,26 @@ var SegmentType = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},
 })
+
+var InputObjectSegmentType = graphql.NewInputObject(
+	graphql.InputObjectConfig{
+		Name: "Segment",
+		Fields: graphql.InputObjectConfigFieldMap{
+			"id": &graphql.InputObjectFieldConfig{
+				Type: graphql.Int,
+			},
+			"sheetId": &graphql.InputObjectFieldConfig{
+				Type: graphql.Int,
+			},
+			"label": &graphql.InputObjectFieldConfig{
+				Type: graphql.String,
+			},
+			"content": &graphql.InputObjectFieldConfig{
+				Type: graphql.String,
+			},
+			"createdAt": &graphql.InputObjectFieldConfig{
+				Type: graphql.String,
+			},
+		},
+	},
+)

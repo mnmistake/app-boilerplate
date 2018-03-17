@@ -1,9 +1,10 @@
 package api
 
 import (
+	"fmt"
+
 	"github.com/graphql-go/graphql"
 
-	"github.com/raunofreiberg/kyrene/server/api/segments"
 	"github.com/raunofreiberg/kyrene/server/api/sheets"
 	"github.com/raunofreiberg/kyrene/server/authentication"
 )
@@ -51,6 +52,8 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 				password := params.Args["password"].(string)
 				token, err := authentication.LoginUser(username, password)
 
+				fmt.Println(username)
+
 				if err != nil {
 					return nil, err
 				}
@@ -69,11 +72,15 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 				"userId": &graphql.ArgumentConfig{
 					Type: graphql.Int,
 				},
+				"segments": &graphql.ArgumentConfig{
+					Type: graphql.NewList(InputObjectSegmentType),
+				},
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				name, _ := params.Args["name"].(string)
 				userID, _ := params.Args["userId"].(int)
-				sheet, err := sheets.InsertSheet(name, userID)
+				segments, _ := params.Args["segments"].([]interface{})
+				sheet, err := sheets.InsertSheet(name, userID, segments)
 
 				if err != nil {
 					return nil, err
@@ -82,7 +89,7 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 				return sheet, nil
 			},
 		},
-		"createSegment": &graphql.Field{
+		/* "createSegment": &graphql.Field{
 			Type:        SegmentType,
 			Description: "Create a segment and attaches it to a sheet",
 			Args: graphql.FieldConfigArgument{
@@ -109,7 +116,7 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 
 				return segment, nil
 			},
-		},
+		}, */
 		/*
 			"updateTodo": &graphql.Field{
 				Type:        TodoType, // return type

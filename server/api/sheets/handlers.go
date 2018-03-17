@@ -57,8 +57,11 @@ func QuerySheet(sheetID int) (interface{}, error) {
 	}, nil
 }
 
-func InsertSheet(name string, userID int) (interface{}, error) {
-	if userID == 0 || name == "" {
+func InsertSheet(name string, userID int, segments []interface{}) (interface{}, error) {
+	var segmentsJSON []model.Segment
+	var dbSegments []database.Segment
+
+	if userID == 0 || name == "" || segments == nil {
 		return nil, errors.New("Missing arguments")
 	}
 
@@ -68,15 +71,40 @@ func InsertSheet(name string, userID int) (interface{}, error) {
 		return nil, errors.New("Tried to attach sheet to a user. User did not exist")
 	}
 
-	currTime := time.Now().Local()
+	currTime := time.Now().Local().String()
 	sheet := database.Sheet{
 		Name:      name,
 		UserID:    userID,
-		CreatedAt: currTime.String(),
+		CreatedAt: currTime,
 	}
 
+	// Insert sheet
 	if _, err := db.Model(&sheet).Returning("id").Insert(); err != nil {
 		return nil, err
+	}
+
+	// Bulk insert related segments
+	for _, data := range segments {
+		dbSegments = append(dbSegments, database.Segment{
+			SheetID:   sheet.ID,
+			Content:   data.(map[string]interface{})["content"].(string),
+			Label:     data.(map[string]interface{})["label"].(string),
+			CreatedAt: currTime,
+		})
+	}
+
+	if err = db.Insert(&dbSegments); err != nil {
+		return nil, err
+	}
+
+	for _, segment := range dbSegments {
+		segmentsJSON = append(segmentsJSON, model.Segment{
+			ID:        segment.ID,
+			SheetID:   segment.SheetID,
+			Label:     segment.Label,
+			Content:   segment.Content,
+			CreatedAt: segment.CreatedAt,
+		})
 	}
 
 	return model.Sheet{
@@ -84,5 +112,6 @@ func InsertSheet(name string, userID int) (interface{}, error) {
 		UserID:    sheet.UserID,
 		Name:      sheet.Name,
 		CreatedAt: sheet.CreatedAt,
+		Segments:  segmentsJSON,
 	}, nil
 }

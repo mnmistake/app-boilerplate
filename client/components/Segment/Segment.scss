@@ -1,0 +1,19 @@
+.segment {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+    max-width: 100%;
+    min-height: 300px;
+    padding: 1rem;
+    box-shadow: 0 11px 32px rgba(86, 86, 86, 0.1);
+    border: 1px solid #eee;
+    border-radius: 6px;
+    color: $black;
+    text-decoration: none;
+    transition: box-shadow .3s ease-in-out;
+
+    &:hover {
+        box-shadow: 0 20px 40px rgba(86, 86, 86, 0.15);
+    }
+}
