@@ -62,7 +62,7 @@ export default class Authentication extends React.Component {
                     <input type="password" onChange={e => this.setState({ password: e.target.value })} />
                     <button>{isRegister ? 'Register' : 'Login'}</button>
                 </form>
-                {!!errors.length && errors.map(err => <li key={err}>{err}</li>)}
+                {!!errors.length && errors.map((err, idx) => <li key={`${err}__${idx}`}>{err}</li>)}
             </React.Fragment>
         );
     }
