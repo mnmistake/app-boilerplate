@@ -1,6 +1,6 @@
 import { withClientState } from 'apollo-link-state';
 
-import userQuery from './graphql/queries/user.graphql';
+import userQuery from './graphql/queries/User.graphql';
 
 const initialState = {
     user: {

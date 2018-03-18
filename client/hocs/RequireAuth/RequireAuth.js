@@ -3,7 +3,7 @@ import { graphql } from 'react-apollo';
 import PropTypes from 'prop-types';
 import jwtDecode from 'jwt-decode';
 
-import setUserMutation from '../../graphql/mutations/user.graphql';
+import setUserMutation from '../../graphql/mutations/User.graphql';
 import Auth from '../../utils/Auth';
 import history from '../../history';
 

@@ -7,30 +7,55 @@ import 'brace/theme/tomorrow';
 import Field from '../Field/renderField';
 import * as styles from './Segment.scss';
 
-const Segment = ({ __ID__, label, value, content, createdAt, isCreator, onSegmentChange, onLabelChange }) => (
-    <div className={styles.segment}>
-        <Field
-            type="text"
-            name="label"
-            placeholder="Label"
-            onChange={onLabelChange}
-        />
+const Segment = props => {
+    const { isCreator, label, content, createdAt } = props;
+    const editorProps = {
+        width: '100%',
+        height: '300px',
+        mode: 'javascript',
+        theme: 'tomorrow',
+        showPrintMargin: false,
+        showGutter: false,
+        fontSize: 14,
+        wrapEnabled: true,
+    };
+
+    const renderEditor = () => {
+        const { __ID__, value, onLabelChange, onSegmentChange } = props;
+        return (
+            <React.Fragment>
+                <Field
+                    type="text"
+                    name="label"
+                    placeholder="Label"
+                    onChange={onLabelChange}
+                />
+                <AceEditor
+                    {...editorProps}
+                    value={value}
+                    defaultValue="// Write something..."
+                    onChange={onSegmentChange}
+                    name={`SEGMENT__${__ID__}`}
+                />
+            </React.Fragment>
+        );
+    };
+
+    const renderStatic = () => (
         <AceEditor
-            value={value}
-            defaultValue="// Write something..."
-            wrapEnabled
-            onChange={onSegmentChange}
-            width="100%"
-            height="300px"
-            fontSize={14}
-            showPrintMargin={false}
-            showGutter={false}
-            mode="javascript"
-            theme="tomorrow"
-            name={`SEGMENT__${__ID__}`}
-            editorProps={{ $blockScrolling: true }}
+            {...editorProps}
+            readOnly
+            highlightActiveLine={false}
+            value={content}
+            name={`SEGMENT__${props.id}`}
         />
-    </div>
-);
+    );
+
+    return (
+        <div className={styles.segment}>
+            {isCreator ? renderEditor() : renderStatic()}
+        </div>
+    );
+};
 
 export default Segment;

@@ -6,7 +6,7 @@ import { graphql } from 'react-apollo';
 import classNames from 'classnames';
 
 import * as styles from './Sheets.scss';
-import { sheetsQuery } from '../../graphql/queries/sheets.graphql';
+import { sheetsQuery } from '../../graphql/queries/Sheets.graphql';
 
 import Avatar from '../Avatar';
 import Spinner from '../Spinner';

@@ -2,13 +2,14 @@ import React from 'react';
 import classNames from 'classnames';
 import { graphql } from 'react-apollo';
 
+import history from '../../history';
 import * as styles from './CreateSheet.scss';
 import Field from '../Field/renderField';
 import ToggleButton from '../ToggleButton';
 import SegmentCreator from './SegmentCreator';
 
-import userQuery from '../../graphql/queries/user.graphql';
-import { createSheet } from '../../graphql/mutations/sheets.graphql';
+import userQuery from '../../graphql/queries/User.graphql';
+import { createSheet } from '../../graphql/mutations/Sheets.graphql';
 
 @graphql(createSheet, {
     props: ({ mutate }) => ({
@@ -20,7 +21,7 @@ import { createSheet } from '../../graphql/mutations/sheets.graphql';
         user,
     }),
 })
-export default class CreateSheet extends React.Component {
+export default class CreateSheet extends React.PureComponent {
     state = {
         // __ID__ is used solely for React element keys.
         // This does not represent the actual ID of the segment.
@@ -62,12 +63,24 @@ export default class CreateSheet extends React.Component {
         ],
     });
 
-    createSheet = () => {
+    createSheet = async (e) => {
+        e.preventDefault();
+
         const { segments, name } = this.state;
         const { createSheet, user: { id: userId } } = this.props;
+        const mappedSegments = segments.map(s => ({ label: s.label, content: s.content }));
 
-        if (segments) {
-            createSheet({ userId, name, segments });
+        if (mappedSegments.length) {
+            try {
+                const res = await createSheet({ userId, name, segments: mappedSegments });
+                const { id } = res.data.createSheet;
+
+                if (res.data) {
+                    history.push(`/sheet/${id}`);
+                }
+            } catch (err) {
+                console.error(err);
+            }
         }
     };
 
@@ -75,7 +88,7 @@ export default class CreateSheet extends React.Component {
         const { segmentCreators } = this.state;
 
         return (
-            <form className={classNames('container', styles.createSheetWrapper)}>
+            <form className={classNames('container', styles.createSheetWrapper)} onSubmit={e => this.createSheet(e)}>
                 <div className={styles.header}>
                     <Field
                         required
@@ -83,15 +96,15 @@ export default class CreateSheet extends React.Component {
                         large
                         type="text"
                         name="name"
-                        placeholder="Name your sheet..."
-                        onLabelChange={e => this.setState({ name: e.target.value })}
+                        placeholder="Sheet name"
+                        onChange={e => this.setState({ name: e.target.value })}
                     />
                     <div className={styles.toggle}>
                         <span className="note">Private</span>
                         <ToggleButton />
                     </div>
                 </div>
-                <div className={styles.segmentCreators}>
+                <div className="segmentsWrapper">
                     {segmentCreators && segmentCreators.map(s => (
                         <SegmentCreator
                             key={s.__ID__}
@@ -108,9 +121,7 @@ export default class CreateSheet extends React.Component {
                     </div>
                     <button
                         style={{ marginTop: '16px' }}
-                        type="button"
                         className="fullWidthBtn"
-                        onClick={this.createSheet}
                     >
                         Create sheet
                     </button>

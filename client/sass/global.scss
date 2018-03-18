@@ -85,3 +85,12 @@ button {
     font-size: 0.7rem;
     letter-spacing: 0.08rem;
 }
+
+.segmentsWrapper {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    grid-gap: 3rem;
+    align-items: stretch;
+    margin: 3rem auto;
+}

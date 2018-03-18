@@ -1,4 +1,9 @@
-mutation createSheet($userId: Int!, $name: String!, $segments: Array!) {
+type InputObjectSegment {
+    content: String!
+    label: String!
+}
+
+mutation createSheet($userId: Int!, $name: String!, $segments: [InputObjectSegment!]!) {
     createSheet(userId: $userId, name: $name, segments: $segments) {
         id
         userId

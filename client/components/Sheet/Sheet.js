@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import * as styles from './Sheet.scss';
 import Spinner from '../Spinner';
 import Segment from '../Segment';
-import { sheetQuery } from '../../graphql/queries/sheets.graphql';
+import { sheetQuery } from '../../graphql/queries/Sheets.graphql';
 
 const Sheet = ({ data: { sheet, loading } }) => {
     if (loading) {
@@ -13,11 +13,14 @@ const Sheet = ({ data: { sheet, loading } }) => {
     }
 
     const { segments } = sheet;
+    console.log(segments);
 
     return (
         <div className={classNames('container', styles.sheetWrapper)}>
             <h1>{sheet.name}</h1>
-            {segments && segments.map(segment => <Segment {...segment} key={segment.id} />)}
+            <div className="segmentsWrapper">
+                {segments && segments.map(segment => <Segment {...segment} key={segment.id} isCreator={false} />)}
+            </div>
         </div>
     );
 };

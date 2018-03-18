@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 
-import { registerUser, loginUser } from '../../graphql/mutations/auth.graphql';
+import { registerUser, loginUser } from '../../graphql/mutations/Authentication.graphql';
 import Auth from '../../utils/Auth';
 import history from '../../history';
-
-console.log(registerUser);
 
 @graphql(loginUser, {
     props: ({ mutate }) => ({
