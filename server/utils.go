@@ -36,3 +36,25 @@ func GetEnvWithDefault(key string, fallback string) string {
 
 	return value
 }
+
+func ParseToken(tokenString string) (jwt.MapClaims, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+
+		return JwtSecret, nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+
+	if token.Valid == false || ok == false {
+		return nil, err
+	}
+
+	return claims, nil
+}

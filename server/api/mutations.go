@@ -1,10 +1,9 @@
 package api
 
 import (
-	"fmt"
-
 	"github.com/graphql-go/graphql"
 
+	"github.com/raunofreiberg/kyrene/server"
 	"github.com/raunofreiberg/kyrene/server/api/sheets"
 	"github.com/raunofreiberg/kyrene/server/authentication"
 )
@@ -15,7 +14,7 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 		// Authentication
 		"registerUser": &graphql.Field{
 			Type:        UserType,
-			Description: "Create user",
+			Description: "Register user",
 			Args: graphql.FieldConfigArgument{
 				"username": &graphql.ArgumentConfig{
 					Type: graphql.String,
@@ -52,8 +51,6 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 				password := params.Args["password"].(string)
 				token, err := authentication.LoginUser(username, password)
 
-				fmt.Println(username)
-
 				if err != nil {
 					return nil, err
 				}
@@ -64,21 +61,21 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 		// Sheets & segments
 		"createSheet": &graphql.Field{
 			Type:        SheetType,
-			Description: "Create a sheet attached to a user",
+			Description: "Creates a sheet along with segments and attaches it to a user",
 			Args: graphql.FieldConfigArgument{
 				"name": &graphql.ArgumentConfig{
 					Type: graphql.String,
-				},
-				"userId": &graphql.ArgumentConfig{
-					Type: graphql.Int,
 				},
 				"segments": &graphql.ArgumentConfig{
 					Type: graphql.NewList(InputObjectSegmentType),
 				},
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				tokenString := params.Context.Value("jwt").(string)
+				claims, err := server.ParseToken(tokenString)
+
 				name, _ := params.Args["name"].(string)
-				userID, _ := params.Args["userId"].(int)
+				userID := int(claims["id"].(float64))
 				segments, _ := params.Args["segments"].([]interface{})
 				sheet, err := sheets.InsertSheet(name, userID, segments)
 

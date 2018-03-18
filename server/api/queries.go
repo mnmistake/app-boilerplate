@@ -49,12 +49,10 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 			Type:        graphql.NewList(SheetType),
 			Description: "Query all sheets",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				/* res, err := server.RequireAuth(
+				res, err := server.RequireAuth(
 					params.Context.Value("jwt").(string),
-					QueryTodos,
-				) */
-
-				res, err := sheets.QuerySheets()
+					sheets.QuerySheets,
+				)
 
 				if err != nil {
 					return nil, err

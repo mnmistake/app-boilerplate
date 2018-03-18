@@ -9,6 +9,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// TODO: are tokens validated against their expiry date?
 func GenerateJWT(user interface{}) (string, error) {
 	expireToken := time.Now().Add(time.Hour * 1).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &model.User{

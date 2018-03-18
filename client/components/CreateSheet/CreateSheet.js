@@ -8,17 +8,11 @@ import Field from '../Field/renderField';
 import ToggleButton from '../ToggleButton';
 import SegmentCreator from './SegmentCreator';
 
-import userQuery from '../../graphql/queries/User.graphql';
 import { createSheet } from '../../graphql/mutations/Sheets.graphql';
 
 @graphql(createSheet, {
     props: ({ mutate }) => ({
-        createSheet: ({ userId, name, segments }) => mutate({ variables: { userId, name, segments } }),
-    }),
-})
-@graphql(userQuery, {
-    props: ({ data: { user } }) => ({
-        user,
+        createSheet: ({ name, segments }) => mutate({ variables: { name, segments } }),
     }),
 })
 export default class CreateSheet extends React.PureComponent {
@@ -67,12 +61,12 @@ export default class CreateSheet extends React.PureComponent {
         e.preventDefault();
 
         const { segments, name } = this.state;
-        const { createSheet, user: { id: userId } } = this.props;
+        const { createSheet } = this.props;
         const mappedSegments = segments.map(s => ({ label: s.label, content: s.content }));
 
-        if (mappedSegments.length) {
+        if (mappedSegments.length) { // TODO: errors when no segments are made.
             try {
-                const res = await createSheet({ userId, name, segments: mappedSegments });
+                const res = await createSheet({ name, segments: mappedSegments });
                 const { id } = res.data.createSheet;
 
                 if (res.data) {
