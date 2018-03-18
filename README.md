@@ -1,13 +1,23 @@
-# GraphQL based API written in Golang
+# Kyrene
 [![Build Status](https://travis-ci.org/raunofreiberg/kyrene.svg?branch=master)](https://travis-ci.org/raunofreiberg/kyrene)
 [![Coverage Status](https://coveralls.io/repos/github/raunofreiberg/kyrene/badge.svg)](https://coveralls.io/github/raunofreiberg/kyrene)
 
 > Work in progress
 
+# Description
+
+I got tired of having my snippets of code, which act as my go-to cheat sheets in multiple languages & frameworks, scattered all over multiple platforms (in some cases even pasting them to a conversation with myself in various messaging platforms).
+
+Thus I decided to start work on a dedicated application which allows users to create their own sheet(s) with multiple segments of code related to a sheet.
+
+Inspired by [devhints.io](https://devhints.io/)
+
+# Technical overview
+
 This project serves as a GraphQL based API written in Golang, which is consumed by the front-end via the Apollo client using React.
 State management is done via `apollo-link-state` and authentication is provided by JSON web tokens. Still work in progress.
 
-# Features
+#### Features
 
 - [x] Base queries & mutations for GraphQL
 - [x] Actual working endpoints for queries & mutations
@@ -31,6 +41,7 @@ State management is done via `apollo-link-state` and authentication is provided 
 - React-Router
 - Apollo
 - Webpack
+- CSS modules
 
 # Setup
 
