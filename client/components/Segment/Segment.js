@@ -30,29 +30,37 @@ const Segment = props => {
                     placeholder="Label"
                     onChange={onLabelChange}
                 />
-                <AceEditor
-                    {...editorProps}
-                    value={value}
-                    defaultValue="// Write something..."
-                    onChange={onSegmentChange}
-                    name={`SEGMENT__${__ID__}`}
-                />
+                <div className={styles.segment}>
+                    <AceEditor
+                        {...editorProps}
+                        value={value}
+                        defaultValue="// Write something..."
+                        onChange={onSegmentChange}
+                        name={`SEGMENT__${__ID__}`}
+                    />
+                </div>
             </React.Fragment>
         );
     };
 
     const renderStatic = () => (
-        <AceEditor
-            {...editorProps}
-            readOnly
-            highlightActiveLine={false}
-            value={content}
-            name={`SEGMENT__${props.id}`}
-        />
+        <React.Fragment>
+            {label && <h3>{label}</h3>}
+            <div className={styles.segment}>
+                <AceEditor
+                    {...editorProps}
+                    className={styles.static}
+                    readOnly
+                    highlightActiveLine={false}
+                    value={content}
+                    name={`SEGMENT__${props.id}`}
+                />
+            </div>
+        </React.Fragment>
     );
 
     return (
-        <div className={styles.segment}>
+        <div className={styles.segmentWrapper}>
             {isCreator ? renderEditor() : renderStatic()}
         </div>
     );

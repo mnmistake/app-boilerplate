@@ -13,6 +13,9 @@ query sheetsQuery {
 query sheetQuery($id: Int!) {
     sheet(id: $id) {
         name
+        user {
+            username
+        }
         segments {
             id
             label
