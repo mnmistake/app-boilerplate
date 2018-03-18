@@ -102,7 +102,7 @@ var SegmentType = graphql.NewObject(graphql.ObjectConfig{
 
 var InputObjectSegmentType = graphql.NewInputObject(
 	graphql.InputObjectConfig{
-		Name: "Segment",
+		Name: "InputObjectSegment",
 		Fields: graphql.InputObjectConfigFieldMap{
 			"id": &graphql.InputObjectFieldConfig{
 				Type: graphql.Int,
