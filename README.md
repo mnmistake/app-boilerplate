@@ -20,12 +20,14 @@ State management is done via `apollo-link-state` and authentication is provided 
 #### Features
 
 - [x] Base queries & mutations for GraphQL
-- [x] Actual working endpoints for queries & mutations
+    - [x] Actual working endpoints for queries & mutations
+    - [x] Creating sheets & segments
 - [x] Database integration
 - [ ] Unit & integration tests for endpoints
 - [x] Front end base setup
-- [ ] Client side functionality integration
-- [ ] JWT authentication
+    - [ ] Client side functionality integration
+- [x] JWT authentication
+    - [ ] OAuth (Facebook?)
 	- [x] Wrap GraphQL queries in authentication HOF
 - [x] Docker
 	- [x] Development
