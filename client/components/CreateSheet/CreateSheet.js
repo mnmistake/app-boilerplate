@@ -47,7 +47,10 @@ export default class CreateSheet extends React.PureComponent {
         }
     };
 
-    setContent = (id, content) => this.setField(id, content, 'content');
+    setContent = (id, content) => {
+        console.log(this.segmentCreator)
+        this.setField(id, content, 'content');
+    };
     setLabel = (id, label) => this.setField(id, label, 'label');
 
     addSegmentCreator = () => this.setState({
@@ -101,6 +104,7 @@ export default class CreateSheet extends React.PureComponent {
                 <div className="segmentsWrapper">
                     {segmentCreators && segmentCreators.map(s => (
                         <SegmentCreator
+                            ref={x => this.segmentCreator = x}
                             key={s.__ID__}
                             __ID__={s.__ID__}
                             value={s.content}

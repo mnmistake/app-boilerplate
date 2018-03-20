@@ -1,6 +1,7 @@
 {
     "parser": "babel-eslint",
-    "extends": "airbnb",
+    "extends": ["airbnb", "eslint:recommended", "plugin:flowtype/recommended"],
+    "plugins": ["flowtype"],
     "env": {
         "browser": true,
         "jest": true
@@ -32,6 +33,6 @@
         // Show TODOs and FIXMEs as warnings
         "no-warning-comments": ["warn", {"location": "anywhere"}],
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-        "no-underscore-dangle": "off",
+        "no-underscore-dangle": "off"
     },
 }

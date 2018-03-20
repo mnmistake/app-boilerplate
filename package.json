@@ -20,7 +20,8 @@
     "lint": "eslint client/ --ext .js --ext .jsx",
     "test": "NODE_ENV=test jest --forceExit",
     "cover": "istanbul cover npm test --no-default-excludes",
-    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
+    "flow": "flow check"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.7",
@@ -79,9 +80,11 @@
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^16.0.0",
     "eslint-import-resolver-webpack": "^0.8.3",
+    "eslint-plugin-flowtype": "^2.46.1",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.4.0",
+    "flow-bin": "^0.68.0",
     "istanbul": "^0.4.5",
     "jest": "^21.2.1",
     "webpack": "^4.0.1",

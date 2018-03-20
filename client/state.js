@@ -1,8 +1,19 @@
+// @flow
 import { withClientState } from 'apollo-link-state';
-
+import type { InMemoryCache } from 'apollo-cache-inmemory';
 import userQuery from './graphql/queries/User.graphql';
 
-const initialState = {
+type User = {
+    __typename: string,
+    username: ?string,
+    id: ?number,
+};
+
+type State = {|
+  user: User,
+|};
+
+const initialState: State = {
     user: {
         __typename: 'CurrentUser',
         username: null,
@@ -10,15 +21,15 @@ const initialState = {
     },
 };
 
-export default cache =>
+export default (cache: InMemoryCache) =>
     withClientState({
         cache,
         defaults: initialState,
         resolvers: {
             Mutation: {
-                setUser: (_, { username, id }, { cache }) => {
+                setUser: (_, { username, id }: { username: boolean, id: number }, { cache }: InMemoryCache): null => {
                     const prevState = cache.readQuery({ query: userQuery });
-                    const data = {
+                    const data: State = {
                         ...prevState,
                         user: {
                             ...prevState.user,

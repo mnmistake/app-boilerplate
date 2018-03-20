@@ -8,7 +8,7 @@ import Field from '../Field/renderField';
 import * as styles from './Segment.scss';
 
 const Segment = props => {
-    const { isCreator, label, content, createdAt } = props;
+    const { isCreator, label, content, createdAt } = props; // TODO: use `createdAt`
     const editorProps = {
         width: '100%',
         height: '300px',

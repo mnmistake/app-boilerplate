@@ -1,4 +1,5 @@
-import React from 'react';
+// @flow
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
@@ -11,8 +12,15 @@ import { sheetsQuery } from '../../graphql/queries/Sheets.graphql';
 import Avatar from '../Avatar';
 import Spinner from '../Spinner';
 
+type Props = {
+  data: {
+      sheets: Array,
+      loading: boolean,
+  }
+};
+
 @graphql(sheetsQuery)
-export default class Sheets extends React.Component {
+export default class Sheets extends React.Component<Props> {
     static propTypes = {
         data: PropTypes.shape({
             sheets: PropTypes.array,
@@ -34,7 +42,7 @@ export default class Sheets extends React.Component {
         );
 
         const Sheet = ({ id, name, createdAt, user: { username }, isLastSheet }) => (
-            <React.Fragment>
+            <Fragment>
                 <Link to={`/sheet/${id}`} className={styles.sheet} title={name}>
                     <div className={styles.sheetDetails}>
                         <h1>{name}</h1>
@@ -43,7 +51,7 @@ export default class Sheets extends React.Component {
                     <Avatar username={username} />
                 </Link>
                 {isLastSheet && <LastSheet />}
-            </React.Fragment>
+            </Fragment>
         );
 
 
