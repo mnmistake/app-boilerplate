@@ -1,11 +1,12 @@
+// @flow
 export default class Auth {
-    static setToken = token => localStorage.setItem('token', token);
+    static setToken = (token: string) => localStorage.setItem('token', token);
 
-    static getToken = () => localStorage.getItem('token');
+    static getToken = (): void => localStorage.getItem('token');
 
-    static removeToken = () => localStorage.removeItem('token');
+    static removeToken = (): void => localStorage.removeItem('token');
 
-    static doesTokenExist() {
+    static doesTokenExist(): boolean {
         return this.getToken() !== null &&
         this.getToken() !== undefined;
     }

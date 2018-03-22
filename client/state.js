@@ -2,15 +2,10 @@
 import { withClientState } from 'apollo-link-state';
 import type { InMemoryCache } from 'apollo-cache-inmemory';
 import userQuery from './graphql/queries/User.graphql';
-
-type User = {
-    __typename: string,
-    username: ?string,
-    id: ?number,
-};
+import type { UserType } from './types/User.types';
 
 type State = {|
-  user: User,
+  user: UserType,
 |};
 
 const initialState: State = {

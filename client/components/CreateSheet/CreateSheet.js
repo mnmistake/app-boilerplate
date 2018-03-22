@@ -1,4 +1,5 @@
-import React from 'react';
+// @flow
+import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import { graphql } from 'react-apollo';
 
@@ -7,15 +8,25 @@ import * as styles from './CreateSheet.scss';
 import Field from '../Field/renderField';
 import ToggleButton from '../ToggleButton';
 import SegmentCreator from './SegmentCreator';
-
 import { createSheet } from '../../graphql/mutations/Sheets.graphql';
+
+type Args = {
+    name: string,
+    segments: Array<Object>,
+};
+
+type Props = {
+    createSheet: Args => Object,
+};
 
 @graphql(createSheet, {
     props: ({ mutate }) => ({
-        createSheet: ({ name, segments }) => mutate({ variables: { name, segments } }),
+        createSheet: ({ name, segments }: Args) => (
+            mutate({ variables: { name, segments } })
+        ),
     }),
 })
-export default class CreateSheet extends React.PureComponent {
+export default class CreateSheet extends PureComponent<Props> {
     state = {
         // __ID__ is used solely for React element keys.
         // This does not represent the actual ID of the segment.
@@ -48,7 +59,6 @@ export default class CreateSheet extends React.PureComponent {
     };
 
     setContent = (id, content) => {
-        console.log(this.segmentCreator)
         this.setField(id, content, 'content');
     };
     setLabel = (id, label) => this.setField(id, label, 'label');
@@ -104,7 +114,6 @@ export default class CreateSheet extends React.PureComponent {
                 <div className="segmentsWrapper">
                     {segmentCreators && segmentCreators.map(s => (
                         <SegmentCreator
-                            ref={x => this.segmentCreator = x}
                             key={s.__ID__}
                             __ID__={s.__ID__}
                             value={s.content}

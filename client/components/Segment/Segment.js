@@ -1,13 +1,21 @@
+// @flow
 import React from 'react';
 import AceEditor from 'react-ace';
-
 import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
 
+import type { SegmentType } from '../../types/Segment.types';
 import Field from '../Field/renderField';
 import * as styles from './Segment.scss';
 
-const Segment = props => {
+type Props = SegmentType & {
+    __ID__: number,
+    value: ?string,
+    onLabelChange: () => void,
+    onSegmentChange: () => void,
+};
+
+const Segment = (props: Props) => {
     const { isCreator, label, content, createdAt } = props; // TODO: use `createdAt`
     const editorProps = {
         width: '100%',

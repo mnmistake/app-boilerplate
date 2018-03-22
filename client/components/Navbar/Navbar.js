@@ -1,15 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import React, { PureComponent } from 'react';
 import { graphql } from 'react-apollo';
 
 import * as styles from './Navbar.scss';
+import type { UserType } from '../../types/User.types';
 import userQuery from '../../graphql/queries/User.graphql';
 import setUserMutation from '../../graphql/mutations/User.graphql';
 import Auth from '../../utils/Auth';
 import history from '../../history';
 
+type Props = {
+    user: UserType,
+    clearUser: () => void,
+};
+
 @graphql(userQuery, {
-    props: ({ data: { user } }) => ({
+    props: ({ data: { user } }: Object<UserType>) => ({
         user,
     }),
 })
@@ -18,12 +24,7 @@ import history from '../../history';
         clearUser: () => mutate({ variables: { username: null, id: null } }),
     }),
 })
-export default class Navbar extends React.Component {
-    static propTypes = {
-        user: PropTypes.shape({}).isRequired,
-        clearUser: PropTypes.func.isRequired,
-    };
-
+export default class Navbar extends PureComponent<Props> {
     logout = () => {
         this.props.clearUser();
         Auth.removeToken();

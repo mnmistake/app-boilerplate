@@ -1,8 +1,15 @@
-import React from 'react';
+// @flow
+import React, { PureComponent } from 'react';
+import Segment from '../../Segment';
 
-import Segment from '../../Segment/index';
+type Props = {
+    value: ?string,
+    __ID__: number,
+    setContent: string => void,
+    setLabel: string => void,
+};
 
-export default class SegmentCreator extends React.PureComponent {
+export default class SegmentCreator extends PureComponent<Props> {
     render() {
         const { value, __ID__, setContent, setLabel } = this.props;
 
@@ -10,7 +17,7 @@ export default class SegmentCreator extends React.PureComponent {
             <Segment
                 value={value && value}
                 __ID__={__ID__}
-                onSegmentChange={content => this.props.setContent(__ID__, content)}
+                onSegmentChange={content => setContent(__ID__, content)}
                 onLabelChange={e => setLabel(__ID__, e.target.value)}
                 isCreator
             />

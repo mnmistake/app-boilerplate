@@ -1,28 +1,33 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 
 import { registerUser, loginUser } from '../../graphql/mutations/Authentication.graphql';
 import Auth from '../../utils/Auth';
 import history from '../../history';
 
+type User = {
+    username: string,
+    password: string,
+};
+
+type Props = {
+    login: User => Object,
+    register: User => Object,
+    isRegister: boolean,
+};
+
 @graphql(loginUser, {
     props: ({ mutate }) => ({
-        login: ({ username, password }) => mutate({ variables: { username, password } }),
+        login: ({ username, password }: User) => mutate({ variables: { username, password } }),
     }),
 })
 @graphql(registerUser, {
     props: ({ mutate }) => ({
-        register: ({ username, password }) => mutate({ variables: { username, password } }),
+        register: ({ username, password }: User) => mutate({ variables: { username, password } }),
     }),
 })
-export default class Authentication extends React.Component {
-    static propTypes = {
-        login: PropTypes.func.isRequired,
-        register: PropTypes.func.isRequired,
-        isRegister: PropTypes.bool.isRequired,
-    };
-
+export default class Authentication extends React.Component<Props> {
     state = {
         username: '',
         password: '',
