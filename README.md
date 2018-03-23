@@ -44,6 +44,7 @@ State management is done via `apollo-link-state` and authentication is provided 
 - Apollo
 - Webpack
 - CSS modules
+- Flow
 
 # Setup
 
