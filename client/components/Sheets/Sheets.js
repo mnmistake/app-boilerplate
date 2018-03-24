@@ -14,7 +14,7 @@ import Spinner from '../Spinner';
 
 type Props = {
   data: {
-      sheets: Array,
+      sheets: Array<Object>,
       loading: boolean,
   }
 };
