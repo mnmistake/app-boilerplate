@@ -33,7 +33,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
                 history.push('/login');
             }
         });
-    if (networkError) console.log(`[Network error]: ${networkError}`);
+    if (networkError) console.error(`[Network error]: ${networkError}`);
 });
 
 const client = new ApolloClient({
