@@ -1,7 +1,10 @@
 // @flow
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
+import classNames from 'classnames';
 
+import * as styles from './Authentication.scss';
+import Field from '../Field/renderField';
 import { registerUser, loginUser } from '../../graphql/mutations/Authentication.graphql';
 import Auth from '../../utils/Auth';
 import history from '../../history';
@@ -17,8 +20,7 @@ type Props = {
     isRegister: boolean,
 };
 
-type State = {
-  ...$Exact<User>,
+type State = User & {
   errors: Array<string>,
 };
 
@@ -62,16 +64,28 @@ export default class Authentication extends Component<Props, State> {
     render() {
         const { errors } = this.state;
         const { isRegister } = this.props;
+        const pageLabel = isRegister ? 'Register' : 'Login';
 
         return (
-            <Fragment>
-                <form onSubmit={e => this.handleSubmit(e)}>
-                    <input type="text" onChange={e => this.setState({ username: e.target.value })} />
-                    <input type="password" onChange={e => this.setState({ password: e.target.value })} />
-                    <button>{isRegister ? 'Register' : 'Login'}</button>
+            <div className={classNames('container', styles.wrapper)}>
+                <h1>{pageLabel}</h1>
+                <form onSubmit={e => this.handleSubmit(e)} className={styles.form}>
+                    <Field
+                        required
+                        type="text"
+                        placeholder="Username"
+                        onChange={e => this.setState({ username: e.target.value })}
+                    />
+                    <Field
+                        required
+                        type="password"
+                        placeholder="Password"
+                        onChange={e => this.setState({ password: e.target.value })}
+                    />
+                    <button className="primary">{pageLabel}</button>
                 </form>
                 {!!errors.length && errors.map((err, idx) => <li key={`${err}__${idx}`}>{err}</li>)}
-            </Fragment>
+            </div>
         );
     }
 }

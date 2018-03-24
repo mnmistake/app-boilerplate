@@ -1,0 +1,21 @@
+.wrapper {
+    margin: 0 auto;
+    padding-top: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .form {
+        width: 60%;
+        padding-top: 48px;
+
+        > div {
+            margin-top: 3rem;
+        }
+
+        button {
+            margin-top: 48px;
+        }
+    }
+}
