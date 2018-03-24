@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
 import AceEditor from 'react-ace';
 import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
@@ -13,10 +13,24 @@ type Props = SegmentType & {
     value: ?string,
     onLabelChange: () => void,
     onSegmentChange: () => void,
+    isCreator: boolean,
 };
 
 const Segment = (props: Props) => {
-    const { isCreator, label, content, createdAt } = props; // TODO: use `createdAt`
+    const {
+        __ID__,
+        id,
+        isCreator,
+
+        label,
+        content,
+        //createdAt, TODO: use `createdAt`
+        value,
+
+        onLabelChange,
+        onSegmentChange,
+    } = props;
+
     const editorProps = {
         width: '100%',
         height: '300px',
@@ -28,31 +42,28 @@ const Segment = (props: Props) => {
         wrapEnabled: true,
     };
 
-    const renderEditor = () => {
-        const { __ID__, value, onLabelChange, onSegmentChange } = props;
-        return (
-            <React.Fragment>
-                <Field
-                    type="text"
-                    name="label"
-                    placeholder="Label"
-                    onChange={onLabelChange}
+    const renderEditor = () => (
+        <Fragment>
+            <Field
+                type="text"
+                name="label"
+                placeholder="Label"
+                onChange={onLabelChange}
+            />
+            <div className={styles.segment}>
+                <AceEditor
+                    {...editorProps}
+                    value={value}
+                    defaultValue="// Write something..."
+                    onChange={onSegmentChange}
+                    name={`SEGMENT__${__ID__}`}
                 />
-                <div className={styles.segment}>
-                    <AceEditor
-                        {...editorProps}
-                        value={value}
-                        defaultValue="// Write something..."
-                        onChange={onSegmentChange}
-                        name={`SEGMENT__${__ID__}`}
-                    />
-                </div>
-            </React.Fragment>
-        );
-    };
+            </div>
+        </Fragment>
+    );
 
     const renderStatic = () => (
-        <React.Fragment>
+        <Fragment>
             {label && <h3>{label}</h3>}
             <div className={styles.segment}>
                 <AceEditor
@@ -61,10 +72,10 @@ const Segment = (props: Props) => {
                     readOnly
                     highlightActiveLine={false}
                     value={content}
-                    name={`SEGMENT__${props.id}`}
+                    name={`SEGMENT__${id}`}
                 />
             </div>
-        </React.Fragment>
+        </Fragment>
     );
 
     return (
