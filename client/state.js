@@ -22,7 +22,7 @@ export default (cache: InMemoryCache) =>
         defaults: initialState,
         resolvers: {
             Mutation: {
-                setUser: (_, { username, id }: { username: string, id: number }, { cache }: InMemoryCache): void => {
+                setUser: (_, { username, id }: { username: string, id: number }, { cache }: InMemoryCache): null => {
                     const prevState = cache.readQuery({ query: userQuery });
                     const data: State = {
                         ...prevState,
