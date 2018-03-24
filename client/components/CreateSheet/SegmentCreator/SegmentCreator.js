@@ -5,8 +5,8 @@ import Segment from '../../Segment';
 type Props = {
     value: ?string,
     __ID__: number,
-    setContent: string => void,
-    setLabel: string => void,
+    setContent: (number, string) => void,
+    setLabel: (number, string) => void,
 };
 
 export default class SegmentCreator extends PureComponent<Props> {
