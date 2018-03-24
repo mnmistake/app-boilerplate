@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 import { graphql } from 'react-apollo';
 
 import { registerUser, loginUser } from '../../graphql/mutations/Authentication.graphql';
@@ -17,6 +17,11 @@ type Props = {
     isRegister: boolean,
 };
 
+type State = {
+  ...$Exact<User>,
+  errors: Array<string>,
+};
+
 @graphql(loginUser, {
     props: ({ mutate }) => ({
         login: ({ username, password }: User) => mutate({ variables: { username, password } }),
@@ -27,14 +32,14 @@ type Props = {
         register: ({ username, password }: User) => mutate({ variables: { username, password } }),
     }),
 })
-export default class Authentication extends React.Component<Props> {
+export default class Authentication extends Component<Props, State> {
     state = {
         username: '',
         password: '',
         errors: [],
     };
 
-    handleSubmit = async (e) => {
+    handleSubmit = async (e: Event) => {
         e.preventDefault();
         const { username, password } = this.state;
         const { login, register, isRegister } = this.props;
@@ -59,14 +64,14 @@ export default class Authentication extends React.Component<Props> {
         const { isRegister } = this.props;
 
         return (
-            <React.Fragment>
+            <Fragment>
                 <form onSubmit={e => this.handleSubmit(e)}>
                     <input type="text" onChange={e => this.setState({ username: e.target.value })} />
                     <input type="password" onChange={e => this.setState({ password: e.target.value })} />
                     <button>{isRegister ? 'Register' : 'Login'}</button>
                 </form>
                 {!!errors.length && errors.map((err, idx) => <li key={`${err}__${idx}`}>{err}</li>)}
-            </React.Fragment>
+            </Fragment>
         );
     }
 }
