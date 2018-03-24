@@ -3,20 +3,30 @@ import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import { graphql } from 'react-apollo';
 
-import history from '../../history';
 import * as styles from './CreateSheet.scss';
+import history from '../../history';
 import Field from '../Field/renderField';
 import ToggleButton from '../ToggleButton';
 import SegmentCreator from './SegmentCreator';
 import { createSheet } from '../../graphql/mutations/Sheets.graphql';
 
+type InternalSegmentType = {
+    label: string,
+    content: string,
+};
+
 type Args = {
     name: string,
-    segments: Array<Object>,
+    segments: Array<InternalSegmentType>,
 };
 
 type Props = {
     createSheet: Args => Object,
+};
+
+type State = {
+    segments: Array<Object>,
+    name: string,
 };
 
 @graphql(createSheet, {
@@ -26,16 +36,15 @@ type Props = {
         ),
     }),
 })
-export default class CreateSheet extends PureComponent<Props> {
+export default class CreateSheet extends PureComponent<Props, State> {
     state = {
         // __ID__ is used solely for React element keys.
         // This does not represent the actual ID of the segment.
-        segmentCreators: [{ __ID__: 0 }],
-        segments: [],
+        segments: [{ __ID__: 0, label: '', content: '' }],
         name: '',
     };
 
-    setField = (__ID__, field, key) => {
+    setField = (__ID__: number, field: string, key: string) => {
         const segment = this.state.segments.find(s => s.__ID__ === __ID__);
 
         if (segment) {
@@ -58,19 +67,14 @@ export default class CreateSheet extends PureComponent<Props> {
         }
     };
 
-    setContent = (id, content) => {
-        this.setField(id, content, 'content');
-    };
-    setLabel = (id, label) => this.setField(id, label, 'label');
+    setContent = (id: number, content: string) => this.setField(id, content, 'content');
+    setLabel = (id: number, label: string) => this.setField(id, label, 'label');
 
-    addSegmentCreator = () => this.setState({
-        segmentCreators: [
-            ...this.state.segmentCreators,
-            { __ID__: this.state.segmentCreators.pop().__ID__ + 1 },
-        ],
-    });
+    addSegment = () => this.setState(prevState => ({
+        segments: [...prevState.segments, { __ID__: this.state.segments.pop().__ID__ + 1 }]
+    }));
 
-    createSheet = async (e) => {
+    createSheet = async (e: Event) => {
         e.preventDefault();
 
         const { segments, name } = this.state;
@@ -92,7 +96,7 @@ export default class CreateSheet extends PureComponent<Props> {
     };
 
     render() {
-        const { segmentCreators } = this.state;
+        const { segments } = this.state;
 
         return (
             <form className={classNames('container', styles.createSheetWrapper)} onSubmit={e => this.createSheet(e)}>
@@ -112,17 +116,18 @@ export default class CreateSheet extends PureComponent<Props> {
                     </div>
                 </div>
                 <div className="segmentsWrapper">
-                    {segmentCreators && segmentCreators.map(s => (
+                    {segments && segments.map(s => (
                         <SegmentCreator
                             key={s.__ID__}
                             __ID__={s.__ID__}
+                            // $FlowFixMe
                             value={s.content}
                             setContent={this.setContent}
                             setLabel={this.setLabel}
                         />
                     ))}
                     <div className={styles.addSegmentBtnWrapper}>
-                        <button type="button" className="circleBtn" onClick={this.addSegmentCreator}>
+                        <button type="button" className="circleBtn" onClick={this.addSegment}>
                             +
                         </button>
                     </div>
