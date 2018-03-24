@@ -1,13 +1,21 @@
 button {
     background: $secondary;
     border-radius: 80px;
+    border: 0;
     width: 100px;
-    height: 35px;
+    height: 40px;
     color: white;
     font-family: "Circular Air";
     font-size: 0.9rem;
     box-shadow: 0 6px 8px rgba(0, 0, 0, .07);
     transition: .2s ease-in-out;
+
+    &.primary {
+        background: $primary;
+        width: 50%;
+        margin: 0 auto;
+        display: block;
+    }
 
     &:focus {
         outline: 0;

@@ -36,8 +36,8 @@ export default class Navbar extends PureComponent<Props> {
         return (
             <div className={styles.navbar}>
                 <div className="container">
-                    <h1>{user && user.username}</h1>
-                    <button onClick={this.logout}>Log out</button>
+                    <h1>{Auth.doesTokenExist() && user && user.username}</h1>
+                    {Auth.doesTokenExist() && <button onClick={this.logout}>Log out</button>}
                 </div>
             </div>
         );
