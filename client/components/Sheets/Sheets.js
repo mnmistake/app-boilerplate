@@ -34,35 +34,29 @@ export default class Sheets extends React.Component<Props> {
         if (loading) {
             return <Spinner />;
         }
-
-        const LastSheet = () => (
-            <Link to={`/create`} className={styles.sheet}>
-                Create your sheet...
-            </Link>
-        );
-
-        const Sheet = ({ id, name, createdAt, user: { username }, isLastSheet }) => (
-            <Fragment>
-                <Link to={`/sheet/${id}`} className={styles.sheet} title={name}>
-                    <div className={styles.sheetDetails}>
-                        <h1>{name}</h1>
-                        <p className="note">Created {moment(createdAt).fromNow()}</p>
-                    </div>
-                    <Avatar username={username} />
-                </Link>
-                {isLastSheet && <LastSheet />}
-            </Fragment>
-        );
-
-
+        
         return (
             <div className={classNames('container', styles.sheetsWrapper)}>
                 {sheets && sheets.map((sheet, idx) => {
                     const isLastSheet = sheets.length - 1 === idx;
+                    const { id, name, createdAt, user: { username } } = sheet;
 
                     return (
-                        <Sheet key={sheet.id} {...sheet} isLastSheet={isLastSheet} />
-                    );
+                        <Fragment>
+                            <Link to={`/sheet/${id}`} className={styles.sheet} title={name}>
+                                <div className={styles.sheetDetails}>
+                                    <h1>{name}</h1>
+                                    <p className="note">Created {moment(createdAt).fromNow()}</p>
+                                </div>
+                                <Avatar username={username} />
+                            </Link>
+                            {isLastSheet &&
+                                <Link to={`/create`} className={styles.sheet}>
+                                    Create your sheet...
+                                </Link>
+                            }
+                        </Fragment>
+                    )
                 })}
             </div>
         );
