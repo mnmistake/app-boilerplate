@@ -1,17 +1,16 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { graphql } from 'react-apollo';
+import { graphql, withApollo } from 'react-apollo';
 
 import * as styles from './Navbar.scss';
 import type { UserType } from '../../types/User.types';
 import userQuery from '../../graphql/queries/User.graphql';
-import setUserMutation from '../../graphql/mutations/User.graphql';
 import Auth from '../../utils/Auth';
 import history from '../../history';
 
 type Props = {
     user: UserType,
-    clearUser: () => void,
+    client: Object,
 };
 
 @graphql(userQuery, {
@@ -19,14 +18,10 @@ type Props = {
         user,
     }),
 })
-@graphql(setUserMutation, {
-    props: ({ mutate }) => ({
-        clearUser: () => mutate({ variables: { username: null, id: null } }),
-    }),
-})
+@withApollo
 export default class Navbar extends PureComponent<Props> {
     logout = () => {
-        this.props.clearUser();
+        this.props.client.resetStore();
         Auth.removeToken();
         history.push('/login');
     };
