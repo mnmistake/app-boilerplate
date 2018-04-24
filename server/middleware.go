@@ -12,6 +12,8 @@ func PassJwtContext(next http.Handler) http.Handler {
 		authorizationHeader := r.Header.Get("Authorization")
 		bearerRegex, _ := regexp.Compile("(?:Bearer *)([^ ]+)(?: *)")
 		bearerRegexMatches := bearerRegex.FindStringSubmatch(authorizationHeader)
+		// We still want requests to be passed onto GraphQL queries/mutations
+		// for authentication so we set the JWT to an empty string if it doesn't exist.
 		ctx := context.WithValue(r.Context(), "jwt", "")
 
 		if len(bearerRegexMatches) != 0 {
@@ -23,6 +25,8 @@ func PassJwtContext(next http.Handler) http.Handler {
 	})
 }
 
+// Helper middleware func for wrapping certain queries in auth verification
+// E.g: RequireAuth(jwt, someQuery)
 func RequireAuth(jwt string, callback func() (interface{}, error)) (interface{}, error) {
 	isAuthorized, err := ValidateJWT(jwt)
 
