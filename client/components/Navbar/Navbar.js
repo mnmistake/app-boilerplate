@@ -1,6 +1,7 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { graphql, withApollo } from 'react-apollo';
+import { Link } from 'react-router-dom';
 
 import * as styles from './Navbar.scss';
 import type { UserType } from '../../types/User.types';
@@ -32,7 +33,16 @@ export default class Navbar extends PureComponent<Props> {
             <div className={styles.navbar}>
                 <div className="container">
                     <h1>{Auth.doesTokenExist() && user && user.username}</h1>
-                    {Auth.doesTokenExist() && <button onClick={this.logout}>Log out</button>}
+                    {Auth.doesTokenExist() && 
+                        <div className={styles.actions}>
+                            <Link to={`/create`} className="button withHover">
+                                <span>New sheet</span>
+                            </Link>
+                            <button className="withHover" onClick={this.logout}>
+                                Log out
+                            </button>
+                        </div>
+                    }
                 </div>
             </div>
         );

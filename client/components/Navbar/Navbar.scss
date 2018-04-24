@@ -16,9 +16,25 @@
             font-weight: 500;
         }
 
-        button {
+        button, a {
             border: 2px solid;
-            background: transparent;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            a {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                text-decoration: none;
+                box-sizing: border-box;
+
+                margin-right: 16px;
+            }
         }
     }
 }
