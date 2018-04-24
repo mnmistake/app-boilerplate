@@ -71,8 +71,14 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 				},
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				tokenString := params.Context.Value("jwt").(string)
-				claims, err := server.ParseToken(tokenString)
+				jwt := params.Context.Value("jwt").(string)
+				_, err := server.ValidateJWT(jwt)
+
+				if err != nil {
+					return nil, err
+				}
+
+				claims, err := server.ParseToken(jwt)
 
 				name, _ := params.Args["name"].(string)
 				userID := int(claims["id"].(float64))
