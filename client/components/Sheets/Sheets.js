@@ -25,24 +25,18 @@ const Sheets = ({ data: { sheets, loading } }: Props) => {
 
     return (
         <div className={classNames('container', styles.sheetsWrapper)}>
-            {sheets && sheets.map((sheet, idx) => {
-                const isLastSheet = sheets.length - 1 === idx;
+            {sheets && sheets.map((sheet, idx) => {                
                 const { id, name, createdAt, user: { username } } = sheet;
-
+                
                 return (
                     <Fragment key={id}>
-                        <Link to={`/sheet/${id}`} className={styles.sheet} title={name}>
+                        <Link to={`/sheet/${id}`} className={classes} title={name}>
                             <div className={styles.sheetDetails}>
                                 <h1>{name}</h1>
-                                <p className="note">Created {moment(createdAt).fromNow()}</p>
+                                <p className="note">Created {createdAtTimestamp}</p>
                             </div>
                             <Avatar username={username} />
                         </Link>
-                        {isLastSheet &&
-                        <Link to={`/create`} className={styles.sheet}>
-                            Create your sheet...
-                        </Link>
-                        }
                     </Fragment>
                 )
             })}

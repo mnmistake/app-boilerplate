@@ -21,7 +21,7 @@
     border-radius: 6px;
     color: $black;
     text-decoration: none;
-    transition: box-shadow .3s ease-in-out;
+    transition: all .3s ease-in-out;
 
     h1 {
         font-size: 1.2rem;
@@ -33,5 +33,6 @@
 
     &:hover {
         box-shadow: 0 20px 40px rgba(86, 86, 86, 0.15);
+        border: 1px solid $primary;
     }
 }
