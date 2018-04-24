@@ -30,7 +30,7 @@ const Sheets = ({ data: { sheets, loading } }: Props) => {
                 
                 return (
                     <Fragment key={id}>
-                        <Link to={`/sheet/${id}`} className={classes} title={name}>
+                        <Link to={`/sheet/${id}`} className={styles.sheet} title={name}>
                             <div className={styles.sheetDetails}>
                                 <h1>{name}</h1>
                                 <p className="note">Created {createdAtTimestamp}</p>
