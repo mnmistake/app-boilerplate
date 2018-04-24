@@ -15,7 +15,7 @@ func QuerySheets() (interface{}, error) {
 	var sheets []model.Sheet
 	var dbSheets []database.Sheet
 
-	err := db.Model(&dbSheets).Select()
+	err := db.Model(&dbSheets).OrderExpr("created_at DESC").Select()
 
 	if err != nil {
 		return nil, err
