@@ -1,15 +1,21 @@
-button {
+button, .button {
     background: $secondary;
     border-radius: 80px;
     border: 0;
-    width: 100px;
-    height: 40px;
+    min-width: 100px;
+    height: 35px;
     color: white;
     font-family: "Circular Air";
     font-size: 0.9rem;
     box-shadow: 0 6px 8px rgba(0, 0, 0, .07);
     transition: .2s ease-in-out;
 
+    &.withHover {
+        &:hover {
+            color: $primary;
+        }
+    }
+    
     &.primary {
         background: $primary;
         width: 50%;
@@ -38,7 +44,7 @@ button {
     }
 
     &.circleBtn {
-        width: 75px;
+        min-width: 75px;
         height: 75px;
         font-size: 2.5rem;
         box-shadow: 0 13px 35px 0 rgba(0, 0, 0, 0.1);
@@ -51,7 +57,7 @@ button {
 
     &:hover {
         cursor: pointer;
-        box-shadow: 0 8px 10px rgba(0, 0, 0, .13);
+        box-shadow: 0 8px 10px rgba(0, 0, 0, .13);        
     }
 }
 
