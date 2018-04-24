@@ -35,6 +35,12 @@ var RootQuery = graphql.NewObject(graphql.ObjectConfig{
 				},
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				_, err := server.ValidateJWT(params.Context.Value("jwt").(string))
+
+				if err != nil {
+					return nil, err
+				}
+
 				sheetID, _ := params.Args["id"].(int)
 				sheet, err := sheets.QuerySheet(sheetID)
 
