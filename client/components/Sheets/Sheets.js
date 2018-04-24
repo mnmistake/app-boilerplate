@@ -25,8 +25,9 @@ const Sheets = ({ data: { sheets, loading } }: Props) => {
 
     return (
         <div className={classNames('container', styles.sheetsWrapper)}>
-            {sheets && sheets.map((sheet, idx) => {                
+            {sheets && sheets.map(sheet => {
                 const { id, name, createdAt, user: { username } } = sheet;
+                const createdAtTimestamp = moment(createdAt).fromNow();
                 
                 return (
                     <Fragment key={id}>
