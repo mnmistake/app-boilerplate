@@ -17,10 +17,7 @@ button, .button {
     }
     
     &.primary {
-        background: $primary;
-        width: 50%;
-        margin: 0 auto;
-        display: block;
+        background: $primary;    
     }
 
     &:focus {

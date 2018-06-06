@@ -1,6 +1,6 @@
 .wrapper {
     margin: 0 auto;
-    padding-top: 64px;
+    padding-top: 4rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,14 +8,30 @@
 
     .form {
         width: 60%;
-        padding-top: 48px;
+        padding-top: 3rem;
 
         > div {
             margin-top: 3rem;
         }
 
         button {
-            margin-top: 48px;
+            margin-top: 3rem;
+        }
+
+        a {
+            margin-top: 1rem;
+            text-decoration: none;
+        }
+
+        button,
+        a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
         }
     }
 }

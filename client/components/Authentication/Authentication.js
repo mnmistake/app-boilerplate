@@ -8,6 +8,7 @@ import Field from '../Field/renderField';
 import { registerUser, loginUser } from '../../graphql/mutations/Authentication.graphql';
 import Auth from '../../utils/Auth';
 import history from '../../history';
+import { Link } from 'react-router-dom'
 
 type User = {
     username: string,
@@ -83,6 +84,9 @@ export default class Authentication extends Component<Props, State> {
                         onChange={e => this.setState({ password: e.target.value })}
                     />
                     <button className="primary">{pageLabel}</button>
+                    <Link to={isRegister ? 'login' : 'register'} className="button">
+                        <span>{isRegister ? 'Login' : 'Register'}</span>
+                    </Link>
                 </form>
                 {!!errors.length && errors.map((err, idx) => <li key={`${err}__${idx}`}>{err}</li>)}
             </div>
