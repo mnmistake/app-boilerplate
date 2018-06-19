@@ -1,14 +1,29 @@
 button, .button {
-    background: $secondary;
     border-radius: 80px;
-    border: 0;
     min-width: 100px;
-    height: 35px;
-    color: white;
+    height: 40px;
+    color: $black;
     font-family: "Circular Air";
     font-size: 0.9rem;
     box-shadow: 0 6px 8px rgba(0, 0, 0, .07);
     transition: .2s ease-in-out;
+    border: none;
+
+    &:hover {
+        cursor: pointer;
+        box-shadow: 0 8px 10px rgba(0, 0, 0, .13);
+    }
+
+    &.default {
+        box-shadow: none;
+        background: transparent;
+        border: 1px solid $primary;
+        color: $primary;
+
+        &:hover {
+            box-shadow: none;
+        }
+    }
 
     &.withHover {
         &:hover {
@@ -17,7 +32,11 @@ button, .button {
     }
     
     &.primary {
-        background: $primary;    
+        background: $primary;
+        color: white;
+        width: 50%;
+        margin: 0 auto;
+        display: block;
     }
 
     &:focus {
@@ -50,11 +69,6 @@ button, .button {
             transform: scale(1.1);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
         }
-    }
-
-    &:hover {
-        cursor: pointer;
-        box-shadow: 0 8px 10px rgba(0, 0, 0, .13);        
     }
 }
 

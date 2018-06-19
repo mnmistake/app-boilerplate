@@ -3,8 +3,7 @@
     height: 45px;
     position: relative;
     padding: 1rem 0;
-    background: $secondary;
-    box-shadow: 0 8px 19px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid $lightGrey;
 
     > div {
         display: flex;
@@ -12,12 +11,8 @@
         align-items: center;
 
         h1 {
-            color: white;
+            color: $primary;
             font-weight: 500;
-        }
-
-        button, a {
-            border: 2px solid;
         }
 
         .actions {

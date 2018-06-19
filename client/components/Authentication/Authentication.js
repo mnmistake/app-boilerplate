@@ -84,7 +84,7 @@ export default class Authentication extends Component<Props, State> {
                         onChange={e => this.setState({ password: e.target.value })}
                     />
                     <button className="primary">{pageLabel}</button>
-                    <Link to={isRegister ? 'login' : 'register'} className="button">
+                    <Link to={isRegister ? 'login' : 'register'} className="button default">
                         <span>{isRegister ? 'Login' : 'Register'}</span>
                     </Link>
                 </form>

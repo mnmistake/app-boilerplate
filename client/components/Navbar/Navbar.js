@@ -35,10 +35,10 @@ export default class Navbar extends PureComponent<Props> {
                     <h1>{Auth.doesTokenExist() && user && user.username}</h1>
                     {Auth.doesTokenExist() && 
                         <div className={styles.actions}>
-                            <Link to={`/create`} className="button withHover">
+                            <Link to={`/create`} className="button primary">
                                 <span>New sheet</span>
                             </Link>
-                            <button className="withHover" onClick={this.logout}>
+                            <button className="button default" onClick={this.logout}>
                                 Log out
                             </button>
                         </div>

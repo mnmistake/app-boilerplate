@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 
 import history from './history';
@@ -14,7 +14,7 @@ import PersistLogin from './hocs/PersistLogin';
 
 const AppRouter = () => (
     <Router history={history}>
-        <div>
+        <Fragment>
             <Navbar />
             <Switch>
                 <Route exact path="/" component={RequireAuth(Sheets)} />
@@ -23,7 +23,7 @@ const AppRouter = () => (
                 <Route path="/login" component={PersistLogin(Authentication)} />
                 <Route path="/register" component={PersistLogin(Authentication, true)} />
             </Switch>
-        </div>
+        </Fragment>
     </Router>
 );
 
