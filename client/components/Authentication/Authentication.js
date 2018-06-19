@@ -2,13 +2,12 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom'
 
 import * as styles from './Authentication.scss';
 import Field from '../Field/renderField';
 import { registerUser, loginUser } from '../../graphql/mutations/Authentication.graphql';
 import Auth from '../../utils/Auth';
-import history from '../../history';
-import { Link } from 'react-router-dom'
 
 type User = {
     username: string,
@@ -45,7 +44,7 @@ export default class Authentication extends Component<Props, State> {
     handleSubmit = async (e: Event) => {
         e.preventDefault();
         const { username, password } = this.state;
-        const { login, register, isRegister } = this.props;
+        const { login, register, isRegister, history } = this.props;
 
         try {
             const res = isRegister ? await register({ username, password }) : await login({ username, password });

@@ -115,3 +115,31 @@ func InsertSheet(name string, userID int, segments []interface{}) (interface{}, 
 		Segments:  segmentsJSON,
 	}, nil
 }
+
+func DeleteSheet(sheetID int, userID int) (interface{}, error) {
+	if userID == 0 || sheetID == 0 {
+		return nil, errors.New("Missing arguments")
+	}
+
+	sheet, err := QuerySheet(sheetID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if sheetUserID := sheet.(model.Sheet).UserID; sheetUserID != userID {
+		return nil, errors.New("This sheet is not yours to delete")
+	}
+
+	sheetToDelete := database.Sheet{
+		ID: sheetID,
+	}
+
+	if err := db.Delete(&sheetToDelete); err != nil {
+		return nil, err
+	}
+
+	return model.Sheet{
+		ID: sheetID,
+	}, nil
+}

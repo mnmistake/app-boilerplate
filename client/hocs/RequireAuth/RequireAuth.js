@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import PropTypes from 'prop-types';
 import jwtDecode from 'jwt-decode';
 
 import setUserMutation from '../../graphql/mutations/User.graphql';
 import Auth from '../../utils/Auth';
-import history from '../../history';
 
 export default function (ComposedComponent) {
     @graphql(setUserMutation, {
@@ -13,21 +12,21 @@ export default function (ComposedComponent) {
             setUser: ({ username, id }) => mutate({ variables: { username, id } }),
         }),
     })
-    class RequireAuth extends React.Component {
+    class RequireAuth extends Component {
         static propTypes = {
             setUser: PropTypes.func.isRequired,
         };
 
-        componentWillMount() {
+        componentDidMount() {
             if (!Auth.doesTokenExist()) {
-                history.push('/login');
+                this.props.history.push('/login');
             }
             this.setUser();
         }
 
-        componentWillUpdate() {
+        componentDidUpdate() {
             if (!Auth.doesTokenExist()) {
-                history.push('/login');
+                this.props.history.push('/login');
             }
             this.setUser();
         }
@@ -44,7 +43,7 @@ export default function (ComposedComponent) {
             } catch (err) {
                 // invalid token error, abort and send back to login
                 Auth.removeToken();
-                history.push('/login');
+                this.props.history.push('/login');
             }
         }
 

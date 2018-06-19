@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Auth from '../../utils/Auth';
-import history from '../../history';
 
 export default function (ComposedComponent, isRegister = false) {
-    class PersistLogin extends React.Component {
-        componentWillMount() {
+    class PersistLogin extends Component {
+        componentDidMount() {
             if (Auth.doesTokenExist()) {
-                history.push('/');
+                this.props.history.push('/');
             }
         }
 
-        componentWillUpdate() {
+        componentDidUpdate() {
             if (Auth.doesTokenExist()) {
-                history.push('/');
+                this.props.history.push('/');
             }
         }
 

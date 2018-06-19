@@ -92,6 +92,34 @@ var RootMutation = graphql.NewObject(graphql.ObjectConfig{
 				return sheet, nil
 			},
 		},
+		"deleteSheet": &graphql.Field{
+			Type:        SheetType,
+			Description: "Deletes a sheet along with segments",
+			Args: graphql.FieldConfigArgument{
+				"id": &graphql.ArgumentConfig{
+					Type: graphql.Int,
+				},
+			},
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				jwt := params.Context.Value("jwt").(string)
+				_, err := server.ValidateJWT(jwt)
+
+				if err != nil {
+					return nil, err
+				}
+
+				claims, _ := server.ParseToken(jwt)
+				userID := int(claims["id"].(float64))
+				sheetID := params.Args["id"].(int)
+				sheet, error := sheets.DeleteSheet(sheetID, userID)
+
+				if error != nil {
+					return nil, error
+				}
+
+				return sheet, nil
+			},
+		},
 		/* "createSegment": &graphql.Field{
 			Type:        SegmentType,
 			Description: "Create a segment and attaches it to a sheet",

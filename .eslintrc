@@ -33,6 +33,8 @@
         // Show TODOs and FIXMEs as warnings
         "no-warning-comments": ["warn", {"location": "anywhere"}],
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "react/prop-types": 0,
+        "react/no-unused-prop-types": 0
     },
 }

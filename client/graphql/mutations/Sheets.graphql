@@ -13,3 +13,9 @@ mutation createSheet($name: String!, $segments: [InputObjectSegment!]!) {
         }
     }
 }
+
+mutation deleteSheet($id: Int!) {
+    deleteSheet(id: $id) {
+        id
+    }
+}

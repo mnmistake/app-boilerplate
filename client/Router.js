@@ -15,7 +15,7 @@ import PersistLogin from './hocs/PersistLogin';
 const AppRouter = () => (
     <Router history={history}>
         <Fragment>
-            <Navbar />
+            <Navbar history={history} />
             <Switch>
                 <Route exact path="/" component={RequireAuth(Sheets)} />
                 <Route path="/sheet/:id" component={RequireAuth(Sheet)} />

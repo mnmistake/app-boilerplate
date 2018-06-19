@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { graphql } from 'react-apollo';
 
 import * as styles from './CreateSheet.scss';
-import history from '../../history';
 import Field from '../Field/renderField';
 import ToggleButton from '../ToggleButton';
 import SegmentCreator from './SegmentCreator';
@@ -87,7 +86,7 @@ export default class CreateSheet extends PureComponent<Props, State> {
                 const { id } = res.data.createSheet;
 
                 if (res.data) {
-                    history.push(`/sheet/${id}`);
+                    this.props.history.push(`/sheet/${id}`);
                 }
             } catch (err) {
                 console.error(err);
@@ -133,7 +132,7 @@ export default class CreateSheet extends PureComponent<Props, State> {
                     </div>
                     <button
                         style={{ marginTop: '16px' }}
-                        className="fullWidthBtn"
+                        className={classNames('fullWidthBtn', styles.createSheetBtn)}
                     >
                         Create sheet
                     </button>
