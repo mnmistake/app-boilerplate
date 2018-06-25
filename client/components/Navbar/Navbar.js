@@ -3,10 +3,10 @@ import React, { PureComponent } from 'react';
 import { graphql, withApollo } from 'react-apollo';
 import { Link } from 'react-router-dom';
 
-import * as styles from './Navbar.scss';
-import type { UserType } from '../../types/User.types';
-import userQuery from '../../graphql/queries/User.graphql';
-import Auth from '../../utils/Auth';
+import * as styles from 'components/Navbar/Navbar.scss';
+import type { UserType } from 'types/User.types';
+import userQuery from 'graphql/queries/User.graphql';
+import Auth from 'utils/Auth';
 
 type Props = {
     user: UserType,
@@ -32,7 +32,7 @@ export default class Navbar extends PureComponent<Props> {
             <div className={styles.navbar}>
                 <div className="container">
                     <h1>{Auth.doesTokenExist() && user && user.username}</h1>
-                    {Auth.doesTokenExist() && 
+                    {Auth.doesTokenExist() &&
                         <div className={styles.actions}>
                             <Link to="/create" className="button primary">
                                 <span>New sheet</span>

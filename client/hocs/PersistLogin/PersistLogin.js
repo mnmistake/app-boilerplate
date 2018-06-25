@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Auth from '../../utils/Auth';
+import Auth from 'utils/Auth';
 
 export default function (ComposedComponent, isRegister = false) {
     class PersistLogin extends Component {

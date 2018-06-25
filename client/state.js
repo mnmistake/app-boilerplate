@@ -1,8 +1,8 @@
 // @flow
 import { withClientState } from 'apollo-link-state';
 import type { InMemoryCache } from 'apollo-cache-inmemory';
-import userQuery from './graphql/queries/User.graphql';
-import type { UserType } from './types/User.types';
+import userQuery from 'graphql/queries/User.graphql';
+import type { UserType } from 'types/User.types';
 
 type State = {|
   user: UserType,

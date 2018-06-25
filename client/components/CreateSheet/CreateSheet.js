@@ -3,11 +3,11 @@ import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import { graphql } from 'react-apollo';
 
-import * as styles from './CreateSheet.scss';
-import Field from '../Field/renderField';
-import ToggleButton from '../ToggleButton';
-import SegmentCreator from './SegmentCreator';
-import { createSheet } from '../../graphql/mutations/Sheets.graphql';
+import * as styles from 'components/CreateSheet/CreateSheet.scss';
+import Field from 'components/Field';
+import ToggleButton from 'components/ToggleButton';
+import SegmentCreator from 'components/CreateSheet/SegmentCreator';
+import { createSheet } from 'graphql/mutations/Sheets.graphql';
 
 type InternalSegmentType = {
     label: string,

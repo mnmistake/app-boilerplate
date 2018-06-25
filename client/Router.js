@@ -1,16 +1,16 @@
 import React, { Fragment } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 
-import history from './history';
+import history from 'history';
 
-import Authentication from './components/Authentication';
-import Sheets from './components/Sheets';
-import CreateSheet from './components/CreateSheet';
-import Sheet from './components/Sheet';
-import Navbar from './components/Navbar';
+import Authentication from 'components/Authentication';
+import Sheets from 'components/Sheets';
+import CreateSheet from 'components/CreateSheet';
+import Sheet from 'components/Sheet';
+import Navbar from 'components/Navbar';
 
-import RequireAuth from './hocs/RequireAuth';
-import PersistLogin from './hocs/PersistLogin';
+import RequireAuth from 'hocs/RequireAuth';
+import PersistLogin from 'hocs/PersistLogin';
 
 const AppRouter = () => (
     <Router history={history}>

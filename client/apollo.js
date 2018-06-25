@@ -5,9 +5,9 @@ import { setContext } from 'apollo-link-context';
 import { ApolloLink } from 'apollo-link';
 import { onError } from 'apollo-link-error';
 
-import history from './history';
-import stateLink from './state';
-import Auth from './utils/Auth';
+import history from 'history';
+import stateLink from 'state';
+import Auth from 'utils/Auth';
 
 const cache = new InMemoryCache();
 

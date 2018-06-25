@@ -4,23 +4,23 @@ import AceEditor from 'react-ace';
 import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
 
-import type { SegmentType } from '../../types/Segment.types';
-import Field from '../Field/renderField';
-import * as styles from './Segment.scss';
+import type { SegmentType } from 'types/Segment.types';
+import Field from 'components/Field';
+import * as styles from 'components/Segment/Segment.scss';
 
 type Props = SegmentType & {
     __ID__: number,
     value: ?string,
     onLabelChange: () => void,
     onSegmentChange: () => void,
-    isCreator: boolean,
+    isEditor: boolean,
 };
 
 const Segment = (props: Props) => {
     const {
         __ID__,
         id,
-        isCreator,
+        isEditor,
 
         label,
         content,
@@ -80,7 +80,7 @@ const Segment = (props: Props) => {
 
     return (
         <div className={styles.segmentWrapper}>
-            {isCreator ? renderEditor() : renderStatic()}
+            {isEditor ? renderEditor() : renderStatic()}
         </div>
     );
 };

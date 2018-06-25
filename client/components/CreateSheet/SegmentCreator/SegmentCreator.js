@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import Segment from '../../Segment';
+import Segment from 'components/Segment';
 
 type Props = {
     value: ?string,
@@ -19,7 +19,7 @@ export default class SegmentCreator extends PureComponent<Props> {
                 __ID__={__ID__}
                 onSegmentChange={content => setContent(__ID__, content)}
                 onLabelChange={e => setLabel(__ID__, e.target.value)}
-                isCreator
+                isEditor
             />
         );
     }

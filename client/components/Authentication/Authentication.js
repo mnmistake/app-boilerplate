@@ -4,10 +4,10 @@ import { graphql } from 'react-apollo';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom'
 
-import * as styles from './Authentication.scss';
-import Field from '../Field/renderField';
-import { registerUser, loginUser } from '../../graphql/mutations/Authentication.graphql';
-import Auth from '../../utils/Auth';
+import * as styles from 'components/Authentication/Authentication.scss';
+import Field from 'components/Field';
+import { registerUser, loginUser } from 'graphql/mutations/Authentication.graphql';
+import Auth from 'utils/Auth';
 
 type User = {
     username: string,

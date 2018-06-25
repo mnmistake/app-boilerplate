@@ -3,15 +3,18 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import classNames from 'classnames';
 
-import type { UserType } from '../../types/User.types';
-import type { SegmentsType } from '../../types/Segment.types';
-import * as styles from './Sheet.scss';
-import { sheetQuery, sheetsQuery } from '../../graphql/queries/Sheets.graphql';
-import { deleteSheet } from '../../graphql/mutations/Sheets.graphql';
-import userQuery from '../../graphql/queries/User.graphql';
-import Spinner from '../Spinner';
-import Segment from '../Segment';
-import Avatar from '../Avatar';
+// Types
+import type { UserType } from 'types/User.types';
+import type { SegmentsType } from 'types/Segment.types';
+// GraphQL
+import { sheetQuery, sheetsQuery } from 'graphql/queries/Sheets.graphql';
+import { deleteSheet } from 'graphql/mutations/Sheets.graphql';
+import userQuery from 'graphql/queries/User.graphql';
+// Components
+import * as styles from 'components/Sheet/Sheet.scss';
+import Spinner from 'components/Spinner';
+import Segment from 'components/Segment';
+import Avatar from 'components/Avatar';
 
 type Props = {
     data: {

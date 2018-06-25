@@ -51,6 +51,10 @@ module.exports = {
     ],
     resolve: {
         extensions: ['.js', '.json'],
+        modules: [
+            helpers.root('client'),
+            'node_modules'
+        ],
     },
     node: {
         fs: 'empty',

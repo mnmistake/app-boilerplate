@@ -1,6 +1,5 @@
 import React from 'react';
-
-import * as styles from './ToggleButton.scss';
+import * as styles from 'components/ToggleButton/ToggleButton.scss';
 
 export default () => (
     <label className={styles.toggleButton}>

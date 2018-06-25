@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
-
-import * as styles from './Avatar.scss';
+import * as styles from 'components/Avatar/Avatar.scss';
 
 type Props = {
     username: string,

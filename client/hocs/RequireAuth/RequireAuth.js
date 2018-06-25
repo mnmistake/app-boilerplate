@@ -3,8 +3,8 @@ import { graphql } from 'react-apollo';
 import PropTypes from 'prop-types';
 import jwtDecode from 'jwt-decode';
 
-import setUserMutation from '../../graphql/mutations/User.graphql';
-import Auth from '../../utils/Auth';
+import setUserMutation from 'graphql/mutations/User.graphql';
+import Auth from 'utils/Auth';
 
 export default function (ComposedComponent) {
     @graphql(setUserMutation, {
