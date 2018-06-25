@@ -133,7 +133,7 @@ func DeleteSheet(sheetID int, userID int) (interface{}, error) {
 		ID: sheetID,
 	}
 
-	if err := db.Delete(&sheetToDelete); err != nil {
+	if err := database.DB.Delete(&sheetToDelete); err != nil {
 		return nil, err
 	}
 
