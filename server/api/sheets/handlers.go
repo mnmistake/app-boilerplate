@@ -9,13 +9,11 @@ import (
 	"github.com/raunofreiberg/kyrene/server/model"
 )
 
-var db = database.Database()
-
 func QuerySheets() (interface{}, error) {
 	var sheets []model.Sheet
 	var dbSheets []database.Sheet
 
-	err := db.Model(&dbSheets).OrderExpr("created_at DESC").Select()
+	err := database.DB.Model(&dbSheets).OrderExpr("created_at DESC").Select()
 
 	if err != nil {
 		return nil, err
@@ -40,7 +38,7 @@ func QuerySheet(sheetID int) (interface{}, error) {
 
 	sheet := database.Sheet{}
 
-	_, err := db.QueryOne(
+	_, err := database.DB.QueryOne(
 		&sheet,
 		"SELECT id, user_id, name, created_at FROM sheets WHERE id = ?", sheetID,
 	)
@@ -79,7 +77,7 @@ func InsertSheet(name string, userID int, segments []interface{}) (interface{}, 
 	}
 
 	// Insert sheet
-	if _, err := db.Model(&sheet).Returning("id").Insert(); err != nil {
+	if _, err := database.DB.Model(&sheet).Returning("id").Insert(); err != nil {
 		return nil, err
 	}
 
@@ -93,7 +91,7 @@ func InsertSheet(name string, userID int, segments []interface{}) (interface{}, 
 		})
 	}
 
-	if err = db.Insert(&dbSegments); err != nil {
+	if err = database.DB.Insert(&dbSegments); err != nil {
 		return nil, err
 	}
 

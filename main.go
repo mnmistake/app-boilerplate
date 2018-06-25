@@ -26,7 +26,7 @@ func main() {
 	})
 	development := os.Getenv("ENV") == "development"
 
-	database.Migrate()
+	database.Init()
 
 	if development {
 		http.Handle("/", http.FileServer(http.Dir("./client")))

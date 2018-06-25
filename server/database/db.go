@@ -11,7 +11,11 @@ import (
 	"github.com/raunofreiberg/kyrene/server"
 )
 
+var DB *pg.DB
+
 func createSchema(db *pg.DB) error {
+	fmt.Println("Migrating... => ", os.Getenv("DB_NAME"))
+
 	for _, model := range Models {
 		err := db.CreateTable(model, &orm.CreateTableOptions{
 			IfNotExists: true,
@@ -37,13 +41,12 @@ func Database() *pg.DB {
 	})
 }
 
-func Migrate() {
-	db := Database()
-	err := createSchema(db)
+// Initialize the database connection and set up migrations, if necessary.
+func Init() {
+	DB = Database()
+	err := createSchema(DB)
 
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println("Migrating... => ", os.Getenv("DB_NAME"))
 }

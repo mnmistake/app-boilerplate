@@ -9,8 +9,6 @@ import (
 	"github.com/raunofreiberg/kyrene/server/model"
 )
 
-var db = database.Database()
-
 func QuerySegments(sheetID int) (interface{}, error) {
 	if sheetID == 0 {
 		return nil, errors.New("This query requires a SheetID param")
@@ -19,7 +17,7 @@ func QuerySegments(sheetID int) (interface{}, error) {
 	var segments []model.Segment
 	var dbSegments []database.Segment
 
-	_, err := db.Query(
+	_, err := database.DB.Query(
 		&dbSegments,
 		"SELECT id, sheet_id, label, content, created_at FROM segments WHERE sheet_id = ?",
 		sheetID,
@@ -62,7 +60,7 @@ func InsertSegment(sheetID int, label string, content string) (interface{}, erro
 		CreatedAt: currTime.String(),
 	}
 
-	if _, err := db.Model(&segment).Returning("id").Insert(); err != nil {
+	if _, err := database.DB.Model(&segment).Returning("id").Insert(); err != nil {
 		return nil, err
 	}
 

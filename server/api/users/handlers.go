@@ -8,15 +8,13 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var db = database.Database()
-
 func CreateUser(username string, hashedPassword []uint8) (interface{}, error) {
 	user := database.User{
 		Username: username,
 		Password: hashedPassword,
 	}
 
-	if _, err := db.Model(&user).Returning("id").Insert(); err != nil {
+	if _, err := database.DB.Model(&user).Returning("id").Insert(); err != nil {
 		return nil, err
 	}
 
@@ -29,7 +27,7 @@ func CreateUser(username string, hashedPassword []uint8) (interface{}, error) {
 func QueryUser(username string) (interface{}, error) {
 	user := database.User{}
 
-	_, err := db.QueryOne(
+	_, err := database.DB.QueryOne(
 		&user,
 		"SELECT id, username FROM users WHERE username = ?", username,
 	)
@@ -47,7 +45,7 @@ func QueryUser(username string) (interface{}, error) {
 func QueryUserById(userID int) (interface{}, error) {
 	user := database.User{}
 
-	_, err := db.QueryOne(
+	_, err := database.DB.QueryOne(
 		&user,
 		"SELECT username, id FROM users WHERE id = ?", userID,
 	)
@@ -66,7 +64,7 @@ func QueryUsers() (interface{}, error) {
 	var users []model.User
 	var dbUsers []database.User
 
-	err := db.Model(&dbUsers).Select()
+	err := database.DB.Model(&dbUsers).Select()
 
 	if err != nil {
 		return nil, err
@@ -85,7 +83,11 @@ func QueryUsers() (interface{}, error) {
 func IsAuthenticated(username string, password []byte) (bool, error) {
 	user := database.User{}
 
-	_, err := db.QueryOne(&user, "SELECT password FROM users WHERE username = ?", username)
+	_, err := database.DB.QueryOne(
+		&user,
+		"SELECT password FROM users WHERE username = ?",
+		username,
+	)
 
 	if err != nil {
 		return false, nil
